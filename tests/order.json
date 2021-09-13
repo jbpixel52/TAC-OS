@@ -1,0 +1,6 @@
+{
+    "order_id": 10101,
+    "date": "DD-MM-YY-hh-mm-ss",
+    "status": "none",
+    "order": "{part_id:{type:taco, meat:asada, status:none, qty:69,ingredients:[cebolla,guacamole]},part2_id:{type:quesadilla, meat:asada, status:none, qty:69,ingredients:[cebolla,guacamole,cilantro]}}"
+}
