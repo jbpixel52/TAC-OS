@@ -39,5 +39,7 @@ def generate_tacos():
     tacos_file.close()
 
 
+print("Generando lista de tacos...")
 generate_tacos()
+print("Tacos han sido generados, revise su archivo json")
 
