@@ -1,0 +1,15 @@
+[
+    {
+        "datetime": "2021-09-14 16:15:55.421215",
+        "request_id": 0,
+        "status": "open",
+        "orden": [{
+            "part_id": "1-0",
+            "type": "taco",
+            "meat": "suadero",
+            "status": "open",
+            "quantity": 31,
+            "ingredients": ["salsa", "cilantro", "cebolla"]
+        }]
+    }
+]
