@@ -1,5 +1,7 @@
+#%%
 import multiprocessing
 import threading
+import logging
 import datetime
 import time
 import sched
@@ -26,69 +28,63 @@ class PersonalTaqueria(threading.Thread):
         self.ordersPerSecondDelta = 3 #^-1 
         self.cookUnitDelta = 0.5 #Minimo para cocinar
         self.Rescheduling = False
-        self.ordenes = []
-
-        pass
-
+        self.ordenes = {} #dict in mind per worker
+        self.tacoCounter=0
     def main(self):
         # Formato de prueba
         #  Orden  = (tiempollegada,duracionOrden)
-        print("Taquero {} en linea".format(self.name))
+        print(f"Taquero {self.name} en linea")
 
         self.OrderRecieverThread.start()
         self.CookerThread.start()
-        pass
+
 
     def recieveClientOrders(self):
         while(True):
-            LaHora = getTime()
-            print("{}:{}".format(LaHora, self.ordenes))
-            f = open("demofile2.txt", "a")
-            f.write("{}:{}\n".format(LaHora, self.ordenes))
+            print(f"{self.ordenes}")
+
             try:
                 newOrder = self.queue.get_nowait()
-                self.ordenes.append(newOrder)
+                self.tacoCounter=+1
+                self.ordenes[str(self.tacoCounter)]=newOrder
                 self.Rescheduling = True
-                self.ordenes.sort()
+                #self.ordenes.sort()
                 self.Rescheduling = False
             except:
-                #print("Error #1")
-                pass  
+                pass
             time.sleep(self.ordersPerSecondDelta)
     
     def cook(self):
         while(True):
-            if(len(self.ordenes)>0 and (not self.Rescheduling)):
-                if(self.ordenes[0] > 0.5):
-                    self.ordenes[0] -= 0.5
+            try:
+                shortestOrder = min(self.ordenes) #orden mas corta en el self.orden
+                if self.ordenes[shortestOrder]>0 and (not self.Rescheduling):
+                    self.ordenes[shortestOrder]-=self.cookUnitDelta #resta el costo del taco hecho
                 else:
-                    self.ordenes.pop(0)
-                pass
-            else:
-                if(self.Rescheduling):
-                    print(self.Rescheduling)
-                    print("NoPuedoEntrar:(")
-                else:
-                    print("Ordenes es 0")
-            time.sleep(self.cookUnitDelta)
-            
+                    self.ordenes.pop(shortestOrder,None) #saca orden del taquero
+                time.sleep(self.cookUnitDelta)            
+            except:
+              pass
+
 
 class CocinaTaqueros(multiprocessing.Process):
-    def __init__(self,nombre):
+    def __init__(self,_name):
         #SuperConsteructor
-        super(CocinaTaqueros, self).__init__(target = self.main, name = nombre)
+        super(CocinaTaqueros, self).__init__(target = self.main, name = _name)
         self.personal = []
-        pass
+
 
     def main(self):
         print("Cocina encendida")
-        pass
 
-## class CocinaQuesadillero()
+class CocinaQuesadillero():
+    pass
 
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="a+",
+                    format="%(asctime)-15s %(levelname)-8s %(message)s")
     print("Scheduler test 1")
     Cocina = CocinaTaqueros("Taqueros")
     Cocina.start()
@@ -96,8 +92,13 @@ if __name__ == "__main__":
     Cocina.personal[0].start()
 
     while(True):
-        print("Escriba la cantidad de unidades que tiene este indice: \n")
-        orden = int(input())
+        logging.info("Escriba la cantidad de unidades que tiene este indice: \n")
+        orden = None
+        try:
+            orden = int(input())
+        except:
+            print('Exception for tacos input')
+        print(f'Hay {orden} de unidades')
         Cocina.personal[0].queue.put(orden)
     
     #x = 5
