@@ -4,9 +4,6 @@ import threading
 import logging
 import datetime
 import time
-import sched
-
-s = sched.scheduler(time.time, time.sleep)
 
 def getTime():
     LocalTime = datetime.datetime.now().strftime("%H:%M:%S")
@@ -30,11 +27,12 @@ class PersonalTaqueria(threading.Thread):
         self.Rescheduling = False
         self.ordenes = {} #dict in mind per worker
         self.tacoCounter=0
+
+
     def main(self):
         # Formato de prueba
         #  Orden  = (tiempollegada,duracionOrden)
         print(f"Taquero {self.name} en linea")
-
         self.OrderRecieverThread.start()
         self.CookerThread.start()
 
@@ -73,9 +71,15 @@ class CocinaTaqueros(multiprocessing.Process):
         super(CocinaTaqueros, self).__init__(target = self.main, name = _name)
         self.personal = []
 
-
     def main(self):
         print("Cocina encendida")
+
+
+    def IngresoPersonal(self,cocina):
+        cocina.personal.append(PersonalTaqueria("Omar"))
+        cocina.personal[0].start()
+
+
 
 class CocinaQuesadillero():
     pass
@@ -88,8 +92,8 @@ if __name__ == "__main__":
     print("Scheduler test 1")
     Cocina = CocinaTaqueros("Taqueros")
     Cocina.start()
-    Cocina.personal.append(PersonalTaqueria("Omar"))
-    Cocina.personal[0].start()
+    Cocina.IngresoPersonal(Cocina)
+
 
     while(True):
         logging.info("Escriba la cantidad de unidades que tiene este indice: \n")
@@ -98,8 +102,5 @@ if __name__ == "__main__":
             orden = int(input())
         except:
             print('Exception for tacos input')
-        print(f'Hay {orden} de unidades')
         Cocina.personal[0].queue.put(orden)
     
-    #x = 5
-    #print(getTime())
