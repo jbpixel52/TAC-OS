@@ -5,6 +5,7 @@ import logging
 import datetime
 import time
 
+tacokillcount=0
 
 def getTime():
     LocalTime = datetime.datetime.now().strftime("%H:%M:%S")
@@ -95,6 +96,8 @@ class PersonalTaqueria(threading.Thread):
                     # saca orden del taquero
                     self.ordenes.pop(shortestOrderIndex, None)
                     logging.info(f"{shortestOrderIndex} Cocinado!")
+                    print(f"{shortestOrderIndex} Cocinado!")
+                    tacokillcount=+1
                 time.sleep(self.cookUnitDelta)
             except:
                 pass
@@ -106,7 +109,7 @@ class PersonalTaqueria(threading.Thread):
         self.ordenes = dict(sorted(self.ordenes.items(),
                             key=lambda item: item[1][0]))
         temp_index=0
-        for orden_info in self.orders.values():
+        for orden_info in self.ordenes.values():
             temp_index+=1
             self.get_starving_treshold(orden=orden_info,index=temp_index)
         temp_index=0            
@@ -123,19 +126,18 @@ class PersonalTaqueria(threading.Thread):
             print('I WANT TO TALK TO THE MANAGER. MY ORDER IS LATE!')
             #reordering time
             # Swapping Values for the given positions... 
-            SeqOrders =list(self.ordernesitems())
             tupList = list(self.ordenes.items())
             tupList[self.get_unlucky_index(index)], tupList[index] = tupList[index], tupList[self.get_unlucky_index(index)]
             swappedOders = dict(tupList)
 
             # Printing the dictionaries...
             print("Initial dictionary = ", end = " ")
-            print(SeqOrders)
+            print(tupList)
             print("Dictionary after swapping = ", end = " ")
             print(swappedOders)
 
     def get_unlucky_index(self,index_starved):
-        return int((len(self.ordernes)-index_starved)/2)
+        return int((len(self.ordenes)-index_starved)/2)
 
 
 class CocinaTaqueros(multiprocessing.Process):
