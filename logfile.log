@@ -227,3 +227,574 @@
 2021-11-02 13:26:31,467 INFO     {}
 2021-11-02 13:26:34,549 INFO     {}
 2021-11-02 13:26:37,625 INFO     {}
+2021-11-05 13:18:43,912 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:18:43,917 INFO     {}
+2021-11-05 13:18:47,009 INFO     {}
+2021-11-05 13:18:47,846 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:18:50,178 INFO     {}
+2021-11-05 13:18:50,224 INFO     1 Cocinado!
+2021-11-05 13:18:53,335 INFO     {}
+2021-11-05 13:18:54,706 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:18:55,592 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:18:56,489 INFO     {}
+2021-11-05 13:18:56,520 INFO     2 Cocinado!
+2021-11-05 13:18:56,575 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:18:57,313 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:18:58,590 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:18:59,626 INFO     {}
+2021-11-05 13:18:59,720 INFO     3 Cocinado!
+2021-11-05 13:19:02,890 INFO     {}
+2021-11-05 13:19:02,998 INFO     39 Cocinado!
+2021-11-05 13:19:03,512 INFO     4 Cocinado!
+2021-11-05 13:19:04,026 INFO     5 Cocinado!
+2021-11-05 13:19:04,538 INFO     14 Cocinado!
+2021-11-05 13:19:05,049 INFO     15 Cocinado!
+2021-11-05 13:19:05,562 INFO     16 Cocinado!
+2021-11-05 13:19:06,051 INFO     {'6': [12, '4-2', 1636143542.9983163], '7': [12, '4-3', 1636143542.9983163], '8': [12, '4-4', 1636143542.9983163], '9': [12, '4-5', 1636143542.9983163], '10': [12, '4-6', 1636143542.9983163], '11': [12, '4-7', 1636143542.9983163], '12': [12, '4-8', 1636143542.9983163], '13': [12, '4-9', 1636143542.9983163], '17': [12, '4-13', 1636143542.9983163], '18': [12, '4-14', 1636143542.9983163], '19': [12, '4-15', 1636143542.9983163], '20': [12, '4-16', 1636143542.9983163], '21': [12, '4-17', 1636143542.9983163], '22': [12, '4-18', 1636143542.9983163], '23': [12, '4-19', 1636143542.9983163], '24': [12, '4-20', 1636143542.9983163], '25': [12, '4-21', 1636143542.9983163], '26': [12, '4-22', 1636143542.9983163], '27': [12, '4-23', 1636143542.9983163], '28': [12, '4-24', 1636143542.9983163], '29': [12, '4-25', 1636143542.9983163], '30': [12, '4-26', 1636143542.9983163], '31': [12, '4-27', 1636143542.9983163], '32': [12, '4-28', 1636143542.9983163], '33': [12, '4-29', 1636143542.9983163], '34': [12, '4-30', 1636143542.9983163], '35': [12, '4-31', 1636143542.9983163], '36': [12, '4-32', 1636143542.9983163], '37': [12, '4-33', 1636143542.9983163], '38': [12, '4-34', 1636143542.9983163]}
+2021-11-05 13:19:06,076 INFO     17 Cocinado!
+2021-11-05 13:19:06,588 INFO     18 Cocinado!
+2021-11-05 13:19:07,101 INFO     19 Cocinado!
+2021-11-05 13:19:07,612 INFO     20 Cocinado!
+2021-11-05 13:19:08,125 INFO     21 Cocinado!
+2021-11-05 13:19:08,637 INFO     22 Cocinado!
+2021-11-05 13:19:09,055 INFO     {'6': [12, '4-2', 1636143542.9983163], '7': [12, '4-3', 1636143542.9983163], '8': [12, '4-4', 1636143542.9983163], '9': [12, '4-5', 1636143542.9983163], '10': [12, '4-6', 1636143542.9983163], '11': [12, '4-7', 1636143542.9983163], '12': [12, '4-8', 1636143542.9983163], '13': [12, '4-9', 1636143542.9983163], '23': [12, '4-19', 1636143542.9983163], '24': [12, '4-20', 1636143542.9983163], '25': [12, '4-21', 1636143542.9983163], '26': [12, '4-22', 1636143542.9983163], '27': [12, '4-23', 1636143542.9983163], '28': [12, '4-24', 1636143542.9983163], '29': [12, '4-25', 1636143542.9983163], '30': [12, '4-26', 1636143542.9983163], '31': [12, '4-27', 1636143542.9983163], '32': [12, '4-28', 1636143542.9983163], '33': [12, '4-29', 1636143542.9983163], '34': [12, '4-30', 1636143542.9983163], '35': [12, '4-31', 1636143542.9983163], '36': [12, '4-32', 1636143542.9983163], '37': [12, '4-33', 1636143542.9983163], '38': [12, '4-34', 1636143542.9983163], '40': [12, '40-0', 1636143546.0522869]}
+2021-11-05 13:19:09,146 INFO     42 Cocinado!
+2021-11-05 13:19:09,657 INFO     23 Cocinado!
+2021-11-05 13:19:10,171 INFO     6 Cocinado!
+2021-11-05 13:19:10,685 INFO     24 Cocinado!
+2021-11-05 13:19:11,186 INFO     25 Cocinado!
+2021-11-05 13:19:11,697 INFO     26 Cocinado!
+2021-11-05 13:19:12,056 INFO     {'7': [12, '4-3', 1636143542.9983163], '8': [12, '4-4', 1636143542.9983163], '9': [12, '4-5', 1636143542.9983163], '10': [12, '4-6', 1636143542.9983163], '11': [12, '4-7', 1636143542.9983163], '12': [12, '4-8', 1636143542.9983163], '13': [12, '4-9', 1636143542.9983163], '27': [12, '4-23', 1636143542.9983163], '28': [12, '4-24', 1636143542.9983163], '29': [12, '4-25', 1636143542.9983163], '30': [12, '4-26', 1636143542.9983163], '31': [12, '4-27', 1636143542.9983163], '32': [12, '4-28', 1636143542.9983163], '33': [12, '4-29', 1636143542.9983163], '34': [12, '4-30', 1636143542.9983163], '35': [12, '4-31', 1636143542.9983163], '36': [12, '4-32', 1636143542.9983163], '37': [12, '4-33', 1636143542.9983163], '38': [12, '4-34', 1636143542.9983163], '40': [12, '40-0', 1636143546.0522869], '41': [12, '41-0', 1636143549.0562236]}
+2021-11-05 13:19:12,211 INFO     27 Cocinado!
+2021-11-05 13:19:12,724 INFO     28 Cocinado!
+2021-11-05 13:19:13,236 INFO     29 Cocinado!
+2021-11-05 13:19:13,751 INFO     30 Cocinado!
+2021-11-05 13:19:14,266 INFO     31 Cocinado!
+2021-11-05 13:19:14,767 INFO     32 Cocinado!
+2021-11-05 13:19:15,061 INFO     {'7': [12, '4-3', 1636143542.9983163], '8': [12, '4-4', 1636143542.9983163], '9': [12, '4-5', 1636143542.9983163], '10': [12, '4-6', 1636143542.9983163], '11': [12, '4-7', 1636143542.9983163], '12': [12, '4-8', 1636143542.9983163], '13': [12, '4-9', 1636143542.9983163], '33': [12, '4-29', 1636143542.9983163], '34': [12, '4-30', 1636143542.9983163], '35': [12, '4-31', 1636143542.9983163], '36': [12, '4-32', 1636143542.9983163], '37': [12, '4-33', 1636143542.9983163], '38': [12, '4-34', 1636143542.9983163], '40': [12, '40-0', 1636143546.0522869], '41': [12, '41-0', 1636143549.0562236]}
+2021-11-05 13:19:15,278 INFO     33 Cocinado!
+2021-11-05 13:19:15,658 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:15,791 INFO     7 Cocinado!
+2021-11-05 13:19:16,121 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:16,305 INFO     34 Cocinado!
+2021-11-05 13:19:16,308 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:16,531 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:16,802 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:16,818 INFO     35 Cocinado!
+2021-11-05 13:19:17,328 INFO     36 Cocinado!
+2021-11-05 13:19:17,840 INFO     37 Cocinado!
+2021-11-05 13:19:17,856 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:17,859 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:18,072 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:18,075 INFO     {'8': [12, '4-4', 1636143542.9983163], '9': [12, '4-5', 1636143542.9983163], '10': [12, '4-6', 1636143542.9983163], '11': [12, '4-7', 1636143542.9983163], '12': [12, '4-8', 1636143542.9983163], '13': [12, '4-9', 1636143542.9983163], '38': [12, '4-34', 1636143542.9983163], '40': [12, '40-0', 1636143546.0522869], '41': [12, '41-0', 1636143549.0562236]}
+2021-11-05 13:19:18,354 INFO     38 Cocinado!
+2021-11-05 13:19:18,865 INFO     8 Cocinado!
+2021-11-05 13:19:19,329 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:19,379 INFO     9 Cocinado!
+2021-11-05 13:19:19,490 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:19,698 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:19,872 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:19,892 INFO     10 Cocinado!
+2021-11-05 13:19:20,318 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:20,406 INFO     11 Cocinado!
+2021-11-05 13:19:20,481 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:19:20,919 INFO     12 Cocinado!
+2021-11-05 13:19:21,089 INFO     {'13': [12, '4-9', 1636143542.9983163], '40': [12, '40-0', 1636143546.0522869], '41': [12, '41-0', 1636143549.0562236]}
+2021-11-05 13:19:21,429 INFO     13 Cocinado!
+2021-11-05 13:19:21,942 INFO     40 Cocinado!
+2021-11-05 13:19:22,457 INFO     41 Cocinado!
+2021-11-05 13:19:24,139 INFO     {}
+2021-11-05 13:19:27,284 INFO     {}
+2021-11-05 13:19:30,402 INFO     {}
+2021-11-05 13:19:31,335 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:20:17,246 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:20:17,249 INFO     {}
+2021-11-05 13:20:20,466 INFO     {}
+2021-11-05 13:20:21,104 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:20:22,174 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:20:23,624 INFO     {}
+2021-11-05 13:20:23,748 INFO     1 Cocinado!
+2021-11-05 13:20:26,747 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:20:26,871 INFO     {}
+2021-11-05 13:20:26,933 INFO     2 Cocinado!
+2021-11-05 13:20:29,403 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:20:30,054 INFO     {}
+2021-11-05 13:20:30,179 INFO     3 Cocinado!
+2021-11-05 13:20:31,005 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:20:31,860 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:20:33,261 INFO     {}
+2021-11-05 13:20:33,353 INFO     5 Cocinado!
+2021-11-05 13:20:33,865 INFO     4 Cocinado!
+2021-11-05 13:20:35,125 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:20:35,824 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:20:36,338 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:20:36,400 INFO     {}
+2021-11-05 13:20:36,896 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:20:39,522 INFO     {}
+2021-11-05 13:20:42,744 INFO     {}
+2021-11-05 13:20:42,900 INFO     8 Cocinado!
+2021-11-05 13:20:46,012 INFO     {}
+2021-11-05 13:20:46,074 INFO     9 Cocinado!
+2021-11-05 13:20:49,125 INFO     {}
+2021-11-05 13:20:49,172 INFO     10 Cocinado!
+2021-11-05 13:20:52,247 INFO     {}
+2021-11-05 13:20:55,356 INFO     {}
+2021-11-05 13:20:58,569 INFO     {}
+2021-11-05 13:21:01,682 INFO     {}
+2021-11-05 13:21:04,899 INFO     {}
+2021-11-05 13:21:07,785 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:21:08,158 INFO     {}
+2021-11-05 13:21:08,423 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:21:09,555 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:21:10,302 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:21:10,878 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:21:11,269 INFO     {}
+2021-11-05 13:21:11,300 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:21:12,064 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:21:14,484 INFO     {}
+2021-11-05 13:21:17,671 INFO     {}
+2021-11-05 13:21:20,858 INFO     {}
+2021-11-05 13:21:24,135 INFO     {}
+2021-11-05 13:21:27,263 INFO     {}
+2021-11-05 13:21:30,497 INFO     {}
+2021-11-05 13:21:33,806 INFO     {}
+2021-11-05 13:21:36,966 INFO     {}
+2021-11-05 13:21:40,123 INFO     {}
+2021-11-05 13:21:43,401 INFO     {}
+2021-11-05 13:21:46,619 INFO     {}
+2021-11-05 13:21:49,811 INFO     {}
+2021-11-05 13:21:52,953 INFO     {}
+2021-11-05 13:21:56,180 INFO     {}
+2021-11-05 13:21:57,893 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:21:58,423 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:21:58,967 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:21:59,358 INFO     {}
+2021-11-05 13:21:59,420 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:21:59,919 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:02,660 INFO     {}
+2021-11-05 13:22:05,772 INFO     {}
+2021-11-05 13:22:08,847 INFO     {}
+2021-11-05 13:22:09,496 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:12,008 INFO     {}
+2021-11-05 13:22:14,125 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:14,839 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:15,277 INFO     {}
+2021-11-05 13:22:15,464 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:16,477 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:16,912 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:17,613 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:18,516 INFO     {}
+2021-11-05 13:22:21,657 INFO     {}
+2021-11-05 13:22:22,854 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:23,367 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:24,312 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:24,668 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:24,747 INFO     {}
+2021-11-05 13:22:25,104 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:27,324 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:22:27,850 INFO     {}
+2021-11-05 13:23:57,881 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:23:57,881 INFO     {}
+2021-11-05 13:24:00,956 INFO     {}
+2021-11-05 13:24:03,229 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:04,049 INFO     {}
+2021-11-05 13:24:04,112 INFO     1 Cocinado!
+2021-11-05 13:24:04,847 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:07,025 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:07,150 INFO     {}
+2021-11-05 13:24:07,197 INFO     2 Cocinado!
+2021-11-05 13:24:08,284 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:10,243 INFO     {}
+2021-11-05 13:24:10,291 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:10,291 INFO     8 Cocinado!
+2021-11-05 13:24:10,808 INFO     3 Cocinado!
+2021-11-05 13:24:10,981 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:11,322 INFO     4 Cocinado!
+2021-11-05 13:24:11,660 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:11,836 INFO     5 Cocinado!
+2021-11-05 13:24:12,351 INFO     6 Cocinado!
+2021-11-05 13:24:12,864 INFO     7 Cocinado!
+2021-11-05 13:24:13,298 INFO     {}
+2021-11-05 13:24:13,377 INFO     9 Cocinado!
+2021-11-05 13:24:16,341 INFO     {}
+2021-11-05 13:24:16,372 INFO     13 Cocinado!
+2021-11-05 13:24:16,886 INFO     10 Cocinado!
+2021-11-05 13:24:17,401 INFO     11 Cocinado!
+2021-11-05 13:24:17,916 INFO     12 Cocinado!
+2021-11-05 13:24:19,411 INFO     {}
+2021-11-05 13:24:19,487 INFO     15 Cocinado!
+2021-11-05 13:24:20,000 INFO     14 Cocinado!
+2021-11-05 13:24:22,531 INFO     {}
+2021-11-05 13:24:22,593 INFO     16 Cocinado!
+2021-11-05 13:24:25,627 INFO     {}
+2021-11-05 13:24:28,731 INFO     {}
+2021-11-05 13:24:31,831 INFO     {}
+2021-11-05 13:24:34,916 INFO     {}
+2021-11-05 13:24:35,801 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:36,406 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:36,890 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:37,278 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:37,636 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:38,023 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:38,039 INFO     {}
+2021-11-05 13:24:38,163 INFO     27 Cocinado!
+2021-11-05 13:24:38,412 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:38,677 INFO     17 Cocinado!
+2021-11-05 13:24:38,798 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:39,178 INFO     18 Cocinado!
+2021-11-05 13:24:39,205 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:39,597 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:39,693 INFO     19 Cocinado!
+2021-11-05 13:24:39,956 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:40,206 INFO     20 Cocinado!
+2021-11-05 13:24:40,721 INFO     21 Cocinado!
+2021-11-05 13:24:41,174 INFO     {'22': [12, '17-5', 1636143878.163543], '23': [12, '17-6', 1636143878.163543], '24': [12, '17-7', 1636143878.163543], '25': [12, '17-8', 1636143878.163543], '26': [12, '17-9', 1636143878.163543]}
+2021-11-05 13:24:41,235 INFO     22 Cocinado!
+2021-11-05 13:24:41,404 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:24:41,748 INFO     23 Cocinado!
+2021-11-05 13:24:42,263 INFO     24 Cocinado!
+2021-11-05 13:24:42,776 INFO     25 Cocinado!
+2021-11-05 13:24:43,277 INFO     26 Cocinado!
+2021-11-05 13:24:43,791 INFO     28 Cocinado!
+2021-11-05 13:24:44,197 INFO     {}
+2021-11-05 13:24:44,306 INFO     29 Cocinado!
+2021-11-05 13:24:47,232 INFO     {}
+2021-11-05 13:24:47,294 INFO     30 Cocinado!
+2021-11-05 13:24:50,327 INFO     {}
+2021-11-05 13:24:50,390 INFO     31 Cocinado!
+2021-11-05 13:24:53,435 INFO     {}
+2021-11-05 13:24:53,497 INFO     32 Cocinado!
+2021-11-05 13:24:56,529 INFO     {}
+2021-11-05 13:24:56,577 INFO     33 Cocinado!
+2021-11-05 13:24:59,612 INFO     {}
+2021-11-05 13:24:59,673 INFO     34 Cocinado!
+2021-11-05 13:25:02,716 INFO     {}
+2021-11-05 13:25:02,762 INFO     35 Cocinado!
+2021-11-05 13:25:05,810 INFO     {}
+2021-11-05 13:25:05,841 INFO     36 Cocinado!
+2021-11-05 13:25:08,885 INFO     {}
+2021-11-05 13:25:08,932 INFO     37 Cocinado!
+2021-11-05 13:25:11,978 INFO     {}
+2021-11-05 13:25:12,041 INFO     47 Cocinado!
+2021-11-05 13:25:12,549 INFO     38 Cocinado!
+2021-11-05 13:25:13,063 INFO     39 Cocinado!
+2021-11-05 13:25:13,578 INFO     40 Cocinado!
+2021-11-05 13:25:14,091 INFO     41 Cocinado!
+2021-11-05 13:25:14,604 INFO     42 Cocinado!
+2021-11-05 13:25:15,055 INFO     {'43': [12, '38-5', 1636143912.0412831], '44': [12, '38-6', 1636143912.0412831], '45': [12, '38-7', 1636143912.0412831], '46': [12, '38-8', 1636143912.0412831]}
+2021-11-05 13:25:15,118 INFO     43 Cocinado!
+2021-11-05 13:25:15,632 INFO     44 Cocinado!
+2021-11-05 13:25:16,146 INFO     45 Cocinado!
+2021-11-05 13:25:16,660 INFO     46 Cocinado!
+2021-11-05 13:25:18,096 INFO     {}
+2021-11-05 13:25:21,220 INFO     {}
+2021-11-05 13:25:24,355 INFO     {}
+2021-11-05 13:25:27,450 INFO     {}
+2021-11-05 13:25:30,571 INFO     {}
+2021-11-05 13:25:33,681 INFO     {}
+2021-11-05 13:25:36,791 INFO     {}
+2021-11-05 13:25:39,881 INFO     {}
+2021-11-05 13:25:42,971 INFO     {}
+2021-11-05 13:25:46,088 INFO     {}
+2021-11-05 13:25:46,968 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:25:49,184 INFO     {}
+2021-11-05 13:25:49,246 INFO     48 Cocinado!
+2021-11-05 13:25:52,278 INFO     {}
+2021-11-05 13:25:55,418 INFO     {}
+2021-11-05 13:25:58,513 INFO     {}
+2021-11-05 13:26:01,644 INFO     {}
+2021-11-05 13:26:04,738 INFO     {}
+2021-11-05 13:26:07,849 INFO     {}
+2021-11-05 13:26:10,964 INFO     {}
+2021-11-05 13:26:14,070 INFO     {}
+2021-11-05 13:26:17,176 INFO     {}
+2021-11-05 13:26:20,285 INFO     {}
+2021-11-05 13:26:23,406 INFO     {}
+2021-11-05 13:26:26,512 INFO     {}
+2021-11-05 13:26:29,620 INFO     {}
+2021-11-05 13:26:32,701 INFO     {}
+2021-11-05 13:26:35,796 INFO     {}
+2021-11-05 13:26:38,914 INFO     {}
+2021-11-05 13:26:42,008 INFO     {}
+2021-11-05 13:26:45,120 INFO     {}
+2021-11-05 13:26:48,218 INFO     {}
+2021-11-05 13:26:51,358 INFO     {}
+2021-11-05 13:26:54,488 INFO     {}
+2021-11-05 13:26:57,598 INFO     {}
+2021-11-05 13:27:00,713 INFO     {}
+2021-11-05 13:27:03,825 INFO     {}
+2021-11-05 13:27:06,951 INFO     {}
+2021-11-05 13:27:10,031 INFO     {}
+2021-11-05 13:27:13,155 INFO     {}
+2021-11-05 13:27:16,276 INFO     {}
+2021-11-05 13:27:17,438 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:18,558 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:18,853 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:19,412 INFO     {}
+2021-11-05 13:27:26,216 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:26,216 INFO     {}
+2021-11-05 13:27:28,890 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:29,125 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:29,344 INFO     {}
+2021-11-05 13:27:29,406 INFO     1 Cocinado!
+2021-11-05 13:27:29,452 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:29,756 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:30,078 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:30,371 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:30,666 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:31,286 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:31,582 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:31,892 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:32,187 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:32,450 INFO     {}
+2021-11-05 13:27:32,514 INFO     2 Cocinado!
+2021-11-05 13:27:32,514 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:35,550 INFO     {}
+2021-11-05 13:27:35,613 INFO     3 Cocinado!
+2021-11-05 13:27:37,387 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:37,965 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:38,505 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:38,645 INFO     {}
+2021-11-05 13:27:38,692 INFO     4 Cocinado!
+2021-11-05 13:27:39,029 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:39,566 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:40,671 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:41,195 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:41,723 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:41,738 INFO     {}
+2021-11-05 13:27:41,910 INFO     5 Cocinado!
+2021-11-05 13:27:44,932 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:27:44,948 INFO     {}
+2021-11-05 13:27:45,104 INFO     6 Cocinado!
+2021-11-05 13:27:48,140 INFO     {}
+2021-11-05 13:27:48,202 INFO     7 Cocinado!
+2021-11-05 13:27:51,243 INFO     {}
+2021-11-05 13:27:51,289 INFO     8 Cocinado!
+2021-11-05 13:27:54,332 INFO     {}
+2021-11-05 13:27:54,394 INFO     9 Cocinado!
+2021-11-05 13:27:57,441 INFO     {}
+2021-11-05 13:27:57,504 INFO     10 Cocinado!
+2021-11-05 13:28:00,551 INFO     {}
+2021-11-05 13:28:00,612 INFO     11 Cocinado!
+2021-11-05 13:28:03,647 INFO     {}
+2021-11-05 13:28:03,710 INFO     12 Cocinado!
+2021-11-05 13:28:06,754 INFO     {}
+2021-11-05 13:28:06,801 INFO     13 Cocinado!
+2021-11-05 13:28:08,835 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:28:09,706 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:28:09,846 INFO     {}
+2021-11-05 13:28:09,908 INFO     14 Cocinado!
+2021-11-05 13:28:11,591 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:28:12,413 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:28:12,955 INFO     {}
+2021-11-05 13:28:13,002 INFO     15 Cocinado!
+2021-11-05 13:28:13,461 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:28:14,312 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:28:15,725 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:28:16,036 INFO     {}
+2021-11-05 13:28:16,098 INFO     16 Cocinado!
+2021-11-05 13:28:19,136 INFO     {}
+2021-11-05 13:28:19,183 INFO     17 Cocinado!
+2021-11-05 13:28:22,218 INFO     {}
+2021-11-05 13:28:22,264 INFO     18 Cocinado!
+2021-11-05 13:28:25,299 INFO     {}
+2021-11-05 13:28:25,346 INFO     19 Cocinado!
+2021-11-05 13:28:28,380 INFO     {}
+2021-11-05 13:28:28,442 INFO     20 Cocinado!
+2021-11-05 13:28:31,475 INFO     {}
+2021-11-05 13:28:31,538 INFO     30 Cocinado!
+2021-11-05 13:28:32,082 INFO     21 Cocinado!
+2021-11-05 13:28:32,598 INFO     22 Cocinado!
+2021-11-05 13:28:33,113 INFO     23 Cocinado!
+2021-11-05 13:28:33,628 INFO     24 Cocinado!
+2021-11-05 13:28:34,141 INFO     25 Cocinado!
+2021-11-05 13:28:34,548 INFO     {'26': [12, '21-5', 1636144111.5375612], '27': [12, '21-6', 1636144111.5375612], '28': [12, '21-7', 1636144111.5375612], '29': [12, '21-8', 1636144111.5375612]}
+2021-11-05 13:28:34,655 INFO     31 Cocinado!
+2021-11-05 13:28:35,168 INFO     26 Cocinado!
+2021-11-05 13:28:35,679 INFO     27 Cocinado!
+2021-11-05 13:28:36,193 INFO     28 Cocinado!
+2021-11-05 13:28:36,706 INFO     29 Cocinado!
+2021-11-05 13:28:37,593 INFO     {}
+2021-11-05 13:28:37,639 INFO     33 Cocinado!
+2021-11-05 13:28:38,153 INFO     32 Cocinado!
+2021-11-05 13:28:40,671 INFO     {}
+2021-11-05 13:28:40,733 INFO     40 Cocinado!
+2021-11-05 13:28:41,249 INFO     34 Cocinado!
+2021-11-05 13:28:41,763 INFO     35 Cocinado!
+2021-11-05 13:28:42,273 INFO     36 Cocinado!
+2021-11-05 13:28:42,784 INFO     37 Cocinado!
+2021-11-05 13:28:43,300 INFO     38 Cocinado!
+2021-11-05 13:28:43,738 INFO     {'39': [12, '34-5', 1636144120.7335176]}
+2021-11-05 13:28:43,801 INFO     41 Cocinado!
+2021-11-05 13:28:44,312 INFO     39 Cocinado!
+2021-11-05 13:28:46,786 INFO     {}
+2021-11-05 13:28:46,847 INFO     42 Cocinado!
+2021-11-05 13:28:47,362 INFO     43 Cocinado!
+2021-11-05 13:28:49,891 INFO     {}
+2021-11-05 13:28:49,954 INFO     44 Cocinado!
+2021-11-05 13:28:50,468 INFO     45 Cocinado!
+2021-11-05 13:28:52,989 INFO     {}
+2021-11-05 13:28:53,052 INFO     48 Cocinado!
+2021-11-05 13:28:53,563 INFO     46 Cocinado!
+2021-11-05 13:28:54,077 INFO     47 Cocinado!
+2021-11-05 13:28:56,098 INFO     {}
+2021-11-05 13:28:59,201 INFO     {}
+2021-11-05 13:29:02,299 INFO     {}
+2021-11-05 13:29:05,403 INFO     {}
+2021-11-05 13:29:08,501 INFO     {}
+2021-11-05 13:29:11,619 INFO     {}
+2021-11-05 13:29:14,729 INFO     {}
+2021-11-05 13:29:17,821 INFO     {}
+2021-11-05 13:29:19,906 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:29:20,638 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:29:20,947 INFO     {}
+2021-11-05 13:29:21,008 INFO     49 Cocinado!
+2021-11-05 13:29:21,381 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:29:22,129 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:29:22,801 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:29:23,501 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:29:24,046 INFO     {}
+2021-11-05 13:29:24,093 INFO     50 Cocinado!
+2021-11-05 13:29:24,205 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:29:25,340 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:29:26,370 INFO     Escriba la cantidad de unidades que tiene este indice: 
+
+2021-11-05 13:29:27,134 INFO     {}
+2021-11-05 13:29:27,196 INFO     53 Cocinado!
+2021-11-05 13:29:27,704 INFO     51 Cocinado!
+2021-11-05 13:29:28,216 INFO     52 Cocinado!
+2021-11-05 13:29:30,239 INFO     {}
+2021-11-05 13:29:30,301 INFO     54 Cocinado!
+2021-11-05 13:29:33,346 INFO     {}
+2021-11-05 13:29:33,408 INFO     55 Cocinado!
+2021-11-05 13:29:36,454 INFO     {}
+2021-11-05 13:29:36,501 INFO     56 Cocinado!
+2021-11-05 13:29:39,536 INFO     {}
+2021-11-05 13:29:39,582 INFO     58 Cocinado!
+2021-11-05 13:29:40,083 INFO     57 Cocinado!
+2021-11-05 13:29:42,619 INFO     {}
+2021-11-05 13:29:42,680 INFO     60 Cocinado!
+2021-11-05 13:29:43,194 INFO     59 Cocinado!
+2021-11-05 13:29:45,719 INFO     {}
+2021-11-05 13:29:45,780 INFO     62 Cocinado!
+2021-11-05 13:29:46,285 INFO     61 Cocinado!
+2021-11-05 13:29:48,822 INFO     {}
