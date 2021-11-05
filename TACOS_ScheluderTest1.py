@@ -3,10 +3,7 @@ import multiprocessing
 import threading
 import logging
 import datetime
-import string
 import time
-
-abcdario = list(string.ascii_uppercase)
 
 def getTime():
     LocalTime = datetime.datetime.now().strftime("%H:%M:%S")
