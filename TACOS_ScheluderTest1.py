@@ -41,7 +41,7 @@ class PersonalTaqueria(threading.Thread):
 
     def recieveClientOrders(self):
         while(True):
-            print(f"{self.ordenes}")
+            
             logging.info(self.ordenes)
             try:
                 newOrder = self.queue.get_nowait()
@@ -81,6 +81,7 @@ class PersonalTaqueria(threading.Thread):
                 self.Rescheduling = False
             except:
                 pass
+            print(f"{self.ordenes}")
             time.sleep(self.ordersPerSecondDelta)
 
     def cook(self):
@@ -88,17 +89,19 @@ class PersonalTaqueria(threading.Thread):
             try:
                 shortestOrderIndex = min(self.ordenes, key=self.ordenes.get)
                 # orden mas corta en el self.orden
-                if self.ordenes[shortestOrderIndex][0] > 0 and (not self.Rescheduling):
-                    self.ordenes[str(shortestOrderIndex)
-                                 ][0] -= self.cookUnitDelta
-                    # resta el costo del taco hecho
-                else:
-                    # saca orden del taquero
-                    self.ordenes.pop(shortestOrderIndex, None)
-                    logging.info(f"{shortestOrderIndex} Cocinado!")
-                    print(f"{shortestOrderIndex} Cocinado!")
-                    tacokillcount=+1
-                time.sleep(self.cookUnitDelta)
+                if(not self.Rescheduling):
+                    if self.ordenes[shortestOrderIndex][0] > 0:
+                        self.ordenes[str(shortestOrderIndex)
+                                    ][0] -= self.cookUnitDelta
+                        # resta el costo del taco hecho
+                    else:
+                        # saca orden del taquero
+                        self.ordenes.pop(shortestOrderIndex, None)
+                        logging.info(f"{shortestOrderIndex} Cocinado!")
+                        print(f"{shortestOrderIndex} Cocinado!")
+                        tacokillcount=+1
+                    time.sleep(self.cookUnitDelta)
+                    pass
             except:
                 pass
 
