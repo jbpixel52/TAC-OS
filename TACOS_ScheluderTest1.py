@@ -1,4 +1,3 @@
-#%%
 import multiprocessing
 import threading
 import logging
@@ -25,12 +24,18 @@ class PersonalTaqueria(threading.Thread):
             target = self.cook,
             args = ()
         )
+        self.StarvingTaxerThread = threading.Thread(
+            target = self.starvingTaxer,
+            args = ()
+        )
         self.ordersPerSecondDelta = 3 #^-1 
         self.cookUnitDelta = 0.5 #Minimo para cocinar
         self.Rescheduling = False
+        self.Cooking = False
         self.ordenes = {} #dict in mind per worker
         self.tacoCounter = 0
         self.constMagnitud = 12 #p90 redondeado, muy grande = hacer parte
+        self.constStarving = 0.01 # blah blah + [utis*const*tiempoatrasado]
 
 
     def main(self):
@@ -38,7 +43,7 @@ class PersonalTaqueria(threading.Thread):
         #  Orden  = (tiempollegada,duracionOrden)
         print(f"Taquero {self.name} en linea")
         self.OrderRecieverThread.start()
-        self.CookerThread.start()
+        #self.CookerThread.start()
 
 
     def recieveClientOrders(self):
@@ -56,26 +61,34 @@ class PersonalTaqueria(threading.Thread):
                     # se hace por FCFS
                     remainingUnits  = newOrder
                     ogTacoCounter = self.tacoCounter
+                    prioridad = ((self.constMagnitud**-1)*10)
                     while(remainingUnits > self.constMagnitud):
                         self.ordenes[str(self.tacoCounter)] = [
                             self.constMagnitud, 
+                            prioridad,
+                            0, #numOfDeltasthat have ocurred
                             f"{ogTacoCounter}-{subSplitIndex}",
                             time.time()
                         ]
                         self.tacoCounter += 1
                         subSplitIndex  += 1
                         remainingUnits -= self.constMagnitud
-                        pass
 
+                    prioridad = ((remainingUnits**-1)*10)
                     self.ordenes[str(self.tacoCounter)] = [
                         remainingUnits, 
+                        prioridad,
+                        0, #numOfDeltasthat have ocurred
                         f"{ogTacoCounter}-{subSplitIndex}",
                         time.time()
                     ]
                     
                 else:
+                    prioridad = ((newOrder**-1)*10)
                     self.ordenes[str(self.tacoCounter)] = [
                         newOrder, 
+                        prioridad,
+                        0, #numOfDeltas that have ocurred
                         f"{self.tacoCounter}-{subSplitIndex}",
                         time.time()
                     ]
@@ -88,20 +101,32 @@ class PersonalTaqueria(threading.Thread):
     
     def cook(self):
         while(True):
-            try:
-                shortestOrderIndex = min(self.ordenes, key=self.ordenes.get) 
-                #orden mas corta en el self.orden
-                if self.ordenes[shortestOrderIndex][0] > 0 and (not self.Rescheduling):
-                    self.ordenes[str(shortestOrderIndex)][0] -= self.cookUnitDelta 
-                    #resta el costo del taco hecho
-                else:
-                    self.ordenes.pop(shortestOrderIndex,None) #saca orden del taquero
-                time.sleep(self.cookUnitDelta)            
-            except:
-              pass
+            if(bool(self.ordenes)): 
+                self.Cooking = True  
+                try: 
+                    shortestOrderIndex = min(self.ordenes, key=self.ordenes.get) 
+                    #orden mas corta en el self.orden
+                    if self.ordenes[shortestOrderIndex][0] > 0 and (not self.Rescheduling):
+                        self.ordenes[str(shortestOrderIndex)][0] -= self.cookUnitDelta 
+                        #resta el costo del taco hecho
+                    else:
+                        self.ordenes.pop(shortestOrderIndex,None) #saca orden del taquero
+                        logging.info(f"Order {shortestOrderIndex} completed")
+                    time.sleep(self.cookUnitDelta)            
+                except:
+                    pass
+            else:
+                self.Cooking = False
     
+    def starvingTaxer(self):
+        while(True):
+            if(self.Cooking):
+                
+        pass
+
+
     def sortOrders(self):
-        self.ordenes = dict(sorted(self.ordenes.items(), key=lambda item: item[1][0]))
+        self.ordenes = dict(sorted(self.ordenes.items(), key=lambda item: item[1][1])[::-1])
         pass
 
 
