@@ -11,6 +11,7 @@ def getTime():
     LocalTime = datetime.datetime.now().strftime("%H:%M:%S")
     return LocalTime
 
+
 class PersonalTaqueria(threading.Thread):
     def __init__(self,nombre):
         #SuperConstructor
@@ -33,9 +34,11 @@ class PersonalTaqueria(threading.Thread):
         self.Rescheduling = False
         self.Cooking = False
         self.ordenes = {} #dict in mind per worker
+        self.ordenesHeads = [] #lista con las cabezas de subordenenes
         self.tacoCounter = 0
         self.constMagnitud = 12 #p90 redondeado, muy grande = hacer parte
         self.constStarving = 0.01 # blah blah + [utis*const*tiempoatrasado]
+        self.shortestOrderIndex = None #Una vez inicia un stack no lo detiene
 
 
     def main(self):
@@ -43,14 +46,17 @@ class PersonalTaqueria(threading.Thread):
         #  Orden  = (tiempollegada,duracionOrden)
         print(f"Taquero {self.name} en linea")
         self.OrderRecieverThread.start()
-        #self.CookerThread.start()
+        self.CookerThread.start()
 
 
     def recieveClientOrders(self):
         while(True):
             print(f"{self.ordenes}")
+            print(self.ordenesHeads)
             logging.info(self.ordenes)
-            try:
+            if(self.queue.empty()):
+                pass
+            else:
                 newOrder = self.queue.get_nowait()
                 subSplitIndex = 0
                 self.tacoCounter += 1
@@ -62,73 +68,114 @@ class PersonalTaqueria(threading.Thread):
                     remainingUnits  = newOrder
                     ogTacoCounter = self.tacoCounter
                     prioridad = ((self.constMagnitud**-1)*10)
+                    self.ordenesHeads.append(ogTacoCounter)
                     while(remainingUnits > self.constMagnitud):
                         self.ordenes[str(self.tacoCounter)] = [
                             self.constMagnitud, 
                             prioridad,
-                            0, #numOfDeltasthat have ocurred
-                            f"{ogTacoCounter}-{subSplitIndex}",
+                            (ogTacoCounter,subSplitIndex),
                             time.time()
                         ]
+                        logging.info(f"Order {self.tacoCounter} has ben put in head")
                         self.tacoCounter += 1
                         subSplitIndex  += 1
                         remainingUnits -= self.constMagnitud
-
+                        
                     prioridad = ((remainingUnits**-1)*10)
                     self.ordenes[str(self.tacoCounter)] = [
-                        remainingUnits, 
-                        prioridad,
-                        0, #numOfDeltasthat have ocurred
-                        f"{ogTacoCounter}-{subSplitIndex}",
-                        time.time()
+                            remainingUnits, 
+                            prioridad,
+                            (ogTacoCounter,subSplitIndex),
+                            time.time()
                     ]
-                    
+                    logging.info(f"Order {self.tacoCounter} has ben put in head")
+                    pass 
                 else:
                     prioridad = ((newOrder**-1)*10)
+                    self.ordenesHeads.append(self.tacoCounter)
                     self.ordenes[str(self.tacoCounter)] = [
                         newOrder, 
                         prioridad,
-                        0, #numOfDeltas that have ocurred
-                        f"{self.tacoCounter}-{subSplitIndex}",
+                        (self.tacoCounter,subSplitIndex),
                         time.time()
                     ]
-                self.Rescheduling = True
-                self.sortOrders()
-                self.Rescheduling = False
-            except:
-                pass
+                    logging.info(f"Order {self.tacoCounter} has ben put in head")
+                try:
+                    self.Rescheduling = True
+                    self.sortOrders()
+                    self.Rescheduling = False
+                except Exception as e:
+                    logging.exception(f"Error -> {Exception}")
+                    pass
             time.sleep(self.ordersPerSecondDelta)
     
+
     def cook(self):
         while(True):
+            shortestOrderIndex = None
             if(bool(self.ordenes)): 
                 self.Cooking = True  
-                try: 
+                if(shortestOrderIndex == None):
+                    #Sí actualmente no trabaja en un stack, darle el indice
                     shortestOrderIndex = min(self.ordenes, key=self.ordenes.get) 
-                    #orden mas corta en el self.orden
-                    if self.ordenes[shortestOrderIndex][0] > 0 and (not self.Rescheduling):
+                    logging.info(f"Order {shortestOrderIndex} assigned")
+                else:
+                    #Si no que siga trabajando con ese stack incluso si 
+                    #llega a haber un sort nuevo con orden más chica
+                    pass
+                if(not self.Rescheduling):
+                    #Si no estamos reordenando podemos cocinar
+                    if self.ordenes[shortestOrderIndex][0] > 0:
                         self.ordenes[str(shortestOrderIndex)][0] -= self.cookUnitDelta 
                         #resta el costo del taco hecho
-                    else:
-                        self.ordenes.pop(shortestOrderIndex,None) #saca orden del taquero
-                        logging.info(f"Order {shortestOrderIndex} completed")
-                    time.sleep(self.cookUnitDelta)            
-                except:
-                    pass
+                        if(self.ordenes[shortestOrderIndex][0] == 0):
+                            #Remover de las ordenes cabeza
+                            # Poner la nueva cabeza si es necesario
+                            # y hacerle pop del diccionario de stacks/ordenes
+                            if(str(int(shortestOrderIndex)+1) in self.ordenes):
+                                #primero revisar si hay un taco counter subsecuente
+                                #Si se acabo el ultimo stack no hya porque revisar que exista
+                                # un sucesor
+                                if(self.ordenes[str(int(shortestOrderIndex)+1)][2][0] 
+                                == self.ordenes[shortestOrderIndex][2][0]):
+                                    #Sí el siguiente taco counter comparte el mismo
+                                    # padre/inicio entonces hacer el venico la nueva 
+                                    # cabeza al acabar este stack
+                                    self.ordenesHeads.remove(int(shortestOrderIndex))
+                                    self.ordenesHeads.append(int(shortestOrderIndex)+1)
+                                else:
+                                    #Si no tiene vecinos entonces bai 
+                                    self.ordenesHeads.remove(int(shortestOrderIndex))
+                            else:
+                                #Si el ultimo elemento cocinado (en algun insante)
+                                # era una cabeza que no pudo ser removida, la 
+                                # intentamos quitar    
+                                if(int(shortestOrderIndex) in self.ordenesHeads):
+                                    self.ordenesHeads.remove(int(shortestOrderIndex)) 
+                            # Una vez acabado el proceso le hacemos pop
+                            self.ordenes.pop(shortestOrderIndex,None) #saca orden del taquero
+                            logging.info(f"Order {shortestOrderIndex} completed")          
             else:
                 self.Cooking = False
+            time.sleep(self.cookUnitDelta)
     
+
     def starvingTaxer(self):
         while(True):
             if(self.Cooking):
-                
-        pass
+                pass
 
 
     def sortOrders(self):
-        self.ordenes = dict(sorted(self.ordenes.items(), key=lambda item: item[1][1])[::-1])
+        items = self.ordenes.items()
+        #Primero sortear por desempate FCFS (se hace esto primero desempate y luego el bueno)
+        sortedOrders = sorted(items, key=lambda item: item[1][3])
+        #Luego sortear por pioridad donde mas es mas importante
+        # Basado en esta respuesta de stack overflow
+        # https://stackoverflow.com/questions/18414995/how-can-i-sort-tuples-by-reverse-yet-breaking-ties-non-reverse-python/18415853#18415853
+        sortedOrders = sorted(items, key=lambda item: item[1][1], reverse=True)
+        self.ordenes = dict(sortedOrders)
         pass
-
 
 
 
@@ -163,11 +210,9 @@ if __name__ == "__main__":
 
 
     while(True):
-        logging.info("Escriba la cantidad de unidades que tiene este indice: \n")
         orden = None
         try:
             orden = int(input())
+            Cocina.personal[0].queue.put(orden)
         except:
             print('Exception for tacos input')
-        Cocina.personal[0].queue.put(orden)
-    
