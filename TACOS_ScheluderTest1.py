@@ -69,26 +69,36 @@ class PersonalTaqueria(threading.Thread):
                     ogTacoCounter = self.tacoCounter
                     prioridad = ((self.constMagnitud**-1)*10)
                     self.ordenesHeads.append(ogTacoCounter)
-                    while(remainingUnits > self.constMagnitud):
+                    utisResidue = newOrder % self.constMagnitud
+                    if(utisResidue > 0):
+                        #Si hubo residuo hay una "cola" para evitar problemas
+                        # primero metamos a la cola la cabeza y que sus subse
+                        # -cuenters grandes stacks sean vecinos
+                        prioridad = ((utisResidue**-1)*10)
+                        self.ordenes[str(self.tacoCounter)] = [
+                                utisResidue, 
+                                prioridad,
+                                (ogTacoCounter,subSplitIndex),
+                                time.time()
+                        ]
+                        logging.info(f"Stack {self.tacoCounter} has ben put in head")
+                        subSplitIndex += 1
+                        self.tacoCounter += 1 
+                        remainingUnits -= utisResidue
+                    while(remainingUnits >= self.constMagnitud):
+                        prioridad = ((self.constMagnitud**-1)*10)
                         self.ordenes[str(self.tacoCounter)] = [
                             self.constMagnitud, 
                             prioridad,
                             (ogTacoCounter,subSplitIndex),
                             time.time()
                         ]
-                        logging.info(f"Order {self.tacoCounter} has ben put in head")
-                        self.tacoCounter += 1
+                        logging.info(f"Stack {self.tacoCounter} has ben put in head")
                         subSplitIndex  += 1
                         remainingUnits -= self.constMagnitud
-                        
-                    prioridad = ((remainingUnits**-1)*10)
-                    self.ordenes[str(self.tacoCounter)] = [
-                            remainingUnits, 
-                            prioridad,
-                            (ogTacoCounter,subSplitIndex),
-                            time.time()
-                    ]
-                    logging.info(f"Order {self.tacoCounter} has ben put in head")
+                        self.tacoCounter +=1
+                        if(remainingUnits == 0):
+                            self.tacoCounter -= 1 #Quitar el que sobra
                     pass 
                 else:
                     prioridad = ((newOrder**-1)*10)
@@ -99,7 +109,7 @@ class PersonalTaqueria(threading.Thread):
                         (self.tacoCounter,subSplitIndex),
                         time.time()
                     ]
-                    logging.info(f"Order {self.tacoCounter} has ben put in head")
+                    logging.info(f"Stack {self.tacoCounter} has ben put in head")
                 try:
                     self.Rescheduling = True
                     self.sortOrders()
@@ -117,11 +127,14 @@ class PersonalTaqueria(threading.Thread):
                 if(self.shortestOrderIndex == None):
                     #Sí actualmente no trabaja en un stack, darle el indice
                     self.shortestOrderIndex = min(self.ordenes, key=self.ordenes.get) 
-                    logging.info(f"Order {self.shortestOrderIndex} assigned to work at")
+                    logging.info(f"Stack {self.shortestOrderIndex} assigned to work at")
                 else:
                     #Si no que siga trabajando con ese stack incluso si 
                     #llega a haber un sort nuevo con orden más chica
                     pass
+                #La delta ahora se hace primero para evitar reporte
+                # prematura de completicion de stack
+                time.sleep(self.cookUnitDelta)
                 if(not self.Rescheduling):
                     #Si no estamos reordenando podemos cocinar
                     if self.ordenes[self.shortestOrderIndex][0] > 0:
@@ -153,12 +166,11 @@ class PersonalTaqueria(threading.Thread):
                                     self.ordenesHeads.remove(int(self.shortestOrderIndex)) 
                             # Una vez acabado el proceso le hacemos pop
                             self.ordenes.pop(self.shortestOrderIndex,None) #saca orden del taquero
-                            logging.info(f"Order {self.shortestOrderIndex} completed") 
+                            logging.info(f"Stack {self.shortestOrderIndex} completed") 
                             self.shortestOrderIndex = None         
             else:
                 self.Cooking = False
-            time.sleep(self.cookUnitDelta)
-            logging.info("Delta")
+            
     
 
     def starvingTaxer(self):
