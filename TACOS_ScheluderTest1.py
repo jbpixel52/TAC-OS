@@ -47,6 +47,7 @@ class PersonalTaqueria(threading.Thread):
         print(f"Taquero {self.name} en linea")
         self.OrderRecieverThread.start()
         self.CookerThread.start()
+        self.StarvingTaxerThread.start()
 
 
     def recieveClientOrders(self):
@@ -126,7 +127,10 @@ class PersonalTaqueria(threading.Thread):
                 self.Cooking = True  
                 if(self.shortestOrderIndex == None):
                     #Sí actualmente no trabaja en un stack, darle el indice
-                    self.shortestOrderIndex = min(self.ordenes, key=self.ordenes.get) 
+                    #TODO referirlo como biggestPriorityIndex
+                    #Sacada respuesta de 
+                    # https://stackoverflow.com/a/64152259 por Sloper C. (2020)
+                    self.shortestOrderIndex = str(list(self.ordenes.keys())[0])
                     logging.info(f"Stack {self.shortestOrderIndex} assigned to work at")
                 else:
                     #Si no que siga trabajando con ese stack incluso si 
@@ -175,8 +179,24 @@ class PersonalTaqueria(threading.Thread):
 
     def starvingTaxer(self):
         while(True):
-            if(self.Cooking):
-                pass
+            #Link para explicación gráfica de los impuestos 
+            # https://www.desmos.com/calculator/ksquctjgyz
+            #Siempre estar dando impuestos a las cabezas cada segundo y haciendo
+            # sort ¿tardá mucho? ya veremos jesjes
+            for headIndex in self.ordenesHeads:
+                UTIs = self.ordenes[str(headIndex)][0]
+                base = (UTIs ** -1) * 10
+                tax = (
+                        UTIs
+                        * self.constStarving 
+                        * (time.time() - self.ordenes[str(headIndex)][3])
+                    )
+                self.ordenes[str(headIndex)][1] = (base + tax)
+            logging.info("Taxer will sort")
+            self.sortOrders()
+            logging.info("Taxer has sorted")
+            time.sleep(1.0)
+
 
 
     def sortOrders(self):
