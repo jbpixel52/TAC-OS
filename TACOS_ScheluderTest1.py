@@ -112,52 +112,53 @@ class PersonalTaqueria(threading.Thread):
 
     def cook(self):
         while(True):
-            shortestOrderIndex = None
             if(bool(self.ordenes)): 
                 self.Cooking = True  
-                if(shortestOrderIndex == None):
+                if(self.shortestOrderIndex == None):
                     #Sí actualmente no trabaja en un stack, darle el indice
-                    shortestOrderIndex = min(self.ordenes, key=self.ordenes.get) 
-                    logging.info(f"Order {shortestOrderIndex} assigned")
+                    self.shortestOrderIndex = min(self.ordenes, key=self.ordenes.get) 
+                    logging.info(f"Order {self.shortestOrderIndex} assigned to work at")
                 else:
                     #Si no que siga trabajando con ese stack incluso si 
                     #llega a haber un sort nuevo con orden más chica
                     pass
                 if(not self.Rescheduling):
                     #Si no estamos reordenando podemos cocinar
-                    if self.ordenes[shortestOrderIndex][0] > 0:
-                        self.ordenes[str(shortestOrderIndex)][0] -= self.cookUnitDelta 
+                    if self.ordenes[self.shortestOrderIndex][0] > 0:
+                        self.ordenes[str(self.shortestOrderIndex)][0] -= self.cookUnitDelta 
                         #resta el costo del taco hecho
-                        if(self.ordenes[shortestOrderIndex][0] == 0):
+                        if(self.ordenes[self.shortestOrderIndex][0] == 0):
                             #Remover de las ordenes cabeza
                             # Poner la nueva cabeza si es necesario
                             # y hacerle pop del diccionario de stacks/ordenes
-                            if(str(int(shortestOrderIndex)+1) in self.ordenes):
+                            if(str(int(self.shortestOrderIndex)+1) in self.ordenes):
                                 #primero revisar si hay un taco counter subsecuente
                                 #Si se acabo el ultimo stack no hya porque revisar que exista
                                 # un sucesor
-                                if(self.ordenes[str(int(shortestOrderIndex)+1)][2][0] 
-                                == self.ordenes[shortestOrderIndex][2][0]):
+                                if(self.ordenes[str(int(self.shortestOrderIndex)+1)][2][0] 
+                                == self.ordenes[self.shortestOrderIndex][2][0]):
                                     #Sí el siguiente taco counter comparte el mismo
                                     # padre/inicio entonces hacer el venico la nueva 
                                     # cabeza al acabar este stack
-                                    self.ordenesHeads.remove(int(shortestOrderIndex))
-                                    self.ordenesHeads.append(int(shortestOrderIndex)+1)
+                                    self.ordenesHeads.remove(int(self.shortestOrderIndex))
+                                    self.ordenesHeads.append(int(self.shortestOrderIndex)+1)
                                 else:
-                                    #Si no tiene vecinos entonces bai 
-                                    self.ordenesHeads.remove(int(shortestOrderIndex))
+                                    #Si no tiene vecinos hermanos entonces solo quitar
+                                    self.ordenesHeads.remove(int(self.shortestOrderIndex))
                             else:
                                 #Si el ultimo elemento cocinado (en algun insante)
                                 # era una cabeza que no pudo ser removida, la 
                                 # intentamos quitar    
-                                if(int(shortestOrderIndex) in self.ordenesHeads):
-                                    self.ordenesHeads.remove(int(shortestOrderIndex)) 
+                                if(int(self.shortestOrderIndex) in self.ordenesHeads):
+                                    self.ordenesHeads.remove(int(self.shortestOrderIndex)) 
                             # Una vez acabado el proceso le hacemos pop
-                            self.ordenes.pop(shortestOrderIndex,None) #saca orden del taquero
-                            logging.info(f"Order {shortestOrderIndex} completed")          
+                            self.ordenes.pop(self.shortestOrderIndex,None) #saca orden del taquero
+                            logging.info(f"Order {self.shortestOrderIndex} completed") 
+                            self.shortestOrderIndex = None         
             else:
                 self.Cooking = False
             time.sleep(self.cookUnitDelta)
+            logging.info("Delta")
     
 
     def starvingTaxer(self):
@@ -167,14 +168,15 @@ class PersonalTaqueria(threading.Thread):
 
 
     def sortOrders(self):
-        items = self.ordenes.items()
+        logging.info("Sorting start")
         #Primero sortear por desempate FCFS (se hace esto primero desempate y luego el bueno)
-        sortedOrders = sorted(items, key=lambda item: item[1][3])
+        sortedOrders = sorted(self.ordenes.items(), key=lambda item: item[1][3])
         #Luego sortear por pioridad donde mas es mas importante
         # Basado en esta respuesta de stack overflow
         # https://stackoverflow.com/questions/18414995/how-can-i-sort-tuples-by-reverse-yet-breaking-ties-non-reverse-python/18415853#18415853
-        sortedOrders = sorted(items, key=lambda item: item[1][1], reverse=True)
+        sortedOrders = sorted(self.ordenes.items(), key=lambda item: item[1][1], reverse=True)
         self.ordenes = dict(sortedOrders)
+        logging.info("Sorting end")
         pass
 
 
