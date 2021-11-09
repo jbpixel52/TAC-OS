@@ -130,6 +130,8 @@ class PersonalTaqueria(threading.Thread):
                     #TODO referirlo como biggestPriorityIndex
                     #Sacada respuesta de 
                     # https://stackoverflow.com/a/64152259 por Sloper C. (2020)
+                    # el key 0 es de la lista hecha diccionario con la prioridad
+                    #$  mas grande
                     self.shortestOrderIndex = str(list(self.ordenes.keys())[0])
                     logging.info(f"Stack {self.shortestOrderIndex} assigned to work at")
                 else:
