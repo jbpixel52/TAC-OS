@@ -5,9 +5,11 @@ import logging
 import datetime
 import string
 import time
-import pprint
+import emoji
+from time import sleep
+import sys
 abcdario = list(string.ascii_uppercase)
-
+debug_state= False
 
 def getTime():
     LocalTime = datetime.datetime.now().strftime("%H:%M:%S")
@@ -31,6 +33,7 @@ class PersonalTaqueria(threading.Thread):
             target=self.starvingTaxer,
             args=()
         )
+        self.emojis=''
         self.ordersPerSecondDelta = 3  # ^-1
         self.cookUnitDelta = 0.5  # Minimo para cocinar
         self.Rescheduling = False
@@ -50,19 +53,32 @@ class PersonalTaqueria(threading.Thread):
         self.CookerThread.start()
         self.StarvingTaxerThread.start()
 
+    def taquitos_emojis(self):
+        print(f"ORDENES:",end='')
+        self.emojis=':taco: ' * len(self.ordenes)
+        print(emoji.emojize(self.emojis))
+        self.emojis = ''
+
+
     def recieveClientOrders(self):
         while(True):
+            if debug_state == True:
+                for key in self.ordenes:
+                    print(f"\nOrder:{key} || ",end='')
+                    for v_data in self.ordenes[key]:
+                        if isinstance(v_data, float):
+                            print(f"{round(v_data,2)} ",end='') 
+                        else:
+                            print(f"{v_data} ",end='')
 
-            for key in self.ordenes:
-                print(f"\nOrder:{key} || ",end='')
-                for v_data in self.ordenes[key]:
-                    if isinstance(v_data, float):
-                        print(f"{round(v_data,2)} ",end='') 
-                    else:
-                        print(f"{v_data} ",end='')
-
-            print(f'HeadsofOrders:{self.ordenesHeads}')
-            logging.info(self.ordenes)
+                print(f'HeadsofOrders:{self.ordenesHeads}')
+                logging.info(self.ordenes)
+                
+                
+            else:
+                self.taquitos_emojis()
+                        
+                        
             if(self.queue.empty()):
                 pass
             else:
@@ -129,6 +145,7 @@ class PersonalTaqueria(threading.Thread):
                 except Exception as e:
                     logging.exception(f"Error -> {Exception}")
                     pass
+            #if debug_state is True:
             time.sleep(self.ordersPerSecondDelta)
 
     def cook(self):
@@ -151,6 +168,7 @@ class PersonalTaqueria(threading.Thread):
                     pass
                 # La delta ahora se hace primero para evitar reporte
                 # prematura de completicion de stack
+                #if debug_state is True:
                 time.sleep(self.cookUnitDelta)
                 if(not self.Rescheduling):
                     # Si no estamos reordenando podemos cocinar
@@ -191,6 +209,7 @@ class PersonalTaqueria(threading.Thread):
                             self.ordenes.pop(self.shortestOrderIndex, None)
                             logging.info(
                                 f"Stack {self.shortestOrderIndex} completed")
+                            
                             self.shortestOrderIndex = None
             else:
                 self.Cooking = False
@@ -213,7 +232,8 @@ class PersonalTaqueria(threading.Thread):
             logging.info("Taxer will sort")
             self.sortOrders()
             logging.info("Taxer has sorted")
-            time.sleep(1.0)
+            if debug_state is True:
+                time.sleep(1.0)
 
     def sortOrders(self):
         logging.info("Sorting start")

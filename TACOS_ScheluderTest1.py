@@ -83,7 +83,7 @@ class PersonalTaqueria(threading.Thread):
                 pass
             print(f"{self.ordenes}")
             time.sleep(self.ordersPerSecondDelta)
-    
+
     def cook(self):
         while(True):
             try:
