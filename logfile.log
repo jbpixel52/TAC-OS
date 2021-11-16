@@ -1,390 +1,110 @@
-2021-11-15 16:33:55,135 INFO     {}
-2021-11-15 16:33:55,187 INFO     Taxer will sort
-2021-11-15 16:33:55,188 INFO     Sorting start
-2021-11-15 16:33:55,188 INFO     Sorting end
-2021-11-15 16:33:55,188 INFO     Taxer has sorted
-2021-11-15 16:33:56,244 INFO     Taxer will sort
-2021-11-15 16:33:56,244 INFO     Sorting start
-2021-11-15 16:33:56,244 INFO     Sorting end
-2021-11-15 16:33:56,244 INFO     Taxer has sorted
-2021-11-15 16:33:57,260 INFO     Taxer will sort
-2021-11-15 16:33:57,275 INFO     Sorting start
-2021-11-15 16:33:57,307 INFO     Sorting end
-2021-11-15 16:33:57,322 INFO     Taxer has sorted
-2021-11-15 16:33:58,240 INFO     {}
-2021-11-15 16:33:58,287 INFO     Stack 1 has ben put in head
-2021-11-15 16:33:58,287 INFO     Stack 1 assigned to work at
-2021-11-15 16:33:58,288 INFO     Stack 2 has ben put in head
-2021-11-15 16:33:58,288 INFO     Sorting start
-2021-11-15 16:33:58,288 INFO     Sorting end
-2021-11-15 16:33:58,365 INFO     Taxer will sort
-2021-11-15 16:33:58,365 INFO     Sorting start
-2021-11-15 16:33:58,365 INFO     Sorting end
-2021-11-15 16:33:58,365 INFO     Taxer has sorted
-2021-11-15 16:33:59,307 INFO     Stack 1 completed
-2021-11-15 16:33:59,307 INFO     Stack 2 assigned to work at
-2021-11-15 16:33:59,369 INFO     Taxer will sort
-2021-11-15 16:33:59,369 INFO     Sorting start
-2021-11-15 16:33:59,369 INFO     Sorting end
-2021-11-15 16:33:59,369 INFO     Taxer has sorted
-2021-11-15 16:34:00,380 INFO     Taxer will sort
-2021-11-15 16:34:00,380 INFO     Sorting start
-2021-11-15 16:34:00,380 INFO     Sorting end
-2021-11-15 16:34:00,380 INFO     Taxer has sorted
-2021-11-15 16:34:01,290 INFO     {'2': [10.5, 1.1392613426121798, (1, 1), 1637022838.2882373]}
-2021-11-15 16:34:01,291 INFO     Stack 3 has ben put in head
-2021-11-15 16:34:01,291 INFO     Stack 4 has ben put in head
-2021-11-15 16:34:01,291 INFO     Stack 5 has ben put in head
-2021-11-15 16:34:01,291 INFO     Sorting start
-2021-11-15 16:34:01,291 INFO     Sorting end
-2021-11-15 16:34:01,383 INFO     Taxer will sort
-2021-11-15 16:34:01,383 INFO     Sorting start
-2021-11-15 16:34:01,383 INFO     Sorting end
-2021-11-15 16:34:01,383 INFO     Taxer has sorted
-2021-11-15 16:34:02,391 INFO     Taxer will sort
-2021-11-15 16:34:02,391 INFO     Sorting start
-2021-11-15 16:34:02,391 INFO     Sorting end
-2021-11-15 16:34:02,391 INFO     Taxer has sorted
-2021-11-15 16:34:03,397 INFO     Taxer will sort
-2021-11-15 16:34:03,397 INFO     Sorting start
-2021-11-15 16:34:03,397 INFO     Sorting end
-2021-11-15 16:34:03,397 INFO     Taxer has sorted
-2021-11-15 16:34:04,298 INFO     {'3': [1, 10.021060259342194, (3, 0), 1637022841.2913105], '2': [7.5, 1.6107440159601325, (1, 1), 1637022838.2882373], '4': [12, 0.8333333333333333, (3, 1), 1637022841.2913105], '5': [12, 0.8333333333333333, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:04,298 INFO     Stack 6 has ben put in head
-2021-11-15 16:34:04,298 INFO     Sorting start
-2021-11-15 16:34:04,298 INFO     Sorting end
-2021-11-15 16:34:04,405 INFO     Taxer will sort
-2021-11-15 16:34:04,405 INFO     Sorting start
-2021-11-15 16:34:04,405 INFO     Sorting end
-2021-11-15 16:34:04,405 INFO     Taxer has sorted
-2021-11-15 16:34:05,411 INFO     Taxer will sort
-2021-11-15 16:34:05,411 INFO     Sorting start
-2021-11-15 16:34:05,411 INFO     Sorting end
-2021-11-15 16:34:05,411 INFO     Taxer has sorted
-2021-11-15 16:34:06,422 INFO     Taxer will sort
-2021-11-15 16:34:06,422 INFO     Sorting start
-2021-11-15 16:34:06,422 INFO     Sorting end
-2021-11-15 16:34:06,422 INFO     Taxer has sorted
-2021-11-15 16:34:07,306 INFO     {'3': [1, 10.051314642429352, (3, 0), 1637022841.2913105], '2': [4.5, 2.2655813783949075, (1, 1), 1637022838.2882373], '6': [8, 1.4199253273010255, (6, 0), 1637022844.2987082], '4': [12, 0.8333333333333333, (3, 1), 1637022841.2913105], '5': [12, 0.8333333333333333, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:07,428 INFO     Taxer will sort
-2021-11-15 16:34:07,428 INFO     Sorting start
-2021-11-15 16:34:07,428 INFO     Sorting end
-2021-11-15 16:34:07,428 INFO     Taxer has sorted
-2021-11-15 16:34:08,435 INFO     Taxer will sort
-2021-11-15 16:34:08,436 INFO     Sorting start
-2021-11-15 16:34:08,436 INFO     Sorting end
-2021-11-15 16:34:08,436 INFO     Taxer has sorted
-2021-11-15 16:34:09,443 INFO     Taxer will sort
-2021-11-15 16:34:09,443 INFO     Sorting start
-2021-11-15 16:34:09,443 INFO     Sorting end
-2021-11-15 16:34:09,443 INFO     Taxer has sorted
-2021-11-15 16:34:10,313 INFO     {'3': [1, 10.08152568101883, (3, 0), 1637022841.2913105], '2': [1.5, 4.2788910329341885, (1, 1), 1637022838.2882373], '6': [8, 1.6616136360168456, (6, 0), 1637022844.2987082], '4': [12, 0.8333333333333333, (3, 1), 1637022841.2913105], '5': [12, 0.8333333333333333, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:10,449 INFO     Taxer will sort
-2021-11-15 16:34:10,449 INFO     Sorting start
-2021-11-15 16:34:10,449 INFO     Sorting end
-2021-11-15 16:34:10,449 INFO     Taxer has sorted
-2021-11-15 16:34:11,457 INFO     Taxer will sort
-2021-11-15 16:34:11,457 INFO     Sorting start
-2021-11-15 16:34:11,457 INFO     Sorting end
-2021-11-15 16:34:11,457 INFO     Taxer has sorted
-2021-11-15 16:34:11,581 INFO     Stack 2 completed
-2021-11-15 16:34:11,581 INFO     Stack 3 assigned to work at
-2021-11-15 16:34:12,462 INFO     Taxer will sort
-2021-11-15 16:34:12,462 INFO     Sorting start
-2021-11-15 16:34:12,462 INFO     Sorting end
-2021-11-15 16:34:12,462 INFO     Taxer has sorted
-2021-11-15 16:34:12,603 INFO     Stack 3 completed
-2021-11-15 16:34:12,603 INFO     Stack 6 assigned to work at
-2021-11-15 16:34:13,322 INFO     {'6': [7.5, 1.9030787277221681, (6, 0), 1637022844.2987082], '4': [12, 0.8333333333333333, (3, 1), 1637022841.2913105], '5': [12, 0.8333333333333333, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:13,475 INFO     Taxer will sort
-2021-11-15 16:34:13,475 INFO     Sorting start
-2021-11-15 16:34:13,475 INFO     Sorting end
-2021-11-15 16:34:13,475 INFO     Taxer has sorted
-2021-11-15 16:34:14,485 INFO     Taxer will sort
-2021-11-15 16:34:14,485 INFO     Sorting start
-2021-11-15 16:34:14,485 INFO     Sorting end
-2021-11-15 16:34:14,485 INFO     Taxer has sorted
-2021-11-15 16:34:15,495 INFO     Taxer will sort
-2021-11-15 16:34:15,495 INFO     Sorting start
-2021-11-15 16:34:15,495 INFO     Sorting end
-2021-11-15 16:34:15,495 INFO     Taxer has sorted
-2021-11-15 16:34:16,336 INFO     {'4': [12, 2.537808984120687, (3, 1), 1637022841.2913105], '6': [4.5, 2.4339929539507086, (6, 0), 1637022844.2987082], '5': [12, 0.8333333333333333, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:16,506 INFO     Taxer will sort
-2021-11-15 16:34:16,506 INFO     Sorting start
-2021-11-15 16:34:16,506 INFO     Sorting end
-2021-11-15 16:34:16,506 INFO     Taxer has sorted
-2021-11-15 16:34:17,512 INFO     Taxer will sort
-2021-11-15 16:34:17,512 INFO     Sorting start
-2021-11-15 16:34:17,512 INFO     Sorting end
-2021-11-15 16:34:17,512 INFO     Taxer has sorted
-2021-11-15 16:34:18,517 INFO     Taxer will sort
-2021-11-15 16:34:18,517 INFO     Sorting start
-2021-11-15 16:34:18,517 INFO     Sorting end
-2021-11-15 16:34:18,517 INFO     Taxer has sorted
-2021-11-15 16:34:19,341 INFO     {'6': [1.5, 4.355465751886368, (6, 0), 1637022844.2987082], '4': [12, 2.900456660588582, (3, 1), 1637022841.2913105], '5': [12, 0.8333333333333333, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:19,526 INFO     Taxer will sort
-2021-11-15 16:34:19,526 INFO     Sorting start
-2021-11-15 16:34:19,526 INFO     Sorting end
-2021-11-15 16:34:19,526 INFO     Taxer has sorted
-2021-11-15 16:34:20,532 INFO     Taxer will sort
-2021-11-15 16:34:20,532 INFO     Sorting start
-2021-11-15 16:34:20,532 INFO     Sorting end
-2021-11-15 16:34:20,532 INFO     Taxer has sorted
-2021-11-15 16:34:20,781 INFO     Stack 6 completed
-2021-11-15 16:34:20,781 INFO     Stack 4 assigned to work at
-2021-11-15 16:34:21,538 INFO     Taxer will sort
-2021-11-15 16:34:21,538 INFO     Sorting start
-2021-11-15 16:34:21,538 INFO     Sorting end
-2021-11-15 16:34:21,538 INFO     Taxer has sorted
-2021-11-15 16:34:22,349 INFO     {'4': [10.5, 3.198007147208504, (3, 1), 1637022841.2913105], '5': [12, 0.8333333333333333, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:22,552 INFO     Taxer will sort
-2021-11-15 16:34:22,552 INFO     Sorting start
-2021-11-15 16:34:22,552 INFO     Sorting end
-2021-11-15 16:34:22,552 INFO     Taxer has sorted
-2021-11-15 16:34:23,561 INFO     Taxer will sort
-2021-11-15 16:34:23,561 INFO     Sorting start
-2021-11-15 16:34:23,561 INFO     Sorting end
-2021-11-15 16:34:23,561 INFO     Taxer has sorted
-2021-11-15 16:34:24,567 INFO     Taxer will sort
-2021-11-15 16:34:24,567 INFO     Sorting start
-2021-11-15 16:34:24,567 INFO     Sorting end
-2021-11-15 16:34:24,567 INFO     Taxer has sorted
-2021-11-15 16:34:25,358 INFO     {'4': [8.0, 3.154971992759144, (3, 1), 1637022841.2913105], '5': [12, 0.8333333333333333, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:25,575 INFO     Taxer will sort
-2021-11-15 16:34:25,575 INFO     Sorting start
-2021-11-15 16:34:25,575 INFO     Sorting end
-2021-11-15 16:34:25,575 INFO     Taxer has sorted
-2021-11-15 16:34:26,583 INFO     Taxer will sort
-2021-11-15 16:34:26,583 INFO     Sorting start
-2021-11-15 16:34:26,583 INFO     Sorting end
-2021-11-15 16:34:26,583 INFO     Taxer has sorted
-2021-11-15 16:34:27,590 INFO     Taxer will sort
-2021-11-15 16:34:27,590 INFO     Sorting start
-2021-11-15 16:34:27,590 INFO     Sorting end
-2021-11-15 16:34:27,590 INFO     Taxer has sorted
-2021-11-15 16:34:28,363 INFO     {'4': [5.0, 3.2646135098283944, (3, 1), 1637022841.2913105], '5': [12, 0.8333333333333333, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:28,594 INFO     Taxer will sort
-2021-11-15 16:34:28,594 INFO     Sorting start
-2021-11-15 16:34:28,594 INFO     Sorting end
-2021-11-15 16:34:28,594 INFO     Taxer has sorted
-2021-11-15 16:34:29,608 INFO     Taxer will sort
-2021-11-15 16:34:29,608 INFO     Sorting start
-2021-11-15 16:34:29,608 INFO     Sorting end
-2021-11-15 16:34:29,608 INFO     Taxer has sorted
-2021-11-15 16:34:30,614 INFO     Taxer will sort
-2021-11-15 16:34:30,614 INFO     Sorting start
-2021-11-15 16:34:30,614 INFO     Sorting end
-2021-11-15 16:34:30,614 INFO     Taxer has sorted
-2021-11-15 16:34:31,373 INFO     {'4': [2.0, 4.73307746052742, (3, 1), 1637022841.2913105], '5': [12, 0.8333333333333333, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:31,622 INFO     Taxer will sort
-2021-11-15 16:34:31,622 INFO     Sorting start
-2021-11-15 16:34:31,622 INFO     Sorting end
-2021-11-15 16:34:31,622 INFO     Taxer has sorted
-2021-11-15 16:34:32,634 INFO     Taxer will sort
-2021-11-15 16:34:32,634 INFO     Sorting start
-2021-11-15 16:34:32,634 INFO     Sorting end
-2021-11-15 16:34:32,634 INFO     Taxer has sorted
-2021-11-15 16:34:33,036 INFO     Stack 4 completed
-2021-11-15 16:34:33,036 INFO     Stack 5 assigned to work at
-2021-11-15 16:34:33,640 INFO     Taxer will sort
-2021-11-15 16:34:33,640 INFO     Sorting start
-2021-11-15 16:34:33,640 INFO     Sorting end
-2021-11-15 16:34:33,640 INFO     Taxer has sorted
-2021-11-15 16:34:34,382 INFO     {'5': [11.0, 4.589722149268441, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:34,645 INFO     Taxer will sort
-2021-11-15 16:34:34,645 INFO     Sorting start
-2021-11-15 16:34:34,645 INFO     Sorting end
-2021-11-15 16:34:34,645 INFO     Taxer has sorted
-2021-11-15 16:34:35,656 INFO     Taxer will sort
-2021-11-15 16:34:35,656 INFO     Sorting start
-2021-11-15 16:34:35,656 INFO     Sorting end
-2021-11-15 16:34:35,656 INFO     Taxer has sorted
-2021-11-15 16:34:36,659 INFO     Taxer will sort
-2021-11-15 16:34:36,659 INFO     Sorting start
-2021-11-15 16:34:36,659 INFO     Sorting end
-2021-11-15 16:34:36,659 INFO     Taxer has sorted
-2021-11-15 16:34:37,385 INFO     {'5': [8.0, 4.182739140777027, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:37,662 INFO     Taxer will sort
-2021-11-15 16:34:37,662 INFO     Sorting start
-2021-11-15 16:34:37,662 INFO     Sorting end
-2021-11-15 16:34:37,662 INFO     Taxer has sorted
-2021-11-15 16:34:38,668 INFO     Taxer will sort
-2021-11-15 16:34:38,668 INFO     Sorting start
-2021-11-15 16:34:38,668 INFO     Sorting end
-2021-11-15 16:34:38,668 INFO     Taxer has sorted
-2021-11-15 16:34:39,674 INFO     Taxer will sort
-2021-11-15 16:34:39,674 INFO     Sorting start
-2021-11-15 16:34:39,674 INFO     Sorting end
-2021-11-15 16:34:39,674 INFO     Taxer has sorted
-2021-11-15 16:34:40,389 INFO     {'5': [5.0, 3.92927393024618, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:40,684 INFO     Taxer will sort
-2021-11-15 16:34:40,684 INFO     Sorting start
-2021-11-15 16:34:40,684 INFO     Sorting end
-2021-11-15 16:34:40,684 INFO     Taxer has sorted
-2021-11-15 16:34:41,693 INFO     Taxer will sort
-2021-11-15 16:34:41,693 INFO     Sorting start
-2021-11-15 16:34:41,693 INFO     Sorting end
-2021-11-15 16:34:41,693 INFO     Taxer has sorted
-2021-11-15 16:34:42,695 INFO     Taxer will sort
-2021-11-15 16:34:42,695 INFO     Sorting start
-2021-11-15 16:34:42,695 INFO     Sorting end
-2021-11-15 16:34:42,695 INFO     Taxer has sorted
-2021-11-15 16:34:43,394 INFO     {'5': [2.0, 4.575470379193623, (3, 2), 1637022841.2913105]}
-2021-11-15 16:34:43,706 INFO     Taxer will sort
-2021-11-15 16:34:43,706 INFO     Sorting start
-2021-11-15 16:34:43,706 INFO     Sorting end
-2021-11-15 16:34:43,706 INFO     Taxer has sorted
-2021-11-15 16:34:44,714 INFO     Taxer will sort
-2021-11-15 16:34:44,714 INFO     Sorting start
-2021-11-15 16:34:44,714 INFO     Sorting end
-2021-11-15 16:34:44,714 INFO     Taxer has sorted
-2021-11-15 16:34:45,287 INFO     Stack 5 completed
-2021-11-15 16:34:45,731 INFO     Taxer will sort
-2021-11-15 16:34:45,762 INFO     Sorting start
-2021-11-15 16:34:45,778 INFO     Sorting end
-2021-11-15 16:34:45,810 INFO     Taxer has sorted
-2021-11-15 16:34:46,460 INFO     {}
-2021-11-15 16:34:46,856 INFO     Taxer will sort
-2021-11-15 16:34:46,872 INFO     Sorting start
-2021-11-15 16:34:46,904 INFO     Sorting end
-2021-11-15 16:34:46,936 INFO     Taxer has sorted
-2021-11-15 16:34:47,989 INFO     Taxer will sort
-2021-11-15 16:34:47,989 INFO     Sorting start
-2021-11-15 16:34:47,989 INFO     Sorting end
-2021-11-15 16:34:47,989 INFO     Taxer has sorted
-2021-11-15 16:34:49,017 INFO     Taxer will sort
-2021-11-15 16:34:49,032 INFO     Sorting start
-2021-11-15 16:34:49,048 INFO     Sorting end
-2021-11-15 16:34:49,048 INFO     Taxer has sorted
-2021-11-15 16:34:49,565 INFO     {}
-2021-11-15 16:34:50,067 INFO     Taxer will sort
-2021-11-15 16:34:50,067 INFO     Sorting start
-2021-11-15 16:34:50,067 INFO     Sorting end
-2021-11-15 16:34:50,067 INFO     Taxer has sorted
-2021-11-15 16:34:51,084 INFO     Taxer will sort
-2021-11-15 16:34:51,084 INFO     Sorting start
-2021-11-15 16:34:51,084 INFO     Sorting end
-2021-11-15 16:34:51,084 INFO     Taxer has sorted
-2021-11-15 16:34:52,111 INFO     Taxer will sort
-2021-11-15 16:34:52,158 INFO     Sorting start
-2021-11-15 16:34:52,158 INFO     Sorting end
-2021-11-15 16:34:52,158 INFO     Taxer has sorted
-2021-11-15 16:34:52,633 INFO     {}
-2021-11-15 16:34:53,186 INFO     Taxer will sort
-2021-11-15 16:34:53,202 INFO     Sorting start
-2021-11-15 16:34:53,202 INFO     Sorting end
-2021-11-15 16:34:53,202 INFO     Taxer has sorted
-2021-11-15 16:34:54,229 INFO     Taxer will sort
-2021-11-15 16:34:54,261 INFO     Sorting start
-2021-11-15 16:34:54,261 INFO     Sorting end
-2021-11-15 16:34:54,277 INFO     Taxer has sorted
-2021-11-15 16:34:55,339 INFO     Taxer will sort
-2021-11-15 16:34:55,355 INFO     Sorting start
-2021-11-15 16:34:55,355 INFO     Sorting end
-2021-11-15 16:34:55,355 INFO     Taxer has sorted
-2021-11-15 16:34:55,702 INFO     {}
-2021-11-15 16:34:56,380 INFO     Taxer will sort
-2021-11-15 16:34:56,395 INFO     Sorting start
-2021-11-15 16:34:56,395 INFO     Sorting end
-2021-11-15 16:34:56,395 INFO     Taxer has sorted
-2021-11-15 16:34:57,414 INFO     Taxer will sort
-2021-11-15 16:34:57,446 INFO     Sorting start
-2021-11-15 16:34:57,478 INFO     Sorting end
-2021-11-15 16:34:57,510 INFO     Taxer has sorted
-2021-11-15 16:34:58,555 INFO     Taxer will sort
-2021-11-15 16:34:58,601 INFO     Sorting start
-2021-11-15 16:34:58,616 INFO     Sorting end
-2021-11-15 16:34:58,648 INFO     Taxer has sorted
-2021-11-15 16:34:58,836 INFO     {}
-2021-11-15 16:52:13,998 INFO     {}
-2021-11-15 16:52:14,060 INFO     Taxer will sort
-2021-11-15 16:52:14,060 INFO     Sorting start
-2021-11-15 16:52:14,060 INFO     Sorting end
-2021-11-15 16:52:14,060 INFO     Taxer has sorted
-2021-11-15 16:52:32,608 INFO     {}
-2021-11-15 16:52:35,617 INFO     {}
-2021-11-15 16:52:38,627 INFO     {}
-2021-11-15 16:52:41,631 INFO     {}
-2021-11-15 16:53:35,575 INFO     {}
-2021-11-15 16:53:38,589 INFO     {}
-2021-11-15 16:53:41,591 INFO     {}
-2021-11-15 16:53:44,598 INFO     {}
-2021-11-15 16:54:10,740 INFO     {}
-2021-11-15 16:54:13,742 INFO     {}
-2021-11-15 16:54:16,758 INFO     {}
-2021-11-15 16:54:19,766 INFO     {}
-2021-11-15 16:54:29,097 INFO     {}
-2021-11-15 16:54:32,112 INFO     {}
-2021-11-15 16:54:36,816 INFO     {}
-2021-11-15 16:55:36,135 INFO     {}
-2021-11-15 16:55:39,148 INFO     {}
-2021-11-15 16:57:51,417 INFO     {}
-2021-11-15 16:57:54,423 INFO     {}
-2021-11-15 16:57:57,425 INFO     {}
-2021-11-15 16:58:00,430 INFO     {}
-2021-11-15 16:58:03,443 INFO     {}
-2021-11-15 16:58:06,451 INFO     {}
-2021-11-15 16:58:09,463 INFO     {}
-2021-11-15 16:58:12,468 INFO     {}
-2021-11-15 17:25:53,404 INFO     {}
-2021-11-15 17:25:56,415 INFO     {}
-2021-11-15 17:53:35,260 INFO     {}
-2021-11-15 18:04:29,387 INFO     {}
-2021-11-15 18:04:41,580 INFO     {}
-2021-11-15 18:05:46,335 INFO     {}
-2021-11-15 18:05:49,340 INFO     {}
-2021-11-15 18:10:07,095 INFO     {}
-2021-11-15 18:10:44,369 INFO     {}
-2021-11-15 18:11:58,721 INFO     {}
-2021-11-15 18:12:21,183 INFO     {}
-2021-11-15 18:34:30,038 INFO     {}
-2021-11-15 18:35:09,212 INFO     {}
-2021-11-15 18:35:26,365 INFO     {}
-2021-11-15 18:39:20,266 INFO     {}
-2021-11-15 18:39:23,270 INFO     {}
-2021-11-15 18:50:22,200 INFO     {}
-2021-11-15 18:58:13,251 INFO     {}
-2021-11-15 18:58:43,825 INFO     {}
-2021-11-15 19:25:21,295 INFO     {}
-2021-11-15 19:41:05,124 INFO     {}
-2021-11-15 19:59:16,112 INFO     {}
-2021-11-15 20:01:56,209 INFO     {}
-2021-11-15 20:02:00,427 INFO     Stack 0 has ben put in head
-2021-11-15 20:02:12,833 INFO     {}
-2021-11-15 20:02:12,834 INFO     Stack 0 has ben put in head
-2021-11-15 20:02:12,834 INFO     Stack 1 has ben put in head
-2021-11-15 20:02:12,834 INFO     Stack 2 has ben put in head
-2021-11-15 20:02:12,834 INFO     Stack 3 has ben put in head
-2021-11-15 20:02:12,835 INFO     Stack 4 has ben put in head
-2021-11-15 20:02:12,835 INFO     Stack 5 has ben put in head
-2021-11-15 20:02:12,835 INFO     Stack 6 has ben put in head
-2021-11-15 20:02:12,835 INFO     Stack 7 has ben put in head
-2021-11-15 20:02:12,835 INFO     Stack 8 has ben put in head
-2021-11-15 20:02:12,836 INFO     Stack 9 has ben put in head
-2021-11-15 20:03:45,448 INFO     {}
-2021-11-15 20:03:48,455 INFO     {}
-2021-11-15 20:03:48,456 INFO     Stack 0 has ben put in head
-2021-11-15 20:03:48,456 INFO     Stack 1 has ben put in head
-2021-11-15 20:03:48,456 INFO     Stack 2 has ben put in head
-2021-11-15 20:03:48,457 INFO     Stack 3 has ben put in head
-2021-11-15 20:03:48,457 INFO     Stack 4 has ben put in head
-2021-11-15 20:03:48,457 INFO     Stack 5 has ben put in head
-2021-11-15 20:03:48,457 INFO     Stack 6 has ben put in head
-2021-11-15 20:03:48,457 INFO     Stack 7 has ben put in head
-2021-11-15 20:03:48,458 INFO     Stack 8 has ben put in head
-2021-11-15 20:03:48,458 INFO     Stack 9 has ben put in head
-2021-11-15 20:04:30,812 INFO     {}
-2021-11-15 20:04:30,813 INFO     Stack 0 has ben put in head
-2021-11-15 20:04:30,813 INFO     Stack 1 has ben put in head
-2021-11-15 20:04:30,813 INFO     Stack 2 has ben put in head
-2021-11-15 20:04:30,813 INFO     Stack 3 has ben put in head
-2021-11-15 20:04:30,814 INFO     Stack 4 has ben put in head
-2021-11-15 20:04:30,814 INFO     Stack 5 has ben put in head
-2021-11-15 20:04:30,814 INFO     Stack 6 has ben put in head
-2021-11-15 20:04:30,814 INFO     Stack 7 has ben put in head
-2021-11-15 20:04:30,814 INFO     Stack 8 has ben put in head
-2021-11-15 20:04:30,814 INFO     Stack 9 has ben put in head
-2021-11-15 20:05:07,755 INFO     Stack 9 has ben put in head
-2021-11-15 20:05:07,755 INFO     Stack 10 has ben put in head
-2021-11-15 20:05:07,755 INFO     Stack 11 has ben put in head
-2021-11-15 20:05:07,755 INFO     Stack 12 has ben put in head
+2021-11-16 14:57:25,984 INFO     {}
+2021-11-16 14:57:28,996 INFO     {}
+2021-11-16 14:57:28,997 INFO     Iniciando partición de orden x
+2021-11-16 14:57:28,997 INFO     Stack 0 has ben put in head
+2021-11-16 14:57:28,997 INFO     Stack 1 has ben put in head
+2021-11-16 14:57:28,997 INFO     Stack 2 has ben put in head
+2021-11-16 14:57:28,997 INFO     Stack 3 has ben put in head
+2021-11-16 14:57:28,998 INFO     Stack 4 has ben put in head
+2021-11-16 14:57:28,998 INFO     Stack 5 has ben put in head
+2021-11-16 14:57:28,998 INFO     Stack 6 has ben put in head
+2021-11-16 14:57:28,998 INFO     Stack 7 has ben put in head
+2021-11-16 14:57:30,039 INFO     Finalizada la partición de orden x
+2021-11-16 15:04:14,974 INFO     {}
+2021-11-16 15:04:17,990 INFO     {}
+2021-11-16 15:04:17,991 INFO     Iniciando particion de orden x
+2021-11-16 15:04:17,991 INFO     Stack 0 has ben put in head
+2021-11-16 15:04:17,991 INFO     Stack 1 has ben put in head
+2021-11-16 15:04:17,991 INFO     Stack 2 has ben put in head
+2021-11-16 15:04:17,991 INFO     Stack 3 has ben put in head
+2021-11-16 15:04:17,991 INFO     Stack 4 has ben put in head
+2021-11-16 15:04:17,991 INFO     Stack 5 has ben put in head
+2021-11-16 15:04:17,991 INFO     Stack 6 has ben put in head
+2021-11-16 15:04:17,992 INFO     Stack 7 has ben put in head
+2021-11-16 15:04:33,704 INFO     Finalizada la particion de orden x
+2021-11-16 15:04:37,364 INFO     {}
+2021-11-16 15:04:37,365 INFO     Iniciando particion de orden x
+2021-11-16 15:04:37,365 INFO     Stack 0 has ben put in head
+2021-11-16 15:04:37,365 INFO     Stack 1 has ben put in head
+2021-11-16 15:04:37,365 INFO     Stack 2 has ben put in head
+2021-11-16 15:04:37,365 INFO     Stack 3 has ben put in head
+2021-11-16 15:04:37,366 INFO     Stack 4 has ben put in head
+2021-11-16 15:04:37,366 INFO     Stack 5 has ben put in head
+2021-11-16 15:04:37,366 INFO     Stack 6 has ben put in head
+2021-11-16 15:04:37,366 INFO     Stack 7 has ben put in head
+2021-11-16 15:04:37,366 INFO     Finalizada la particion de orden x
+2021-11-16 15:07:07,578 INFO     {}
+2021-11-16 15:07:07,580 INFO     Iniciando particion de orden x
+2021-11-16 15:07:10,540 INFO     Stack 0 has ben put in head
+2021-11-16 15:07:10,540 INFO     Stack 1 has ben put in head
+2021-11-16 15:07:10,540 INFO     Stack 2 has ben put in head
+2021-11-16 15:07:10,540 INFO     Stack 3 has ben put in head
+2021-11-16 15:07:10,540 INFO     Stack 4 has ben put in head
+2021-11-16 15:07:10,541 INFO     Stack 5 has ben put in head
+2021-11-16 15:07:10,541 INFO     Stack 6 has ben put in head
+2021-11-16 15:07:10,541 INFO     Stack 7 has ben put in head
+2021-11-16 15:07:10,541 INFO     Finalizada la particion de orden x
+2021-11-16 15:07:29,036 INFO     {'0': [38.333349999999996, 0.26086945179589055, (0, 0, 0), 1637104030.5404897, 5.0, 7.66667], '1': [38.333349999999996, 0.26086945179589055, (0, 0, 0), 1637104030.5404897, 5.0, 7.66667], '2': [38.333349999999996, 0.26086945179589055, (0, 0, 1), 1637104030.5404897, 5.0, 7.66667], '3': [7.66667, 1.3043472589794527, (0, 1, 0), 1637104030.5404897, 1.0, 7.66667], '4': [38.333349999999996, 0.26086945179589055, (0, 1, 0), 1637104030.5404897, 5.0, 7.66667], '5': [38.333349999999996, 0.26086945179589055, (0, 1, 1), 1637104030.5414898, 5.0, 7.66667], '6': [38.333349999999996, 0.26086945179589055, (0, 1, 2), 1637104030.5414898, 5.0, 7.66667], '7': [22.66668, 0.441176211072817, (0, 2, 0), 1637104030.5414898, 4, 5.66667]}
+2021-11-16 15:07:29,037 INFO     Iniciando particion de orden x
+2021-11-16 15:07:47,866 INFO     Stack 8 has ben put in head
+2021-11-16 15:07:47,866 INFO     Stack 9 has ben put in head
+2021-11-16 15:07:47,866 INFO     Stack 10 has ben put in head
+2021-11-16 15:07:47,867 INFO     Stack 11 has ben put in head
+2021-11-16 15:07:47,867 INFO     Stack 12 has ben put in head
+2021-11-16 15:07:47,867 INFO     Stack 13 has ben put in head
+2021-11-16 15:07:47,867 INFO     Finalizada la particion de orden x
+2021-11-16 15:08:54,519 INFO     {}
+2021-11-16 15:08:54,521 INFO     Iniciando particion de orden x
+2021-11-16 15:08:55,666 INFO     Stack 0 has ben put in head
+2021-11-16 15:08:55,666 INFO     Stack 1 has ben put in head
+2021-11-16 15:08:55,666 INFO     Stack 2 has ben put in head
+2021-11-16 15:08:55,666 INFO     Stack 3 has ben put in head
+2021-11-16 15:08:55,666 INFO     Stack 4 has ben put in head
+2021-11-16 15:08:55,667 INFO     Stack 5 has ben put in head
+2021-11-16 15:08:55,667 INFO     Stack 6 has ben put in head
+2021-11-16 15:08:55,667 INFO     Stack 7 has ben put in head
+2021-11-16 15:08:55,667 INFO     Finalizada la particion de orden x
+2021-11-16 15:08:59,981 INFO     {'0': [38.333349999999996, 0.26086945179589055, (0, 0, 0), 1637104135.6667907, 5.0, 7.66667], '1': [38.333349999999996, 0.26086945179589055, (0, 0, 0), 1637104135.6667907, 5.0, 7.66667], '2': [38.333349999999996, 0.26086945179589055, (0, 0, 1), 1637104135.6667907, 5.0, 7.66667], '3': [7.66667, 1.3043472589794527, (0, 1, 0), 1637104135.6667907, 1.0, 7.66667], '4': [38.333349999999996, 0.26086945179589055, (0, 1, 0), 1637104135.6667907, 5.0, 7.66667], '5': [38.333349999999996, 0.26086945179589055, (0, 1, 1), 1637104135.667945, 5.0, 7.66667], '6': [38.333349999999996, 0.26086945179589055, (0, 1, 2), 1637104135.667945, 5.0, 7.66667], '7': [22.66668, 0.441176211072817, (0, 2, 0), 1637104135.667945, 4, 5.66667]}
+2021-11-16 15:08:59,982 INFO     Iniciando particion de orden x
+2021-11-16 15:09:27,812 INFO     Stack 8 has ben put in head
+2021-11-16 15:09:27,812 INFO     Stack 9 has ben put in head
+2021-11-16 15:09:27,812 INFO     Stack 10 has ben put in head
+2021-11-16 15:09:27,812 INFO     Stack 11 has ben put in head
+2021-11-16 15:09:27,812 INFO     Stack 12 has ben put in head
+2021-11-16 15:09:27,812 INFO     Stack 13 has ben put in head
+2021-11-16 15:09:27,813 INFO     Finalizada la particion de orden x
+2021-11-16 15:10:02,676 INFO     {}
+2021-11-16 15:10:02,677 INFO     Iniciando particion de orden x
+2021-11-16 15:10:03,469 INFO     Stack 0 has ben put in head
+2021-11-16 15:10:03,469 INFO     Stack 1 has ben put in head
+2021-11-16 15:10:03,469 INFO     Stack 2 has ben put in head
+2021-11-16 15:10:03,469 INFO     Stack 3 has ben put in head
+2021-11-16 15:10:03,469 INFO     Stack 4 has ben put in head
+2021-11-16 15:10:03,469 INFO     Stack 5 has ben put in head
+2021-11-16 15:10:03,470 INFO     Stack 6 has ben put in head
+2021-11-16 15:10:03,470 INFO     Stack 7 has ben put in head
+2021-11-16 15:10:03,470 INFO     Finalizada la particion de orden x
+2021-11-16 15:10:07,013 INFO     {'0': [38.333349999999996, 0.26086945179589055, (0, 0, 0), 1637104203.4696922, 5.0, 7.66667], '1': [38.333349999999996, 0.26086945179589055, (0, 0, 0), 1637104203.4696922, 5.0, 7.66667], '2': [38.333349999999996, 0.26086945179589055, (0, 0, 1), 1637104203.4696922, 5.0, 7.66667], '3': [7.66667, 1.3043472589794527, (0, 1, 0), 1637104203.4696922, 1.0, 7.66667], '4': [38.333349999999996, 0.26086945179589055, (0, 1, 0), 1637104203.4696922, 5.0, 7.66667], '5': [38.333349999999996, 0.26086945179589055, (0, 1, 1), 1637104203.4696922, 5.0, 7.66667], '6': [38.333349999999996, 0.26086945179589055, (0, 1, 2), 1637104203.470664, 5.0, 7.66667], '7': [22.66668, 0.441176211072817, (0, 2, 0), 1637104203.470664, 4, 5.66667]}
+2021-11-16 15:10:07,013 INFO     Iniciando particion de orden x
+2021-11-16 15:25:10,097 INFO     {}
+2021-11-16 15:25:10,097 INFO     Iniciando particion de orden x
+2021-11-16 15:26:55,718 INFO     {}
+2021-11-16 15:26:55,718 INFO     Iniciando particion de orden x
+2021-11-16 15:26:55,719 INFO     Stack 0 has ben put in head
+2021-11-16 15:26:55,719 INFO     Stack 1 has ben put in head
+2021-11-16 15:26:55,719 INFO     Stack 2 has ben put in head
+2021-11-16 15:26:55,719 INFO     Stack 3 has ben put in head
+2021-11-16 15:26:55,719 INFO     Stack 4 has ben put in head
+2021-11-16 15:26:55,719 INFO     Stack 5 has ben put in head
+2021-11-16 15:26:55,719 INFO     Stack 6 has ben put in head
+2021-11-16 15:26:55,719 INFO     Stack 7 has ben put in head
+2021-11-16 15:27:38,827 INFO     Finalizada la particion de orden x
+2021-11-16 15:27:41,837 INFO     {'0': [38.333349999999996, 0.26086945179589055, (0, 0, 0), 1637105215.7196784, 5.0, 7.66667], '1': [38.333349999999996, 0.26086945179589055, (0, 0, 1), 1637105215.7196784, 5.0, 7.66667], '2': [38.333349999999996, 0.26086945179589055, (0, 0, 2), 1637105215.7196784, 5.0, 7.66667], '3': [7.66667, 1.3043472589794527, (0, 1, 0), 1637105215.7196784, 1.0, 7.66667], '4': [38.333349999999996, 0.26086945179589055, (0, 1, 0), 1637105215.7196784, 5.0, 7.66667], '5': [38.333349999999996, 0.26086945179589055, (0, 1, 1), 1637105215.7196784, 5.0, 7.66667], '6': [38.333349999999996, 0.26086945179589055, (0, 1, 2), 1637105215.7196784, 5.0, 7.66667], '7': [22.66668, 0.441176211072817, (0, 2, 0), 1637105215.7196784, 4, 5.66667]}
+2021-11-16 15:27:41,837 INFO     Iniciando particion de orden x
+2021-11-16 15:27:41,837 INFO     Stack 8 has ben put in head
+2021-11-16 15:27:41,838 INFO     Stack 9 has ben put in head
+2021-11-16 15:27:41,838 INFO     Stack 10 has ben put in head
+2021-11-16 15:27:41,838 INFO     Stack 11 has ben put in head
+2021-11-16 15:27:41,838 INFO     Stack 12 has ben put in head
+2021-11-16 15:27:41,838 INFO     Stack 13 has ben put in head
+2021-11-16 15:27:41,838 INFO     Stack 14 has ben put in head

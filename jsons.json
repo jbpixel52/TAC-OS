@@ -5,11 +5,11 @@
         "status": "open",
         "orden": [
             {
-                "part_id": "1-0",
+                "part_id": "0-0",
                 "type": "taco",
                 "meat": "asada",
                 "status": "open",
-                "quantity": 31,
+                "quantity": 15,
                 "ingredients": [
                     "salsa",
                     "cilantro",
@@ -17,14 +17,25 @@
                 ]
             },
             {
-                "part_id": "1-0",
+                "part_id": "0-1",
                 "type": "taco",
                 "meat": "asada",
                 "status": "open",
-                "quantity": 11,
+                "quantity": 16,
                 "ingredients": [
                     "salsa",
                     "cilantro",
+                    "cebolla"
+                ]
+            },
+            {
+                "part_id": "0-2",
+                "type": "taco",
+                "meat": "asada",
+                "status": "open",
+                "quantity": 4,
+                "ingredients": [
+                    "salsa",
                     "cebolla"
                 ]
             }
