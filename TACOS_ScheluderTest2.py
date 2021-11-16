@@ -5,11 +5,12 @@ import logging
 import datetime
 import string
 import time
+import json
 import emoji
 from time import sleep
 import sys
 abcdario = list(string.ascii_uppercase)
-debug_state= False
+debug_state = True
 
 def getTime():
     LocalTime = datetime.datetime.now().strftime("%H:%M:%S")
@@ -38,10 +39,14 @@ class PersonalTaqueria(threading.Thread):
         self.cookUnitDelta = 0.5  # Minimo para cocinar
         self.Rescheduling = False
         self.Cooking = False
+        self.cuadernilloRecibidos = {} #Cuaderno con los jsons de entrada
+        self.cuadernilloSalidas = {} # Cuadrerno con los jsons de salida
         self.ordenes = {}  # dict in mind per worker
         self.ordenesHeads = []  # lista con las cabezas de subordenenes
         self.tacoCounter = 0
-        self.constMagnitud = 12  # p90 redondeado, muy grande = hacer parte
+        self.orderCounter = 0
+        self.stackCounter = 0 #Antes conocido como tacoCounter (incorrectamente)
+        self.constMagnitud = 24  # p90 redondeado, muy grande = hacer parte
         self.constStarving = 0.01  # blah blah + [utis*const*tiempoatrasado]
         self.shortestOrderIndex = None  # Una vez inicia un stack no lo detiene
 
@@ -50,8 +55,8 @@ class PersonalTaqueria(threading.Thread):
         #  Orden  = (tiempollegada,duracionOrden)
         print(f"Taquero {self.name} en linea")
         self.OrderRecieverThread.start()
-        self.CookerThread.start()
-        self.StarvingTaxerThread.start()
+        #self.CookerThread.start()
+        #self.StarvingTaxerThread.start()
 
     def taquitos_emojis(self):
         print(f"ORDENES:",end='')
@@ -59,7 +64,80 @@ class PersonalTaqueria(threading.Thread):
         print(emoji.emojize(self.emojis))
         self.emojis = ''
 
-
+    def SplitOrder(self, orden):
+        pedido = orden
+        numSuborden = 0
+        #Seccionar en partes la orden (los indices de ['orden'])
+        for subOrden in pedido['orden']:
+            costoUTIs = 1
+            if(subOrden['type'] == 'taco'):
+                #Hacer un calculo del costo
+                if('salsa' in subOrden['ingredients']):
+                    costoUTIs += 2.66667
+                if('guacamole' in subOrden['ingredients']):
+                    costoUTIs += 3.5
+                if('cilantro' in subOrden['ingredients']):
+                    costoUTIs += 2
+                if('cebolla' in subOrden['ingredients']):
+                    costoUTIs += 2
+                #costo es costo por taco * cantidadtacos
+                #Costo individual servirá para la división de sstacks
+                costoIndividual = costoUTIs
+                costoUTIs = costoUTIs * subOrden['quantity']
+                if(costoUTIs < self.constMagnitud):
+                    #No dividir
+                    pass
+                else:
+                    #Dividir orden en partes (stacks)
+                    #Primero ver cuantos stacks puedo hacer
+                    numStacks = costoUTIs // self.constMagnitud
+                    residuoUTIS = costoUTIs % self.constMagnitud
+                    tacosPorStack = subOrden['quantity'] // numStacks
+                    tacosSobrantes =  subOrden['quantity'] % numStacks
+                    #Como habia hecho en el test2 inician
+                    # primero vá la cola
+                    # Si hubo residuo hay una "cola" para evitar problemas
+                    # primero metamos a la cola la cabeza y que sus subse
+                    # -cuenters grandes stacks sean vecinos
+                    # Consultar con Omar para sus apuntes de estas lineas
+                    prioridad = ((residuoUTIS**-1)*10)
+                    subSplitIndex = 0
+                    self.ordenes[str(self.stackCounter)] = [
+                        residuoUTIS,
+                        prioridad,
+                        (self.orderCounter, numSuborden, subSplitIndex),
+                        time.time(),
+                        tacosSobrantes,
+                        costoIndividual
+                    ]
+                    logging.info(
+                        f"Stack {self.stackCounter} has ben put in head")
+                    subSplitIndex += 1
+                    self.stackCounter += 1                  
+                    for stack in range(int(numStacks)):
+                        costoStack = tacosPorStack * costoIndividual
+                        prioridad = ((costoStack**-1)*10)
+                        self.ordenes[str(self.stackCounter)] = [
+                            costoStack,
+                            prioridad,
+                            (self.orderCounter, numSuborden, subSplitIndex),
+                            time.time(),
+                            tacosPorStack,
+                            costoIndividual
+                        ]
+                        logging.info(
+                            f"Stack {self.stackCounter} has ben put in head")
+                        subSplitIndex += 1
+                        self.stackCounter += 1   
+                        pass
+                    self.stackCounter -=1
+                    pass
+                pass
+            pass
+            numSuborden += 1
+        pass
+    
+    
     def recieveClientOrders(self):
         while(True):
             if debug_state == True:
@@ -72,72 +150,71 @@ class PersonalTaqueria(threading.Thread):
                             print(f"{v_data} ",end='')
 
                 print(f'HeadsofOrders:{self.ordenesHeads}')
-                logging.info(self.ordenes)
-                
-                
+                logging.info(self.ordenes)     
             else:
                 self.taquitos_emojis()
-                        
-                        
+                                  
             if(self.queue.empty()):
                 pass
             else:
                 newOrder = self.queue.get_nowait()
-                subSplitIndex = 0
-                self.tacoCounter += 1
-                if(newOrder > self.constMagnitud):
-                    # Idea: dividir en stacks (no la estructura)
-                    # las ordenes que excedan x tacos
-                    # y que se respete el orden de UTIS 1ro y si hay empate
-                    # se hace por FCFS
-                    remainingUnits = newOrder
-                    ogTacoCounter = self.tacoCounter
-                    prioridad = ((self.constMagnitud**-1)*10)
-                    self.ordenesHeads.append(ogTacoCounter)
-                    utisResidue = newOrder % self.constMagnitud
-                    if(utisResidue > 0):
-                        # Si hubo residuo hay una "cola" para evitar problemas
-                        # primero metamos a la cola la cabeza y que sus subse
-                        # -cuenters grandes stacks sean vecinos
-                        prioridad = ((utisResidue**-1)*10)
-                        self.ordenes[str(self.tacoCounter)] = [
-                            utisResidue,
-                            prioridad,
-                            (ogTacoCounter, subSplitIndex),
-                            time.time()
-                        ]
-                        logging.info(
-                            f"Stack {self.tacoCounter} has ben put in head")
-                        subSplitIndex += 1
-                        self.tacoCounter += 1
-                        remainingUnits -= utisResidue
-                    while(remainingUnits >= self.constMagnitud):
-                        prioridad = ((self.constMagnitud**-1)*10)
-                        self.ordenes[str(self.tacoCounter)] = [
-                            self.constMagnitud,
-                            prioridad,
-                            (ogTacoCounter, subSplitIndex),
-                            time.time()
-                        ]
-                        logging.info(
-                            f"Stack {self.tacoCounter} has ben put in head")
-                        subSplitIndex += 1
-                        remainingUnits -= self.constMagnitud
-                        self.tacoCounter += 1
-                        if(remainingUnits == 0):
-                            self.tacoCounter -= 1  # Quitar el que sobra
-                    pass
-                else:
-                    prioridad = ((newOrder**-1)*10)
-                    self.ordenesHeads.append(self.tacoCounter)
-                    self.ordenes[str(self.tacoCounter)] = [
-                        newOrder,
-                        prioridad,
-                        (self.tacoCounter, subSplitIndex),
-                        time.time()
-                    ]
-                    logging.info(
-                        f"Stack {self.tacoCounter} has ben put in head")
+                self.cuadernilloRecibidos[str(self.tacoCounter)] = newOrder
+                self.SplitOrder(newOrder)
+                # subSplitIndex = 0
+                # self.tacoCounter += 1
+                # if(newOrder > self.constMagnitud):
+                #     # Idea: dividir en stacks (no la estructura)
+                #     # las ordenes que excedan x tacos
+                #     # y que se respete el orden de UTIS 1ro y si hay empate
+                #     # se hace por FCFS
+                #     remainingUnits = newOrder
+                #     ogTacoCounter = self.tacoCounter
+                #     prioridad = ((self.constMagnitud**-1)*10)
+                #     self.ordenesHeads.append(ogTacoCounter)
+                #     utisResidue = newOrder % self.constMagnitud
+                #     if(utisResidue > 0):
+                #         # Si hubo residuo hay una "cola" para evitar problemas
+                #         # primero metamos a la cola la cabeza y que sus subse
+                #         # -cuenters grandes stacks sean vecinos
+                #         prioridad = ((utisResidue**-1)*10)
+                #         self.ordenes[str(self.tacoCounter)] = [
+                #             utisResidue,
+                #             prioridad,
+                #             (ogTacoCounter, subSplitIndex),
+                #             time.time()
+                #         ]
+                #         logging.info(
+                #             f"Stack {self.tacoCounter} has ben put in head")
+                #         subSplitIndex += 1
+                #         self.tacoCounter += 1
+                #         remainingUnits -= utisResidue
+                #     while(remainingUnits >= self.constMagnitud):
+                #         prioridad = ((self.constMagnitud**-1)*10)
+                #         self.ordenes[str(self.tacoCounter)] = [
+                #             self.constMagnitud,
+                #             prioridad,
+                #             (ogTacoCounter, subSplitIndex),
+                #             time.time()
+                #         ]
+                #         logging.info(
+                #             f"Stack {self.tacoCounter} has ben put in head")
+                #         subSplitIndex += 1
+                #         remainingUnits -= self.constMagnitud
+                #         self.tacoCounter += 1
+                #         if(remainingUnits == 0):
+                #             self.tacoCounter -= 1  # Quitar el que sobra
+                #     pass
+                # else:
+                #     prioridad = ((newOrder**-1)*10)
+                #     self.ordenesHeads.append(self.tacoCounter)
+                #     self.ordenes[str(self.tacoCounter)] = [
+                #         newOrder,
+                #         prioridad,
+                #         (self.tacoCounter, subSplitIndex),
+                #         time.time()
+                #     ]
+                #     logging.info(
+                #         f"Stack {self.tacoCounter} has ben put in head")
                 try:
                     self.Rescheduling = True
                     self.sortOrders()
@@ -269,6 +346,8 @@ class CocinaQuesadillero():
 
 
 if __name__ == "__main__":
+    #Solo poner estas ordenes mientras hacemos pruebas
+    ordersToTest = 2
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="a+",
                         format="%(asctime)-15s %(levelname)-8s %(message)s")
     print("Scheduler test 1")
@@ -277,9 +356,9 @@ if __name__ == "__main__":
     Cocina.IngresoPersonal(Cocina)
 
     while(True):
-        orden = None
-        try:
-            orden = int(input())
-            Cocina.personal[0].queue.put(orden)
-        except:
-            print('Exception for tacos input')
+        with open("jsons.json") as OrdenesJSON:
+            ListadoOrdenes = json.load(OrdenesJSON)
+            for i in range(ordersToTest):
+                orden = ListadoOrdenes[i]
+                Cocina.personal[0].queue.put(orden)
+
