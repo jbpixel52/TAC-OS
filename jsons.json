@@ -53,7 +53,7 @@
                 "status": "open",
                 "quantity": 31,
                 "ingredients": [
-                    "salsa",
+                    "guacamole",
                     "cilantro",
                     "cebolla"
                 ]
@@ -68,13 +68,23 @@
             {
                 "part_id": "2-0",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
                 "quantity": 20,
                 "ingredients": [
                     "salsa",
                     "cebolla"
                 ]
+            },
+            { 
+                "part_id": "2-1",
+                "type": "taco",
+                "meat": "asada",
+                "status": "open",
+                "quantity": 8,
+                "ingredients": [
+                    "guacamole"
+                ]               
             }
         ]
     },
@@ -90,8 +100,8 @@
                 "status": "open",
                 "quantity": 10,
                 "ingredients": [
-                    "cilantro",
-                    "cebolla"
+                    "guacamole",
+                    "salsa"
                 ]
             }
         ]
