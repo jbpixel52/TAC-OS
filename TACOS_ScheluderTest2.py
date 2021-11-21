@@ -245,32 +245,41 @@ class PersonalTaqueria(threading.Thread):
             #if debug_state is True:
             time.sleep(self.ordersPerSecondDelta)
 
+    def pickShortestOrderIndex(self):
+        #Esperar a que no se este haciendo sort o split para conseguir
+        #  un indice con el que trabajar
+        if((not self.Splitting) and (not self.Rescheduling)):
+            # Sí actualmente no trabaja en un stack, darle el indice
+            # TODO referirlo como biggestPriorityIndex
+            # Sacada respuesta de
+            # https://stackoverflow.com/a/64152259 por Sloper C. (2020)
+            # el key 0 es de la lista hecha diccionario con la prioridad
+            # $  mas grande
+            logging.info("Taquero will sort to pick")
+            self.sortOrders()
+            logging.info("Taquero has sorted and will pick")
+            self.shortestOrderIndex = str(list(self.ordenes.keys())[0])
+            logging.info(
+                f"Stack {self.shortestOrderIndex} assigned to work at")
+            #Varia por stack, cada x deltas se hace un taco y debemos contarlos
+            self.deltasPerTaco = self.ordenes[self.shortestOrderIndex][7]/self.cookUnitDelta
+        else:
+            if(self.shortestOrderIndex == None):
+                logging.info("Taquero is splitting or scheduling, cannot pick  a new index")
+        pass
+
+
     def cook(self):
         while(True):
             if(bool(self.ordenes)):
-                #Esperar a que no se este haciendo sort o split para conseguir
-                #  un indice con el que trabajar
-                if((not self.Splitting) and (not self.Rescheduling)):
-                    if(self.shortestOrderIndex == None):
-                        # Sí actualmente no trabaja en un stack, darle el indice
-                        # TODO referirlo como biggestPriorityIndex
-                        # Sacada respuesta de
-                        # https://stackoverflow.com/a/64152259 por Sloper C. (2020)
-                        # el key 0 es de la lista hecha diccionario con la prioridad
-                        # $  mas grande
-                        self.shortestOrderIndex = str(list(self.ordenes.keys())[0])
-                        logging.info(
-                            f"Stack {self.shortestOrderIndex} assigned to work at")
-                        #Varia por stack, cada x deltas se hace un taco y debemos contarlos
-                        self.deltasPerTaco = self.ordenes[self.shortestOrderIndex][7]/self.cookUnitDelta
-                    else:
-                        # Si no que siga trabajando con ese stack incluso si
-                        # llega a haber un sort nuevo con orden más chica
-                        pass
+                #Escojer indice para trabajar si no se tiene uno
+                if(self.shortestOrderIndex == None):
+                    self.pickShortestOrderIndex()
                 else:
-                    if(self.shortestOrderIndex == None):
-                        logging.info("Taquero is splitting or scheduling, cannot pick  a new index")
-
+                    # Si no que siga trabajando con ese stack incluso si
+                    # llega a haber un sort nuevo con orden más chica
+                    pass
+                
                 # Cocinamos si no se esta recalendarizando por parte del taquero (el taxer no
                 #  activa el MUTEX intencionalmente) y si hay indice disponible
                 # Tampoco si se esta haciendo algun split el taquero porque ni que tuviera
@@ -348,11 +357,15 @@ class PersonalTaqueria(threading.Thread):
                     * (time.time() - self.ordenes[str(headIndex)][3])
                 )
                 self.ordenes[str(headIndex)][1] = (base + tax)
-            logging.info("Taxer will sort")
-            self.sortOrders()
-            logging.info("Taxer has sorted")
+            # Ahora solo se hace al escojer un indice nuevo
+            # logging.info("Taxer will sort")
+            # self.sortOrders()
+            # logging.info("Taxer has sorted")
             if debug_state is True:
                 time.sleep(1.0)
+            # logging.info("Taxer will sort")
+            # self.sortOrders()
+            # logging.info("Taxer has sorted")
 
     def sortOrders(self):
         logging.info("Sorting start")
