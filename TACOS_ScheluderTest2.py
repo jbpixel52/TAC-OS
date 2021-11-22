@@ -12,6 +12,7 @@ import sys
 abcdario = list(string.ascii_uppercase)
 debug_state = True
 
+
 def getTime():
     LocalTime = datetime.datetime.now().strftime("%H:%M:%S")
     return LocalTime
@@ -34,14 +35,15 @@ class PersonalTaqueria(threading.Thread):
             target=self.starvingTaxer,
             args=()
         )
-        self.emojis=''
+        self.emojis = ''
         # Variables MUTEX
         self.Splitting = False
         self.Rescheduling = False
         self.Cooking = False
         # Esctructuras de datos
-        self.cuadernilloRecibidos = {} #Cuaderno con los jsons de entrada (se usará?)
-        self.cuadernilloSalidas = {} # Cuadrerno con los jsons de salida
+        # Cuaderno con los jsons de entrada (se usará?)
+        self.cuadernilloRecibidos = {}
+        self.cuadernilloSalidas = {}  # Cuadrerno con los jsons de salida
         self.ordenes = {}  # dict in mind per worker
         self.ordenesHeads = []  # lista con las cabezas de subordenenes
         # Variables
@@ -49,10 +51,12 @@ class PersonalTaqueria(threading.Thread):
         self.cookUnitDelta = 0.5  # Minimo para cocinar
         self.tacoCounter = 0
         self.orderCounter = 0
-        self.stackCounter = 0 #Antes conocido como tacoCounter (incorrectamente)
-        self.deltasPerTaco = 0 #Definida por el thread cooker, varia por stack
+        # Antes conocido como tacoCounter (incorrectamente)
+        self.stackCounter = 0
+        self.deltasPerTaco = 0  # Definida por el thread cooker, varia por stack
         self.constMagnitud = 40  # ya no es p90 lol, ni para 4 tacos con todo alcanzaba
-        self.constStarving = 0.005  # blah blah + [utis*const*tiempoatrasado], consultar desmos para demo
+        # blah blah + [utis*const*tiempoatrasado], consultar desmos para demo
+        self.constStarving = 0.005
         self.shortestOrderIndex = None  # Una vez inicia un stack no lo detiene
 
     def main(self):
@@ -64,22 +68,22 @@ class PersonalTaqueria(threading.Thread):
         self.StarvingTaxerThread.start()
 
     def taquitos_emojis(self):
-        print(f"ORDENES:",end='')
-        self.emojis=':taco: ' * len(self.ordenes)
+        print(f"ORDENES:", end='')
+        self.emojis = ':taco: ' * len(self.ordenes)
         print(emoji.emojize(self.emojis))
         self.emojis = ''
 
     def SplitOrder(self, orden):
         pedido = orden
         numSuborden = 0
-        #Seccionar en partes la orden (los indices de ['orden'])
+        # Seccionar en partes la orden (los indices de ['orden'])
         for subOrden in pedido['orden']:
-            #Costo UTIS empieza en 1 por la carne, igual para tiempo de cocinar
+            # Costo UTIS empieza en 1 por la carne, igual para tiempo de cocinar
             costoUTIs = 1
-            tiempoParaCocinar  = 1
+            tiempoParaCocinar = 1
             subSplitIndex = 0
             if(subOrden['type'] == 'taco'):
-                #Hacer un calculo del costo
+                # Hacer un calculo del costo
                 if('salsa' in subOrden['ingredients']):
                     costoUTIs += 2.66667
                     tiempoParaCocinar += 0.5
@@ -92,16 +96,16 @@ class PersonalTaqueria(threading.Thread):
                 if('cebolla' in subOrden['ingredients']):
                     costoUTIs += 2
                     tiempoParaCocinar += 0.5
-                #costo es costo por taco * cantidadtacos
-                #Costo individual servirá para la división de sstacks
+                # costo es costo por taco * cantidadtacos
+                # Costo individual servirá para la división de sstacks
                 costoUTIsIndividual = costoUTIs
                 tiempoCocinarIndividual = tiempoParaCocinar
                 costoUTIs = costoUTIs * subOrden['quantity']
                 tiempoParaCocinar = tiempoParaCocinar * subOrden['quantity']
-                
-                ## Fin del calculo del costo
+
+                # Fin del calculo del costo
                 if(costoUTIs < self.constMagnitud):
-                    #No dividir, solo 1 stack por esta suborden
+                    # No dividir, solo 1 stack por esta suborden
                     prioridad = ((costoUTIs**-1)*10)
                     self.ordenesHeads.append(self.stackCounter)
                     subSplitIndex = 0
@@ -116,37 +120,35 @@ class PersonalTaqueria(threading.Thread):
                         tiempoCocinarIndividual
                     ]
                     logging.info(
-                        f"Stack {self.stackCounter} has ben put in head")
+                        f"Stack {self.stackCounter} has ben put ahead")
                     subSplitIndex += 1
-                    self.stackCounter += 1  
-                    pass
+                    self.stackCounter += 1
                 else:
-                    #Dividir orden en partes (stacks)
-                    #Primero ver cuantos stacks puedo hacer
-                    #numStacks = costoUTIs // self.constMagnitud
+                    # Dividir orden en partes (stacks)
+                    # Primero ver cuantos stacks puedo hacer
                     # el tiempo para cocinar debe tomar en cuanta el numero de tacos
                     #  del stack en vez de la suborden si hubo particion
-                    tacosPorStack =  self.constMagnitud // costoUTIsIndividual
+                    tacosPorStack = self.constMagnitud // costoUTIsIndividual
                     numStacks = subOrden['quantity'] // tacosPorStack
                     tiempoParaCocinar = tiempoCocinarIndividual * tacosPorStack
-                    #calcular tacos sobrantes
-                    tacosSobrantes =  subOrden['quantity'] - (
+                    # calcular tacos sobrantes
+                    tacosSobrantes = subOrden['quantity'] - (
                         tacosPorStack * numStacks
                     )
                     residuoUTIS = costoUTIsIndividual * tacosSobrantes
                     if(numStacks == 1):
-                        #Pasar el taco sobrante al stack cola si solo
+                        # Pasar el taco sobrante al stack cola si solo
                         #  hay 1 stack y su cola,
                         tacosSobrantes = 1
-                        tacosPorStack -=1 
-                    #Como habia hecho en el test2 inician
+                        tacosPorStack -= 1
+                    # Como habia hecho en el test2 inician
                     # primero vá la cola
                     # Si hubo residuo hay una "cola" para evitar problemas
                     # primero metamos a la cola la cabeza y que sus subse
                     # -cuenters grandes stacks sean vecinos
                     # Consultar con Omar para sus apuntes de estas lineas
 
-                    ## Si hubo residuo ponemos cola, si no entonces no
+                    # Si hubo residuo ponemos cola, si no entonces no
                     if(residuoUTIS > 0):
                         prioridad = ((residuoUTIS**-1)*10)
                         self.ordenesHeads.append(self.stackCounter)
@@ -165,11 +167,11 @@ class PersonalTaqueria(threading.Thread):
                         logging.info(
                             f"Stack {self.stackCounter} has ben put in head")
                         subSplitIndex += 1
-                        self.stackCounter += 1  
+                        self.stackCounter += 1
                     else:
-                        #Si la orden esta partida perfectamente
+                        # Si la orden esta partida perfectamente
                         # en stacks iguales, le ponemos la cabeza aquí
-                        self.ordenesHeads.append(self.stackCounter)               
+                        self.ordenesHeads.append(self.stackCounter)
                     for numStack in range(int(numStacks)):
                         costoStack = tacosPorStack * costoUTIsIndividual
                         prioridad = ((costoStack**-1)*10)
@@ -186,9 +188,9 @@ class PersonalTaqueria(threading.Thread):
                         logging.info(
                             f"Stack {self.stackCounter} has ben put in head")
                         subSplitIndex += 1
-                        self.stackCounter += 1   
+                        self.stackCounter += 1
                         pass
-                    #Este bug ya no es necesario parchearlo así
+                    # Este bug ya no es necesario parchearlo así
                     # porque ahora estoy usando for y no while (creo..)
                     #self.stackCounter -=1
                     pass
@@ -197,7 +199,7 @@ class PersonalTaqueria(threading.Thread):
             numSuborden += 1
         self.orderCounter += 1
         pass
-        
+
     def recieveClientOrders(self):
         while(True):
             # if debug_state == True:
@@ -206,20 +208,20 @@ class PersonalTaqueria(threading.Thread):
             #             print(f"\nOrder:{key} || ",end='')
             #             for v_data in self.ordenes[key]:
             #                 if isinstance(v_data, float):
-            #                     print(f"{round(v_data,2)} ",end='') 
+            #                     print(f"{round(v_data,2)} ",end='')
             #                 else:
             #                     print(f"{v_data} ",end='')
 
-            #         
-            #         
+            #
+            #
             #         logging.info(f"Tacos hechos hasta esta hora: {self.tacoCounter}")
             #     except Exception as e:
-            #         logging.log(f"Hoy en Julio rompiendo la taqueria: {e}")     
+            #         logging.log(f"Hoy en Julio rompiendo la taqueria: {e}")
             # else:
             #     self.taquitos_emojis()
-            logging.info(self.ordenes)  
-            logging.info(f'HeadsofOrders:{self.ordenesHeads}')  
-            logging.info(f"Taco counter: {self.tacoCounter}")                  
+            logging.info(self.ordenes)
+            logging.info(f'HeadsofOrders:{self.ordenesHeads}')
+            logging.info(f"Taco counter: {self.tacoCounter}")
             if(self.queue.empty()):
                 pass
             else:
@@ -234,19 +236,20 @@ class PersonalTaqueria(threading.Thread):
                     self.Rescheduling = True
                     self.sortOrders()
                     self.Rescheduling = False
-                    #Esto va aqui intencionalmente porque en esa corta ventana sin MUTEX
-                    # se podria agarrar un indice incorrecto porque no se alcanzaba a 
+                    # Esto va aqui intencionalmente porque en esa corta ventana sin MUTEX
+                    # se podria agarrar un indice incorrecto porque no se alcanzaba a
                     # ordear las ordenes
                     self.Splitting = False
-                    logging.info("Finalizada la particion y organización de orden x")
+                    logging.info(
+                        "Finalizada la particion y organización de orden x")
                 except Exception as e:
                     logging.exception(f"Error -> {Exception}")
                     pass
-            #if debug_state is True:
+            # if debug_state is True:
             time.sleep(self.ordersPerSecondDelta)
 
     def pickShortestOrderIndex(self):
-        #Esperar a que no se este haciendo sort o split para conseguir
+        # Esperar a que no se este haciendo sort o split para conseguir
         #  un indice con el que trabajar
         if((not self.Splitting) and (not self.Rescheduling)):
             # Sí actualmente no trabaja en un stack, darle el indice
@@ -261,43 +264,45 @@ class PersonalTaqueria(threading.Thread):
             self.shortestOrderIndex = str(list(self.ordenes.keys())[0])
             logging.info(
                 f"Stack {self.shortestOrderIndex} assigned to work at")
-            #Varia por stack, cada x deltas se hace un taco y debemos contarlos
-            self.deltasPerTaco = self.ordenes[self.shortestOrderIndex][7]/self.cookUnitDelta
+            # Varia por stack, cada x deltas se hace un taco y debemos contarlos
+            self.deltasPerTaco = self.ordenes[self.shortestOrderIndex][7] / \
+                self.cookUnitDelta
         else:
             if(self.shortestOrderIndex == None):
-                logging.info("Taquero is splitting or scheduling, cannot pick  a new index")
+                logging.info(
+                    "Taquero is splitting or scheduling, cannot pick  a new index")
         pass
-
 
     def cook(self):
         while(True):
             if(bool(self.ordenes)):
-                #Escojer indice para trabajar si no se tiene uno
+                # Escojer indice para trabajar si no se tiene uno
                 if(self.shortestOrderIndex == None):
                     self.pickShortestOrderIndex()
                 else:
                     # Si no que siga trabajando con ese stack incluso si
                     # llega a haber un sort nuevo con orden más chica
                     pass
-                
+
                 # Cocinamos si no se esta recalendarizando por parte del taquero (el taxer no
                 #  activa el MUTEX intencionalmente) y si hay indice disponible
                 # Tampoco si se esta haciendo algun split el taquero porque ni que tuviera
                 #  4 brazos y dos cerebros lol
                 if(not self.Rescheduling and not self.Splitting and self.shortestOrderIndex != None):
-                    #Esta variable la vamos a usar?....
+                    # Esta variable la vamos a usar?....
                     self.Cooking = True
                     # La delta ahora se hace primero para evitar reporte
                     # prematura de completicion de stack
-                    #if debug_state is True:
+                    # if debug_state is True:
                     time.sleep(self.cookUnitDelta)
-                    ##Logica del taco counter
+                    # Logica del taco counter
                     self.deltasPerTaco -= 1
                     if(self.deltasPerTaco == 0):
                         self.tacoCounter += 1
-                        #Reiniciar el contador para que calcule las deltas de otro taco
+                        # Reiniciar el contador para que calcule las deltas de otro taco
                         #  del mismo tamano dentro del stack
-                        self.deltasPerTaco = self.ordenes[self.shortestOrderIndex][7]/self.cookUnitDelta
+                        self.deltasPerTaco = self.ordenes[self.shortestOrderIndex][7] / \
+                            self.cookUnitDelta
                     ###
                     # Si no estamos reordenando podemos cocinar
                     if self.ordenes[self.shortestOrderIndex][6] > 0:
@@ -337,7 +342,7 @@ class PersonalTaqueria(threading.Thread):
                             self.ordenes.pop(self.shortestOrderIndex, None)
                             logging.info(
                                 f"Stack {self.shortestOrderIndex} completed")
-                            
+
                             self.shortestOrderIndex = None
             else:
                 self.Cooking = False
@@ -357,15 +362,10 @@ class PersonalTaqueria(threading.Thread):
                     * (time.time() - self.ordenes[str(headIndex)][3])
                 )
                 self.ordenes[str(headIndex)][1] = (base + tax)
-            # Ahora solo se hace al escojer un indice nuevo
-            # logging.info("Taxer will sort")
-            # self.sortOrders()
-            # logging.info("Taxer has sorted")
+
             if debug_state is True:
                 time.sleep(1.0)
-            # logging.info("Taxer will sort")
-            # self.sortOrders()
-            # logging.info("Taxer has sorted")
+
 
     def sortOrders(self):
         logging.info("Sorting start")
@@ -401,8 +401,8 @@ class CocinaQuesadillero():
 
 
 if __name__ == "__main__":
-    #Solo poner estas ordenes mientras hacemos pruebas
-    ordersToTest = 4
+    # Solo poner estas ordenes mientras hacemos pruebas
+    ordersToTest = 3
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="a+",
                         format="%(asctime)-15s %(levelname)-8s %(message)s")
     print("Scheduler test 1")
@@ -417,4 +417,3 @@ if __name__ == "__main__":
                 orden = ListadoOrdenes[i]
                 Cocina.personal[0].queue.put(orden)
         time.sleep(9999)
-
