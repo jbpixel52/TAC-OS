@@ -1,5 +1,6 @@
 import multiprocessing
 from queue import Empty
+import queue
 import threading
 import logging
 import datetime
@@ -58,10 +59,30 @@ class PersonalTaqueria(threading.Thread):
         # blah blah + [utis*const*tiempoatrasado], consultar desmos para demo
         self.constStarving = 0.005
         self.shortestOrderIndex = None  # Una vez inicia un stack no lo detiene
+        # Variables de chaches de ingredientes, una es Maximo y otra es cuantas quedan
+        self.maxTortillas = 50
+        self.currentTortillas = 50
+        self.maxSalsa = 150
+        self.currentSalsa = 150
+        self.maxGuacamole = 100
+        self.currentGuacamole = 100
+        self.maxCilantro = 200
+        self.currentCilantro = 200
+        self.maxCebolla = 200
+        self.currentCebolla = 200
+        # Chalan asignado, lo asigna la clase cocina
+        self.chalanAsignado = None
+        # variables que especifican que ya se solicitó un rellenado de ingredientes
+        #  el chalan se encarga de devolvarlas a su valor false
+        self.requestedTortillas = False
+        self.requestedSalsa = False
+        self.requestedGuacamole = False
+        self.requestedCilantro = False
+        self.requestedCebolla = False
+        
 
     def main(self):
-        # Formato de prueba
-        #  Orden  = (tiempollegada,duracionOrden)
+        #Decir que se está en linea
         print(f"Taquero {self.name} en linea")
         self.OrderRecieverThread.start()
         self.CookerThread.start()
@@ -202,23 +223,6 @@ class PersonalTaqueria(threading.Thread):
 
     def recieveClientOrders(self):
         while(True):
-            # if debug_state == True:
-            #     try:
-            #         for key in self.ordenes:
-            #             print(f"\nOrder:{key} || ",end='')
-            #             for v_data in self.ordenes[key]:
-            #                 if isinstance(v_data, float):
-            #                     print(f"{round(v_data,2)} ",end='')
-            #                 else:
-            #                     print(f"{v_data} ",end='')
-
-            #
-            #
-            #         logging.info(f"Tacos hechos hasta esta hora: {self.tacoCounter}")
-            #     except Exception as e:
-            #         logging.log(f"Hoy en Julio rompiendo la taqueria: {e}")
-            # else:
-            #     self.taquitos_emojis()
             logging.info(self.ordenes)
             logging.info(f'HeadsofOrders:{self.ordenesHeads}')
             logging.info(f"Taco counter: {self.tacoCounter}")
@@ -303,6 +307,7 @@ class PersonalTaqueria(threading.Thread):
                         #  del mismo tamano dentro del stack
                         self.deltasPerTaco = self.ordenes[self.shortestOrderIndex][7] / \
                             self.cookUnitDelta
+                    # Lógica del consumo de ingredientes
                     ###
                     # Si no estamos reordenando podemos cocinar
                     if self.ordenes[self.shortestOrderIndex][6] > 0:
@@ -366,7 +371,6 @@ class PersonalTaqueria(threading.Thread):
             if debug_state is True:
                 time.sleep(1.0)
 
-
     def sortOrders(self):
         logging.info("Sorting start")
         # Primero sortear por desempate FCFS (se hace esto primero desempate y luego el bueno)
@@ -382,6 +386,52 @@ class PersonalTaqueria(threading.Thread):
         pass
 
 
+class ChalanTaquero(threading.Thread):
+    def __init__(self, _name):
+        # SuperConsteructor
+        super(ChalanTaquero, self).__init__(target=self.main, name=_name)
+        # Cada chalan tiene dos taqueros asignados, por lo tanto debe haber dos queues de solicitudes
+        #    si fuesemos a verlo de forma IRL, digamos que el taquero le escribio en un pizarron
+        #    al chalan la solicitud y este debe meterlo en su cabeza su tarea
+        self.queueA = multiprocessing.Queue()
+        self.queueB = multiprocessing.Queue()
+        # Aquí estan las solicitudes ya en la cabeza del chalan
+        self.queueCabeza = []
+        pass
+
+    def gotoStores(self, ingridientType):
+        pass
+
+    def main(self):
+        # Estar escuchando a los taqueros asignados a que le digan algo
+        while(True):
+            if(not self.isGoingtotheStoreAndRefilling):  
+                # Escucha ambas solicitudes y luego decide irse o no a la tienda y rellenar             
+                if(self.queueA.empty()):
+                    pass
+                else:
+                    #Si hubo una solicitud de rellenar que lo lea del pizarron y se lo meta en su cabeza
+                    self.queueCabeza.append(self.queueA.get_nowait())
+                pass
+                if(self.queueB.empty()):
+                    pass
+                else:
+                    #Si hubo una solicitud de rellenar que lo lea del pizarron y se lo meta en su cabeza
+                    self.queueCabeza.append(self.queueB.get_nowait())
+                pass   
+            # Decidir si tiene que rellenar algo en base a la solicitud más reciente
+            if(len(self.queueCabeza) > 0):
+                pass
+            else:
+                pass
+            # Hacer el relleno yendo a la tienda
+
+            # Decirle al taquero que ya le dio los ingredientes solicitados
+
+            # Volver a revisar los pizarrones
+        pass
+
+
 class CocinaTaqueros(multiprocessing.Process):
     def __init__(self, _name):
         # SuperConsteructor
@@ -393,6 +443,7 @@ class CocinaTaqueros(multiprocessing.Process):
 
     def IngresoPersonal(self, cocina):
         cocina.personal.append(PersonalTaqueria("Omar"))
+        cocina.personal[0].chalanAsignado = ChalanTaquero("Julio")
         cocina.personal[0].start()
 
 
