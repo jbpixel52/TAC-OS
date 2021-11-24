@@ -37,6 +37,7 @@ class PersonalTaqueria(threading.Thread):
             args=()
         )
         self.emojis = ''
+        self.ID = 0
         # Variables MUTEX
         self.Splitting = False
         self.Rescheduling = False
@@ -73,13 +74,9 @@ class PersonalTaqueria(threading.Thread):
         self.currentIngridientList = []
         # Chalan asignado, lo asigna la clase cocina
         self.chalanAsignado = None
-        # variables que especifican que ya se solicitó un rellenado de ingredientes
-        #  el chalan se encarga de devolvarlas a su valor false
-        self.requestedTortillas = False
-        self.requestedSalsa = False
-        self.requestedGuacamole = False
-        self.requestedCilantro = False
-        self.requestedCebolla = False
+        # Lista de variables que especifican que ya se solicitó un rellenado 
+        #  de ingredientes, el chalan se encarga de quitarlos de tal lista
+        self.listOfRquestedIngridients = []
         
     def main(self):
         #Decir que se está en linea
@@ -279,16 +276,29 @@ class PersonalTaqueria(threading.Thread):
             # if debug_state is True:
             time.sleep(self.ordersPerSecondDelta)
 
+    def requestIngridient(self,ingridient,quantity):
+        if(ingridient not in self.listOfRquestedIngridients):
+            #Si no está el ingrediente en la lista de solicitados, se pide
+            queueChalan = self.chalanAsignado.queueA
+            queueChalan.put((ingridient,quantity,self.ID))
+            #queueChalan.put_nowait((self,ingridient,quantity))
+            #self.chalanAsignado.queueCabeza.append("lol")
+            # Tambien se marca que se pidió, el chalan lo quita de tal listado
+            self.listOfRquestedIngridients.append(ingridient)
+        pass
+
     def spendIngredients(self):
         # Lógica del consumo de ingredientes
         # hastag no se me vino esta idea de aquí https://youtu.be/LwKtRnlongU?t=55
         if("to" in self.currentIngridientList):
-            #Revisar si en la orden en la lista ingredientes se usa un ingrediente
+            # Revisar si en la orden en la lista ingredientes se usa un ingrediente
             if(self.currentTortillas > 0):
-                #Si se tiene se gasta
+                # Si se tiene se gasta
                 self.currentTortillas -= 1
+                # Solicitar ingrediente 
+                self.requestIngridient("to",self.maxTortillas-self.currentTortillas)
             else:
-                #Si no se espera hasta que le llegue (temporal esta forma)
+                # Si no se espera hasta que le llegue (temporal esta forma)
                 logging.info("Taquero waits for tortillas :(")
                 while(self.currentTortillas == 0):
                     time.sleep(0.1)
@@ -299,14 +309,16 @@ class PersonalTaqueria(threading.Thread):
         elif("sa" in self.currentIngridientList):
             if(self.currentSalsa > 0):
                 self.currentSalsa -= 1
+                self.requestIngridient("sa",self.maxSalsa-self.currentSalsa)
             else:
                 while(self.currentSalsa == 0):
                     time.sleep(0.1)
                 self.currentSalsa -= 1
-            self.currentIngridientList.remove("sa")
+            self.currentIngridientList.remove("sa")     
         elif("gu" in self.currentIngridientList):
             if(self.currentGuacamole > 0):
                 self.currentGuacamole -= 1
+                self.requestIngridient("gu",self.maxGuacamole-self.currentGuacamole)
             else:
                 while(self.currentGuacamole == 0):
                     time.sleep(0.1)
@@ -315,6 +327,7 @@ class PersonalTaqueria(threading.Thread):
         elif("ci" in self.currentIngridientList):
             if(self.currentCilantro > 0):
                 self.currentCilantro -= 1
+                self.requestIngridient("ci",self.maxCilantro-self.currentCilantro)
             else:
                 while(self.currentCilantro == 0):
                     time.sleep(0.1)
@@ -323,12 +336,13 @@ class PersonalTaqueria(threading.Thread):
         elif("ce" in self.currentIngridientList):
             if(self.currentCebolla > 0):
                 self.currentCebolla -= 1
+                self.requestIngridient("ce",self.maxCebolla-self.currentCebolla)
             else:
                 while(self.currentCebolla == 0):
                     time.sleep(0.1)
                 self.currentCebolla -= 1
             self.currentIngridientList.remove("ce")
-
+            
     def pickShortestOrderIndex(self):
         # Esperar a que no se este haciendo sort o split para conseguir
         #  un indice con el que trabajar
@@ -481,19 +495,22 @@ class ChalanTaquero(threading.Thread):
         # Cada chalan tiene dos taqueros asignados, por lo tanto debe haber dos queues de solicitudes
         #    si fuesemos a verlo de forma IRL, digamos que el taquero le escribio en un pizarron
         #    al chalan la solicitud y este debe meterlo en su cabeza su tarea
+
         self.queueA = multiprocessing.Queue()
         self.queueB = multiprocessing.Queue()
         # Aquí estan las solicitudes ya en la cabeza del chalan
         self.queueCabeza = []
         pass
 
-    def gotoStores(self, ingridientType):
-        pass
-
     def main(self):
         print(f"Chalan {self.name} en linea")
         # Estar escuchando a los taqueros asignados a que le digan algo
         while(True):
+            # Variables para el relleno de ingredientes
+            timeToRefill = 0
+            quantityToRefill = 0
+            taqueroIDToRefill = 0
+            orderTypeToRefill = ""
             # Escucha ambas solicitudes y luego decide irse o no a la tienda y rellenar             
             if(self.queueA.empty()):
                 pass
@@ -509,14 +526,33 @@ class ChalanTaquero(threading.Thread):
             pass   
             # Decidir si tiene que rellenar algo en base a la solicitud más reciente
             if(len(self.queueCabeza) > 0):
+                quantityToRefill = self.queueCabeza[0][1]
+                taqueroIDToRefill = self.queueCabeza[0][2]
+                if(self.queueCabeza[0][0] == "to"):
+                    timeToRefill = 5
+                    orderTypeToRefill = "to"
+                    pass
                 pass
             else:
+                # Si no hay ordenes entonces que siga estando al tanto
                 pass
-            # Hacer el relleno yendo a la tienda
-
-            # Decirle al taquero que ya le dio los ingredientes solicitados
-
-            # Volver a revisar los pizarrones
+            
+            if(len(self.queueCabeza) > 0):
+                # Imprimir la lista de solicitudes si no está vacia
+                logging.info(self.queueCabeza)
+                # Hacer el relleno yendo a la tienda
+                logging.info(f"Chalan will go to the store for {orderTypeToRefill}")
+                time.sleep(timeToRefill)
+                if(orderTypeToRefill == "to"):
+                    Cocina.personal[taqueroIDToRefill].currentTortillas += quantityToRefill
+                    # Decirle al taquero que ya le dio los ingredientes solicitados
+                    Cocina.personal[taqueroIDToRefill].listOfRquestedIngridients.remove("to")
+                    logging.info(f"Chalan returned and has given {quantityToRefill} tortillas to taquero {taqueroIDToRefill}")
+                # Remover de su queue de cabeza esa tarea
+                self.queueCabeza.pop(0)
+                
+            # Volver a revisar los pizarrones, necesario ese sleep?
+            time.sleep(0.25)
         pass
 
 
@@ -530,9 +566,18 @@ class CocinaTaqueros(multiprocessing.Process):
         print("Cocina encendida")
 
     def IngresoPersonal(self, cocina):
+        """
+        [IDs de taqueros]
+            0 -> Adobaba
+            1 -> Asada y Suadero (1)
+            2 -> Asada y Suadero (2)
+            3 -> Tripa y cabeza 
+            4 -> El de las quesadillas
+        """
         cocina.personal.append(PersonalTaqueria("Omar"))
         cocina.personal[0].chalanAsignado = ChalanTaquero("Julio")
         cocina.personal[0].start()
+        cocina.personal[0].ID = 0
         cocina.personal[0].chalanAsignado.start()
 
 
@@ -556,4 +601,4 @@ if __name__ == "__main__":
             for i in range(ordersToTest):
                 orden = ListadoOrdenes[i]
                 Cocina.personal[0].queue.put(orden)
-        time.sleep(9999)
+        x = input()
