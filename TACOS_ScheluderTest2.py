@@ -403,32 +403,32 @@ class ChalanTaquero(threading.Thread):
         pass
 
     def main(self):
+        print(f"Chalan {self.name} en linea")
         # Estar escuchando a los taqueros asignados a que le digan algo
         while(True):
-            if(not self.isGoingtotheStoreAndRefilling):  
-                # Escucha ambas solicitudes y luego decide irse o no a la tienda y rellenar             
-                if(self.queueA.empty()):
-                    pass
-                else:
-                    #Si hubo una solicitud de rellenar que lo lea del pizarron y se lo meta en su cabeza
-                    self.queueCabeza.append(self.queueA.get_nowait())
-                pass
-                if(self.queueB.empty()):
-                    pass
-                else:
-                    #Si hubo una solicitud de rellenar que lo lea del pizarron y se lo meta en su cabeza
-                    self.queueCabeza.append(self.queueB.get_nowait())
-                pass   
-            # Decidir si tiene que rellenar algo en base a la solicitud más reciente
-            if(len(self.queueCabeza) > 0):
+            # Escucha ambas solicitudes y luego decide irse o no a la tienda y rellenar             
+            if(self.queueA.empty()):
                 pass
             else:
+                #Si hubo una solicitud de rellenar que lo lea del pizarron y se lo meta en su cabeza
+                self.queueCabeza.append(self.queueA.get_nowait())
+            pass
+            if(self.queueB.empty()):
                 pass
-            # Hacer el relleno yendo a la tienda
+            else:
+                #Si hubo una solicitud de rellenar que lo lea del pizarron y se lo meta en su cabeza
+                self.queueCabeza.append(self.queueB.get_nowait())
+            pass   
+        # Decidir si tiene que rellenar algo en base a la solicitud más reciente
+        if(len(self.queueCabeza) > 0):
+            pass
+        else:
+            pass
+        # Hacer el relleno yendo a la tienda
 
-            # Decirle al taquero que ya le dio los ingredientes solicitados
+        # Decirle al taquero que ya le dio los ingredientes solicitados
 
-            # Volver a revisar los pizarrones
+        # Volver a revisar los pizarrones
         pass
 
 
@@ -445,6 +445,7 @@ class CocinaTaqueros(multiprocessing.Process):
         cocina.personal.append(PersonalTaqueria("Omar"))
         cocina.personal[0].chalanAsignado = ChalanTaquero("Julio")
         cocina.personal[0].start()
+        cocina.personal[0].chalanAsignado.start()
 
 
 class CocinaQuesadillero():
