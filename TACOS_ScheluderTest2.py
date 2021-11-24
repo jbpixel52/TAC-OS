@@ -70,6 +70,7 @@ class PersonalTaqueria(threading.Thread):
         self.currentCilantro = 200
         self.maxCebolla = 200
         self.currentCebolla = 200
+        self.currentIngridientList = []
         # Chalan asignado, lo asigna la clase cocina
         self.chalanAsignado = None
         # variables que especifican que ya se solicitó un rellenado de ingredientes
@@ -80,7 +81,6 @@ class PersonalTaqueria(threading.Thread):
         self.requestedCilantro = False
         self.requestedCebolla = False
         
-
     def main(self):
         #Decir que se está en linea
         print(f"Taquero {self.name} en linea")
@@ -99,24 +99,45 @@ class PersonalTaqueria(threading.Thread):
         numSuborden = 0
         # Seccionar en partes la orden (los indices de ['orden'])
         for subOrden in pedido['orden']:
+            """[Explicación de la lista que conforma al stacl]
+                stack = [
+                    Costo UTIS del stack,
+                    Prioridad,
+                    TUPLA_ID -> (orden, suborden, stack),
+                    Tiempo de llegada desde epoch,
+                    Cantidad de tacos,
+                    Costo UTIS individual de cada taco,
+                    Tiempo para cocinar el stack,
+                    Tiempo individual para cocinar un taco,
+                    Tupla de ingredientes
+                ]
+            """
             # Costo UTIS empieza en 1 por la carne, igual para tiempo de cocinar
             costoUTIs = 1
             tiempoParaCocinar = 1
             subSplitIndex = 0
+            # Variables relacionadas con el uso de ingredientes
+            #  recordatorio: si una suborden usa x ingrediente, sus stacks tambien
+            #  y siempre se usan tortillas lol (to = *to*rtillas)
+            listaIngridients = ["","","","","to"]
             if(subOrden['type'] == 'taco'):
                 # Hacer un calculo del costo
                 if('salsa' in subOrden['ingredients']):
                     costoUTIs += 2.66667
                     tiempoParaCocinar += 0.5
+                    listaIngridients[0] = "sa"
                 if('guacamole' in subOrden['ingredients']):
                     costoUTIs += 3.5
                     tiempoParaCocinar += 0.5
+                    listaIngridients[1] = "gu"
                 if('cilantro' in subOrden['ingredients']):
                     costoUTIs += 2
                     tiempoParaCocinar += 0.5
+                    listaIngridients[2] = "ci"
                 if('cebolla' in subOrden['ingredients']):
                     costoUTIs += 2
                     tiempoParaCocinar += 0.5
+                    listaIngridients[3] = "ce"
                 # costo es costo por taco * cantidadtacos
                 # Costo individual servirá para la división de sstacks
                 costoUTIsIndividual = costoUTIs
@@ -138,7 +159,8 @@ class PersonalTaqueria(threading.Thread):
                         subOrden['quantity'],
                         costoUTIsIndividual,
                         tiempoParaCocinar,
-                        tiempoCocinarIndividual
+                        tiempoCocinarIndividual,
+                        listaIngridients
                     ]
                     logging.info(
                         f"Stack {self.stackCounter} has ben put ahead")
@@ -183,7 +205,8 @@ class PersonalTaqueria(threading.Thread):
                             tacosSobrantes,
                             costoUTIsIndividual,
                             residuoTiempo,
-                            tiempoCocinarIndividual
+                            tiempoCocinarIndividual,
+                            listaIngridients
                         ]
                         logging.info(
                             f"Stack {self.stackCounter} has ben put in head")
@@ -204,7 +227,8 @@ class PersonalTaqueria(threading.Thread):
                             tacosPorStack,
                             costoUTIsIndividual,
                             tiempoParaCocinar,
-                            tiempoCocinarIndividual
+                            tiempoCocinarIndividual,
+                            listaIngridients
                         ]
                         logging.info(
                             f"Stack {self.stackCounter} has ben put in head")
@@ -226,6 +250,9 @@ class PersonalTaqueria(threading.Thread):
             logging.info(self.ordenes)
             logging.info(f'HeadsofOrders:{self.ordenesHeads}')
             logging.info(f"Taco counter: {self.tacoCounter}")
+            logging.info(
+                f"Remaining ingridients:{self.currentSalsa}|{self.currentGuacamole}|{self.currentCilantro}|{self.currentCebolla}|{self.currentTortillas}"
+            )
             if(self.queue.empty()):
                 pass
             else:
@@ -252,6 +279,56 @@ class PersonalTaqueria(threading.Thread):
             # if debug_state is True:
             time.sleep(self.ordersPerSecondDelta)
 
+    def spendIngredients(self):
+        # Lógica del consumo de ingredientes
+        # hastag no se me vino esta idea de aquí https://youtu.be/LwKtRnlongU?t=55
+        if("to" in self.currentIngridientList):
+            #Revisar si en la orden en la lista ingredientes se usa un ingrediente
+            if(self.currentTortillas > 0):
+                #Si se tiene se gasta
+                self.currentTortillas -= 1
+            else:
+                #Si no se espera hasta que le llegue (temporal esta forma)
+                logging.info("Taquero waits for tortillas :(")
+                while(self.currentTortillas == 0):
+                    time.sleep(0.1)
+                #Una vez llega sigue trabajando
+                self.currentTortillas -= 1
+            #quitarlo de la lista al fin de todo modo
+            self.currentIngridientList.remove("to")
+        elif("sa" in self.currentIngridientList):
+            if(self.currentSalsa > 0):
+                self.currentSalsa -= 1
+            else:
+                while(self.currentSalsa == 0):
+                    time.sleep(0.1)
+                self.currentSalsa -= 1
+            self.currentIngridientList.remove("sa")
+        elif("gu" in self.currentIngridientList):
+            if(self.currentGuacamole > 0):
+                self.currentGuacamole -= 1
+            else:
+                while(self.currentGuacamole == 0):
+                    time.sleep(0.1)
+                self.currentGuacamole -= 1
+            self.currentIngridientList.remove("gu")
+        elif("ci" in self.currentIngridientList):
+            if(self.currentCilantro > 0):
+                self.currentCilantro -= 1
+            else:
+                while(self.currentCilantro == 0):
+                    time.sleep(0.1)
+                self.currentCilantro -= 1
+            self.currentIngridientList.remove("ci")
+        elif("ce" in self.currentIngridientList):
+            if(self.currentCebolla > 0):
+                self.currentCebolla -= 1
+            else:
+                while(self.currentCebolla == 0):
+                    time.sleep(0.1)
+                self.currentCebolla -= 1
+            self.currentIngridientList.remove("ce")
+
     def pickShortestOrderIndex(self):
         # Esperar a que no se este haciendo sort o split para conseguir
         #  un indice con el que trabajar
@@ -266,6 +343,10 @@ class PersonalTaqueria(threading.Thread):
             self.sortOrders()
             logging.info("Taquero has sorted and will pick")
             self.shortestOrderIndex = str(list(self.ordenes.keys())[0])
+            # Tambien que agarre la lista de ingredientes que se usa x cada taco
+            # Explicitamente debe hacerce por valor porque la original debe restaurarse
+            #  N tacos por cada stack [:] hace eso
+            self.currentIngridientList = self.ordenes[self.shortestOrderIndex][8][:]
             logging.info(
                 f"Stack {self.shortestOrderIndex} assigned to work at")
             # Varia por stack, cada x deltas se hace un taco y debemos contarlos
@@ -299,6 +380,8 @@ class PersonalTaqueria(threading.Thread):
                     # prematura de completicion de stack
                     # if debug_state is True:
                     time.sleep(self.cookUnitDelta)
+                    # Gastar ingredientes
+                    self.spendIngredients()
                     # Logica del taco counter
                     self.deltasPerTaco -= 1
                     if(self.deltasPerTaco == 0):
@@ -307,9 +390,14 @@ class PersonalTaqueria(threading.Thread):
                         #  del mismo tamano dentro del stack
                         self.deltasPerTaco = self.ordenes[self.shortestOrderIndex][7] / \
                             self.cookUnitDelta
-                    # Lógica del consumo de ingredientes
-                    ###
-                    # Si no estamos reordenando podemos cocinar
+                        # Tambien reiniciar el listado de ingredientes por cada taco
+                        #  porque cada taco puede usar 1 ingrediente de cada tipo, no un stack
+                        # Aquí tambien debe copiarse por valor y no referencia
+                        self.currentIngridientList = self.ordenes[self.shortestOrderIndex][8][:]
+
+
+                    # Lógica de restar tiempo, quitar cabezas y hacer pop
+                    # Ver si le queda tiempo por cocinar al stack, si no quitarlo
                     if self.ordenes[self.shortestOrderIndex][6] > 0:
                         self.ordenes[str(self.shortestOrderIndex)
                                      ][6] -= self.cookUnitDelta
@@ -419,16 +507,16 @@ class ChalanTaquero(threading.Thread):
                 #Si hubo una solicitud de rellenar que lo lea del pizarron y se lo meta en su cabeza
                 self.queueCabeza.append(self.queueB.get_nowait())
             pass   
-        # Decidir si tiene que rellenar algo en base a la solicitud más reciente
-        if(len(self.queueCabeza) > 0):
-            pass
-        else:
-            pass
-        # Hacer el relleno yendo a la tienda
+            # Decidir si tiene que rellenar algo en base a la solicitud más reciente
+            if(len(self.queueCabeza) > 0):
+                pass
+            else:
+                pass
+            # Hacer el relleno yendo a la tienda
 
-        # Decirle al taquero que ya le dio los ingredientes solicitados
+            # Decirle al taquero que ya le dio los ingredientes solicitados
 
-        # Volver a revisar los pizarrones
+            # Volver a revisar los pizarrones
         pass
 
 
@@ -454,7 +542,7 @@ class CocinaQuesadillero():
 
 if __name__ == "__main__":
     # Solo poner estas ordenes mientras hacemos pruebas
-    ordersToTest = 3
+    ordersToTest = 4
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="a+",
                         format="%(asctime)-15s %(levelname)-8s %(message)s")
     print("Scheduler test 1")
