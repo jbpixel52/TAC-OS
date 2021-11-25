@@ -591,7 +591,7 @@ class CocinaQuesadillero():
     pass
 
 
-def main():
+def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
     ordersToTest = 4
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="a+",
@@ -607,4 +607,4 @@ def main():
             for i in range(ordersToTest):
                 orden = ListadoOrdenes[i]
                 Cocina.personal[0].queue.put(orden)
-        x = input()
+        #x = input()
