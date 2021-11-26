@@ -26,7 +26,7 @@ debug_state = True
 programas = multiprocessing.Queue()
 
 
-def main():
+def main_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
     ordersToTest = 4
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="a+",
