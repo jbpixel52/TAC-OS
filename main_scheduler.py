@@ -551,9 +551,9 @@ class ChalanTaquero(threading.Thread):
                     f"Chalan will go to the store for {orderTypeToRefill}")
                 time.sleep(timeToRefill)
                 if(orderTypeToRefill == "to"):
-                    self.cocineroAsignadoA.personal[taqueroIDToRefill].currentTortillas += quantityToRefill
+                    self.cocineroAsignadoA.currentTortillas += quantityToRefill
                     # Decirle al taquero que ya le dio los ingredientes solicitados
-                    self.cocineroAsignadoA.personal[taqueroIDToRefill].listOfRquestedIngridients.remove(
+                    self.cocineroAsignadoA.listOfRquestedIngridients.remove(
                         "to")
                     logging.info(
                         f"Chalan returned and has given {quantityToRefill} tortillas to taquero {taqueroIDToRefill}")
