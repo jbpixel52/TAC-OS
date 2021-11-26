@@ -505,10 +505,18 @@ class ChalanTaquero(threading.Thread):
         self.queueCabeza = []
         # Apuntador a los cocineros asignados (A es el solo, B es de los paralelos)
         #  lo asigna la cocina
-        self.cocineroAsignadoA = None
+        self.cocinerosAsignados = [None, None]
         pass
 
     def main(self):
+        """
+        [IDs de taqueros]
+            0 -> Adobaba
+            1 -> Asada y Suadero (1)
+            2 -> Asada y Suadero (2)
+            3 -> Tripa y cabeza 
+            4 -> El de las quesadillas
+        """
         print(f"Chalan {self.name} en linea")
         # Estar escuchando a los taqueros asignados a que le digan algo
         while(True):
@@ -534,6 +542,11 @@ class ChalanTaquero(threading.Thread):
             if(len(self.queueCabeza) > 0):
                 quantityToRefill = self.queueCabeza[0][1]
                 taqueroIDToRefill = self.queueCabeza[0][2]
+                if(taqueroIDToRefill == 0 or taqueroIDToRefill == 3):
+                    #Si es 0 o 3 es de un chalan solitario
+                    taqueroIDToRefill = 0
+                else: #Si no es de los taqueros paralelos
+                    taqueroIDToRefill = 1
                 if(self.queueCabeza[0][0] == "to"):
                     timeToRefill = 5
                     orderTypeToRefill = "to"
@@ -551,9 +564,9 @@ class ChalanTaquero(threading.Thread):
                     f"Chalan will go to the store for {orderTypeToRefill}")
                 time.sleep(timeToRefill)
                 if(orderTypeToRefill == "to"):
-                    self.cocineroAsignadoA.currentTortillas += quantityToRefill
+                    self.cocinerosAsignados[taqueroIDToRefill].currentTortillas += quantityToRefill
                     # Decirle al taquero que ya le dio los ingredientes solicitados
-                    self.cocineroAsignadoA.listOfRquestedIngridients.remove(
+                    self.cocinerosAsignados[taqueroIDToRefill].listOfRquestedIngridients.remove(
                         "to")
                     logging.info(
                         f"Chalan returned and has given {quantityToRefill} tortillas to taquero {taqueroIDToRefill}")
@@ -585,7 +598,7 @@ class CocinaTaqueros(multiprocessing.Process):
         """
         cocina.personal.append(PersonalTaqueria("Omar"))
         cocina.personal[0].chalanAsignado = ChalanTaquero("Julio")
-        cocina.personal[0].chalanAsignado.cocineroAsignadoA = cocina.personal[0]
+        cocina.personal[0].chalanAsignado.cocinerosAsignados[0] = cocina.personal[0]
         cocina.personal[0].ID = 0
         cocina.personal[0].start()
         cocina.personal[0].chalanAsignado.start()
@@ -595,23 +608,25 @@ class CocinaQuesadillero():
     pass
 
 
-
-
-
 def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
     ordersToTest = 4
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="a+",
                         format="%(asctime)-15s %(levelname)-8s %(message)s")
-    print("Scheduler test 1")
+    print("Clients activating...")
     Cocina = CocinaTaqueros("Taqueros")
+    # Quesadilleria = CocinaQuesadillas("Quesadilleros")
+    # Quesadilleria.start() <- proximamente
     Cocina.start()
     Cocina.IngresoPersonal(Cocina)
 
+    # Aunque leyendo de archivo no es necesario ahora, necesitaremos un while true aquí O
+    #  crear otro THREAD (o proceso pero que se llame aquí en este .py) que se encarge de 
+    # mandar las ordenes por SQS. Y Julio, la cocina ya era un proceso .....
     while(True):
         with open("jsons.json") as OrdenesJSON:
             ListadoOrdenes = json.load(OrdenesJSON)
             for i in range(ordersToTest):
                 orden = ListadoOrdenes[i]
                 Cocina.personal[0].queue.put(orden)
-        #x = input()
+        time.sleep(9999)

@@ -1,9 +1,6 @@
-import datetime
-
 import dash
 from dash import dcc
 from dash import html
-import plotly
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 
@@ -36,4 +33,4 @@ class dashboard:
             return self.fig.show()
         
         #RUN DASH APP SERVER    
-        self.app.run_server(debug=True)
+        self.app.run_server(debug=False)
