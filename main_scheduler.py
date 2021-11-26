@@ -279,7 +279,11 @@ class PersonalTaqueria(threading.Thread):
     def requestIngridient(self, ingridient, quantity):
         if(ingridient not in self.listOfRquestedIngridients):
             # Si no está el ingrediente en la lista de solicitados, se pide
-            queueChalan = self.chalanAsignado.queueA
+            # Los taqueros individuales usan queueA, los paralelos queueB
+            if(self.ID == 0 or self.ID == 3):
+                queueChalan = self.chalanAsignado.queueA
+            else:
+                queueChalan = self.chalanAsignado.queueB
             queueChalan.put((ingridient, quantity, self.ID))
             # queueChalan.put_nowait((self,ingridient,quantity))
             # self.chalanAsignado.queueCabeza.append("lol")
@@ -508,6 +512,47 @@ class ChalanTaquero(threading.Thread):
         self.cocinerosAsignados = [None, None]
         pass
 
+    def gotoStoreAndRefill(self, orderTypeToRefill, taqueroIDToRefill, quantityToRefill, timeToRefill):
+        # Imprimir la lista de solicitudes si no está vacia
+        logging.info(self.queueCabeza)
+        # Hacer el relleno yendo a la tienda
+        logging.info(
+            f"Chalan will go to the store for {orderTypeToRefill}")
+        time.sleep(timeToRefill)
+        if(orderTypeToRefill == "to"):
+            self.cocinerosAsignados[taqueroIDToRefill].currentTortillas += quantityToRefill
+            # Decirle al taquero que ya le dio los ingredientes solicitados
+            self.cocinerosAsignados[taqueroIDToRefill].listOfRquestedIngridients.remove(
+                "to")
+            logging.info(
+                f"Chalan returned and has given {quantityToRefill} tortillas to taquero {taqueroIDToRefill}")
+        elif(orderTypeToRefill == "sa"):
+            self.cocinerosAsignados[taqueroIDToRefill].currentSalsa += quantityToRefill
+            self.cocinerosAsignados[taqueroIDToRefill].listOfRquestedIngridients.remove(
+                "sa")
+            logging.info(
+                f"Chalan returned and has given {quantityToRefill} salsas to taquero {taqueroIDToRefill}")
+        elif(orderTypeToRefill == "gu"):
+            self.cocinerosAsignados[taqueroIDToRefill].currentGuacamole += quantityToRefill
+            self.cocinerosAsignados[taqueroIDToRefill].listOfRquestedIngridients.remove(
+                "gu")
+            logging.info(
+                f"Chalan returned and has given {quantityToRefill} guacamoles to taquero {taqueroIDToRefill}")
+        elif(orderTypeToRefill == "ci"):
+            self.cocinerosAsignados[taqueroIDToRefill].currentCilantro += quantityToRefill
+            self.cocinerosAsignados[taqueroIDToRefill].listOfRquestedIngridients.remove(
+                "ci")
+            logging.info(
+                f"Chalan returned and has given {quantityToRefill} cilantros to taquero {taqueroIDToRefill}")
+        elif(orderTypeToRefill == "ce"):
+            self.cocinerosAsignados[taqueroIDToRefill].currentCebolla += quantityToRefill
+            self.cocinerosAsignados[taqueroIDToRefill].listOfRquestedIngridients.remove(
+                "ce")
+            logging.info(
+                f"Chalan returned and has given {quantityToRefill} cebollas to taquero {taqueroIDToRefill}")  
+        # Remover de la cabeza                  
+        self.queueCabeza.pop(0)
+        
     def main(self):
         """
         [IDs de taqueros]
@@ -547,31 +592,32 @@ class ChalanTaquero(threading.Thread):
                     taqueroIDToRefill = 0
                 else: #Si no es de los taqueros paralelos
                     taqueroIDToRefill = 1
+                # Definir el tiempo necesario para rellenar
                 if(self.queueCabeza[0][0] == "to"):
                     timeToRefill = 5
                     orderTypeToRefill = "to"
-                    pass
+                elif(self.queueCabeza[0][0] == "sa"):
+                    timeToRefill = 15
+                    orderTypeToRefill = "sa"
+                elif(self.queueCabeza[0][0] == "gu"):
+                    timeToRefill = 20
+                    orderTypeToRefill = "gu"
+                elif(self.queueCabeza[0][0] == "ci"):
+                    timeToRefill = 10
+                    orderTypeToRefill = "ci"
+                elif(self.queueCabeza[0][0] == "ce"):
+                    timeToRefill = 10
+                    orderTypeToRefill = "ce"
                 pass
             else:
                 # Si no hay ordenes entonces que siga estando al tanto
                 pass
 
             if(len(self.queueCabeza) > 0):
-                # Imprimir la lista de solicitudes si no está vacia
-                logging.info(self.queueCabeza)
-                # Hacer el relleno yendo a la tienda
-                logging.info(
-                    f"Chalan will go to the store for {orderTypeToRefill}")
-                time.sleep(timeToRefill)
-                if(orderTypeToRefill == "to"):
-                    self.cocinerosAsignados[taqueroIDToRefill].currentTortillas += quantityToRefill
-                    # Decirle al taquero que ya le dio los ingredientes solicitados
-                    self.cocinerosAsignados[taqueroIDToRefill].listOfRquestedIngridients.remove(
-                        "to")
-                    logging.info(
-                        f"Chalan returned and has given {quantityToRefill} tortillas to taquero {taqueroIDToRefill}")
-                # Remover de su queue de cabeza esa tarea
-                self.queueCabeza.pop(0)
+                # Si hay tareas, ir a la tienda y rellenar
+                self.gotoStoreAndRefill(
+                    orderTypeToRefill, taqueroIDToRefill, quantityToRefill, timeToRefill
+                )
 
             # Volver a revisar los pizarrones, necesario ese sleep?
             time.sleep(0.25)
