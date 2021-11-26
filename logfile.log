@@ -1,0 +1,191 @@
+2021-11-25 17:01:45,063 INFO     {}
+2021-11-25 17:01:45,064 INFO     HeadsofOrders:[]
+2021-11-25 17:01:45,064 INFO     Taco counter: 0
+2021-11-25 17:01:45,064 INFO     Remaining ingridients:150|100|200|200|50
+2021-11-25 17:01:45,114 INFO     Iniciando particion de orden x
+2021-11-25 17:01:45,154 INFO     Stack 0 has ben put in head
+2021-11-25 17:01:45,155 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:01:45,155 INFO     Stack 1 has ben put in head
+2021-11-25 17:01:45,155 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:01:45,156 INFO     Stack 2 has ben put in head
+2021-11-25 17:01:45,156 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:01:45,156 INFO     Stack 3 has ben put in head
+2021-11-25 17:01:45,157 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:01:45,157 INFO     Stack 4 has ben put in head
+2021-11-25 17:01:45,157 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:01:45,158 INFO     Stack 5 has ben put in head
+2021-11-25 17:01:45,158 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:01:45,158 INFO     Stack 6 has ben put in head
+2021-11-25 17:01:45,158 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:01:45,158 INFO     Stack 7 has ben put ahead
+2021-11-25 17:01:45,159 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:01:45,159 INFO     Sorting start
+2021-11-25 17:01:45,159 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:01:45,160 INFO     Sorting end
+2021-11-25 17:01:45,160 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:01:45,160 INFO     Finalizada la particion y organización de orden x
+2021-11-25 17:01:45,160 INFO     Taquero will sort to pick
+2021-11-25 17:01:45,161 INFO     Sorting start
+2021-11-25 17:01:45,161 INFO     Sorting end
+2021-11-25 17:01:45,161 INFO     Taquero has sorted and will pick
+2021-11-25 17:01:45,161 INFO     Stack 3 assigned to work at
+2021-11-25 17:01:45,832 INFO     [('to', 1, 0)]
+2021-11-25 17:01:45,832 INFO     Chalan will go to the store for to
+2021-11-25 17:01:47,724 INFO     Stack 3 completed
+2021-11-25 17:01:47,724 INFO     Taquero will sort to pick
+2021-11-25 17:01:47,724 INFO     Sorting start
+2021-11-25 17:01:47,724 INFO     Sorting end
+2021-11-25 17:01:47,725 INFO     Taquero has sorted and will pick
+2021-11-25 17:01:47,725 INFO     Stack 7 assigned to work at
+2021-11-25 17:01:48,162 INFO     {'7': [22.66668, 0.6693338019989874, (0, 2, 0), 1637888505.1584768, 4, 5.66667, 8.0, 2.0, ['sa', '', '', 'ce', 'to']], '0': [38.333349999999996, 0.6474838074475076, (0, 0, 0), 1637888505.1545134, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '1': [38.333349999999996, 0.26086945179589055, (0, 0, 1), 1637888505.155485, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '2': [38.333349999999996, 0.26086945179589055, (0, 0, 2), 1637888505.1564817, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '4': [38.333349999999996, 0.26086945179589055, (0, 1, 1), 1637888505.1574788, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '5': [38.333349999999996, 0.26086945179589055, (0, 1, 2), 1637888505.1584768, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '6': [38.333349999999996, 0.26086945179589055, (0, 1, 3), 1637888505.1584768, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']]}
+2021-11-25 17:01:48,162 INFO     HeadsofOrders:[0, 7, 4]
+2021-11-25 17:01:48,162 INFO     Taco counter: 1
+2021-11-25 17:01:48,162 INFO     Remaining ingridients:149|100|199|199|49
+2021-11-25 17:01:48,163 INFO     Iniciando particion de orden x
+2021-11-25 17:01:48,163 INFO     Stack 8 has ben put in head
+2021-11-25 17:01:48,163 INFO     Stack 9 has ben put in head
+2021-11-25 17:01:48,164 INFO     Stack 10 has ben put in head
+2021-11-25 17:01:48,164 INFO     Stack 11 has ben put in head
+2021-11-25 17:01:48,164 INFO     Stack 12 has ben put in head
+2021-11-25 17:01:48,164 INFO     Stack 13 has ben put in head
+2021-11-25 17:01:48,164 INFO     Stack 14 has ben put in head
+2021-11-25 17:01:48,165 INFO     Stack 15 has ben put in head
+2021-11-25 17:01:48,165 INFO     Sorting start
+2021-11-25 17:01:48,165 INFO     Sorting end
+2021-11-25 17:01:48,165 INFO     Finalizada la particion y organización de orden x
+2021-11-25 17:02:06,379 INFO     {}
+2021-11-25 17:02:06,380 INFO     HeadsofOrders:[]
+2021-11-25 17:02:06,380 INFO     Taco counter: 0
+2021-11-25 17:02:06,381 INFO     Remaining ingridients:150|100|200|200|50
+2021-11-25 17:02:06,467 INFO     Iniciando particion de orden x
+2021-11-25 17:02:06,467 INFO     Stack 0 has ben put in head
+2021-11-25 17:02:06,467 INFO     Stack 1 has ben put in head
+2021-11-25 17:02:06,468 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:02:06,468 INFO     Stack 2 has ben put in head
+2021-11-25 17:02:06,469 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:02:06,469 INFO     Stack 3 has ben put in head
+2021-11-25 17:02:06,469 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:02:06,470 INFO     Stack 4 has ben put in head
+2021-11-25 17:02:06,470 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:02:06,470 INFO     Stack 5 has ben put in head
+2021-11-25 17:02:06,470 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:02:06,471 INFO     Stack 6 has ben put in head
+2021-11-25 17:02:06,471 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:02:06,472 INFO     Stack 7 has ben put ahead
+2021-11-25 17:02:06,472 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:02:06,472 INFO     Sorting start
+2021-11-25 17:02:06,472 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:02:06,473 INFO     Sorting end
+2021-11-25 17:02:06,473 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:02:06,473 INFO     Finalizada la particion y organización de orden x
+2021-11-25 17:02:06,473 INFO     Taquero will sort to pick
+2021-11-25 17:02:06,474 INFO     Sorting start
+2021-11-25 17:02:06,474 INFO     Sorting end
+2021-11-25 17:02:06,474 INFO     Taquero has sorted and will pick
+2021-11-25 17:02:06,474 INFO     Stack 3 assigned to work at
+2021-11-25 17:02:07,160 INFO     [('to', 1, 0)]
+2021-11-25 17:02:07,160 INFO     Chalan will go to the store for to
+2021-11-25 17:02:09,015 INFO     Stack 3 completed
+2021-11-25 17:02:09,015 INFO     Taquero will sort to pick
+2021-11-25 17:02:09,015 INFO     Sorting start
+2021-11-25 17:02:09,015 INFO     Sorting end
+2021-11-25 17:02:09,015 INFO     Taquero has sorted and will pick
+2021-11-25 17:02:09,016 INFO     Stack 7 assigned to work at
+2021-11-25 17:02:09,498 INFO     {'7': [22.66668, 0.6685465513349916, (0, 2, 0), 1637888526.472661, 4, 5.66667, 8.0, 2.0, ['sa', '', '', 'ce', 'to']], '0': [38.333349999999996, 0.646348787492707, (0, 0, 0), 1637888526.467673, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '1': [38.333349999999996, 0.26086945179589055, (0, 0, 1), 1637888526.467673, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '2': [38.333349999999996, 0.26086945179589055, (0, 0, 2), 1637888526.468672, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '4': [38.333349999999996, 0.26086945179589055, (0, 1, 1), 1637888526.4706671, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '5': [38.333349999999996, 0.26086945179589055, (0, 1, 2), 1637888526.4706671, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '6': [38.333349999999996, 0.26086945179589055, (0, 1, 3), 1637888526.4716642, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']]}
+2021-11-25 17:02:09,498 INFO     HeadsofOrders:[0, 7, 4]
+2021-11-25 17:02:09,499 INFO     Taco counter: 1
+2021-11-25 17:02:09,499 INFO     Remaining ingridients:149|100|199|199|49
+2021-11-25 17:02:09,499 INFO     Iniciando particion de orden x
+2021-11-25 17:02:09,499 INFO     Stack 8 has ben put in head
+2021-11-25 17:02:09,499 INFO     Stack 9 has ben put in head
+2021-11-25 17:02:09,499 INFO     Stack 10 has ben put in head
+2021-11-25 17:02:09,500 INFO     Stack 11 has ben put in head
+2021-11-25 17:02:09,500 INFO     Stack 12 has ben put in head
+2021-11-25 17:02:09,500 INFO     Stack 13 has ben put in head
+2021-11-25 17:02:09,500 INFO     Stack 14 has ben put in head
+2021-11-25 17:02:09,500 INFO     Stack 15 has ben put in head
+2021-11-25 17:02:09,500 INFO     Sorting start
+2021-11-25 17:02:09,501 INFO     Sorting end
+2021-11-25 17:02:09,501 INFO     Finalizada la particion y organización de orden x
+2021-11-25 17:03:51,591 INFO     {}
+2021-11-25 17:03:51,592 INFO     HeadsofOrders:[]
+2021-11-25 17:03:51,593 INFO     Taco counter: 0
+2021-11-25 17:03:51,593 INFO     Remaining ingridients:150|100|200|200|50
+2021-11-25 17:03:51,656 INFO     Iniciando particion de orden x
+2021-11-25 17:03:51,656 INFO     Stack 0 has ben put in head
+2021-11-25 17:03:51,656 INFO     Stack 1 has ben put in head
+2021-11-25 17:03:51,657 INFO     Stack 2 has ben put in head
+2021-11-25 17:03:51,657 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:03:51,657 INFO     Stack 3 has ben put in head
+2021-11-25 17:03:51,657 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:03:51,658 INFO     Stack 4 has ben put in head
+2021-11-25 17:03:51,659 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:03:51,659 INFO     Stack 5 has ben put in head
+2021-11-25 17:03:51,659 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:03:51,660 INFO     Stack 6 has ben put in head
+2021-11-25 17:03:51,660 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:03:51,660 INFO     Stack 7 has ben put ahead
+2021-11-25 17:03:51,661 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:03:51,661 INFO     Sorting start
+2021-11-25 17:03:51,661 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:03:51,662 INFO     Sorting end
+2021-11-25 17:03:51,662 INFO     Taquero is splitting or scheduling, cannot pick  a new index
+2021-11-25 17:03:51,662 INFO     Finalizada la particion y organización de orden x
+2021-11-25 17:03:51,662 INFO     Taquero will sort to pick
+2021-11-25 17:03:51,662 INFO     Sorting start
+2021-11-25 17:03:51,663 INFO     Sorting end
+2021-11-25 17:03:51,663 INFO     Taquero has sorted and will pick
+2021-11-25 17:03:51,663 INFO     Stack 3 assigned to work at
+2021-11-25 17:03:52,374 INFO     [('to', 1, 0)]
+2021-11-25 17:03:52,374 INFO     Chalan will go to the store for to
+2021-11-25 17:03:54,189 INFO     Stack 3 completed
+2021-11-25 17:03:54,189 INFO     Taquero will sort to pick
+2021-11-25 17:03:54,189 INFO     Sorting start
+2021-11-25 17:03:54,189 INFO     Sorting end
+2021-11-25 17:03:54,190 INFO     Taquero has sorted and will pick
+2021-11-25 17:03:54,190 INFO     Stack 7 assigned to work at
+2021-11-25 17:03:54,770 INFO     {'7': [22.66668, 0.7937176775798704, (0, 2, 0), 1637888631.6602457, 4, 5.66667, 7.5, 2.0, ['sa', '', '', 'ce', 'to']], '0': [38.333349999999996, 0.8578436113500145, (0, 0, 0), 1637888631.6562574, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '1': [38.333349999999996, 0.26086945179589055, (0, 0, 1), 1637888631.6562574, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '2': [38.333349999999996, 0.26086945179589055, (0, 0, 2), 1637888631.6562574, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '4': [38.333349999999996, 0.8574614937535074, (0, 1, 1), 1637888631.658251, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '5': [38.333349999999996, 0.26086945179589055, (0, 1, 2), 1637888631.6592488, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']], '6': [38.333349999999996, 0.26086945179589055, (0, 1, 3), 1637888631.6602457, 5.0, 7.66667, 12.5, 2.5, ['sa', '', 'ci', 'ce', 'to']]}
+2021-11-25 17:03:54,770 INFO     HeadsofOrders:[0, 7, 4]
+2021-11-25 17:03:54,770 INFO     Taco counter: 1
+2021-11-25 17:03:54,770 INFO     Remaining ingridients:149|100|199|199|48
+2021-11-25 17:03:54,771 INFO     Iniciando particion de orden x
+2021-11-25 17:03:54,771 INFO     Stack 8 has ben put in head
+2021-11-25 17:03:54,771 INFO     Stack 9 has ben put in head
+2021-11-25 17:03:54,771 INFO     Stack 10 has ben put in head
+2021-11-25 17:03:54,771 INFO     Stack 11 has ben put in head
+2021-11-25 17:03:54,771 INFO     Stack 12 has ben put in head
+2021-11-25 17:03:54,771 INFO     Stack 13 has ben put in head
+2021-11-25 17:03:54,771 INFO     Stack 14 has ben put in head
+2021-11-25 17:03:54,772 INFO     Stack 15 has ben put in head
+2021-11-25 17:03:54,772 INFO     Sorting start
+2021-11-25 17:03:54,772 INFO     Sorting end
+2021-11-25 17:03:54,772 INFO     Finalizada la particion y organización de orden x
+2021-11-25 17:11:26,519 INFO     {}
+2021-11-25 17:11:26,521 INFO     HeadsofOrders:[]
+2021-11-25 17:11:26,521 INFO     Taco counter: 0
+2021-11-25 17:11:26,605 INFO     Remaining ingridients:150|100|200|200|50
+2021-11-25 17:11:26,763 INFO     Iniciando particion de orden x
+2021-11-25 17:11:26,763 INFO     Stack 0 has ben put in head
+2021-11-25 17:11:26,763 INFO     Stack 1 has ben put in head
+2021-11-25 17:11:26,763 INFO     Stack 2 has ben put in head
+2021-11-25 17:11:26,763 INFO     Stack 3 has ben put in head
+2021-11-25 17:11:26,763 INFO     Stack 4 has ben put in head
+2021-11-25 17:11:26,763 INFO     Stack 5 has ben put in head
+2021-11-25 17:11:26,764 INFO     Stack 6 has ben put in head
+2021-11-25 17:11:26,764 INFO     Stack 7 has ben put ahead
+2021-11-25 17:11:26,764 INFO     Sorting start
+2021-11-25 17:11:26,764 INFO     Sorting end
+2021-11-25 17:11:26,764 INFO     Finalizada la particion y organización de orden x
+2021-11-25 17:11:26,764 INFO     Taquero will sort to pick
+2021-11-25 17:11:26,765 INFO     Sorting start
+2021-11-25 17:11:26,765 INFO     Sorting end
+2021-11-25 17:11:26,765 INFO     Taquero has sorted and will pick
+2021-11-25 17:11:26,765 INFO     Stack 3 assigned to work at
+2021-11-25 17:11:27,386 INFO     [('to', 1, 0)]
+2021-11-25 17:11:27,386 INFO     Chalan will go to the store for to
+2021-11-25 17:11:29,316 INFO     Stack 3 completed
+2021-11-25 17:11:29,316 INFO     Taquero will sort to pick
+2021-11-25 17:11:29,316 INFO     Sorting start
+2021-11-25 17:11:29,316 INFO     Sorting end
+2021-11-25 17:11:29,316 INFO     Taquero has sorted and will pick
+2021-11-25 17:11:29,316 INFO     Stack 7 assigned to work at

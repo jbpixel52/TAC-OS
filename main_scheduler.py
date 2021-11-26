@@ -503,6 +503,9 @@ class ChalanTaquero(threading.Thread):
         self.queueB = multiprocessing.Queue()
         # Aquí estan las solicitudes ya en la cabeza del chalan
         self.queueCabeza = []
+        # Apuntador a los cocineros asignados (A es el solo, B es de los paralelos)
+        #  lo asigna la cocina
+        self.cocineroAsignadoA = None
         pass
 
     def main(self):
@@ -548,9 +551,9 @@ class ChalanTaquero(threading.Thread):
                     f"Chalan will go to the store for {orderTypeToRefill}")
                 time.sleep(timeToRefill)
                 if(orderTypeToRefill == "to"):
-                    Cocina.personal[taqueroIDToRefill].currentTortillas += quantityToRefill
+                    self.cocineroAsignadoA.personal[taqueroIDToRefill].currentTortillas += quantityToRefill
                     # Decirle al taquero que ya le dio los ingredientes solicitados
-                    Cocina.personal[taqueroIDToRefill].listOfRquestedIngridients.remove(
+                    self.cocineroAsignadoA.personal[taqueroIDToRefill].listOfRquestedIngridients.remove(
                         "to")
                     logging.info(
                         f"Chalan returned and has given {quantityToRefill} tortillas to taquero {taqueroIDToRefill}")
@@ -582,8 +585,9 @@ class CocinaTaqueros(multiprocessing.Process):
         """
         cocina.personal.append(PersonalTaqueria("Omar"))
         cocina.personal[0].chalanAsignado = ChalanTaquero("Julio")
-        cocina.personal[0].start()
+        cocina.personal[0].chalanAsignado.cocineroAsignadoA = cocina.personal[0]
         cocina.personal[0].ID = 0
+        cocina.personal[0].start()
         cocina.personal[0].chalanAsignado.start()
 
 

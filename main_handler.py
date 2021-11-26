@@ -49,7 +49,7 @@ def main():
     taqueria.start()
     
     dashboard = Process(target=dashboard_main.dashboard)
-    dashboard.start()
+    #dashboard.start()
 
 
 if __name__ == '__main__':
