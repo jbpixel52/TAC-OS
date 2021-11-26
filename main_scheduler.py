@@ -276,7 +276,7 @@ class PersonalTaqueria(threading.Thread):
             # if debug_state is True:
             time.sleep(self.ordersPerSecondDelta)
 
-    def requestIngridient(self, ingridient, quantity):
+    def requestIngridient(self, ingridient, quantity, priority):
         if(ingridient not in self.listOfRquestedIngridients):
             # Si no está el ingrediente en la lista de solicitados, se pide
             # Los taqueros individuales usan queueA, los paralelos queueB
@@ -284,7 +284,7 @@ class PersonalTaqueria(threading.Thread):
                 queueChalan = self.chalanAsignado.queueA
             else:
                 queueChalan = self.chalanAsignado.queueB
-            queueChalan.put((ingridient, quantity, self.ID))
+            queueChalan.put((ingridient, quantity, self.ID, priority))
             # queueChalan.put_nowait((self,ingridient,quantity))
             # self.chalanAsignado.queueCabeza.append("lol")
             # Tambien se marca que se pidió, el chalan lo quita de tal listado
@@ -301,7 +301,7 @@ class PersonalTaqueria(threading.Thread):
                 self.currentTortillas -= 1
                 # Solicitar ingrediente
                 self.requestIngridient(
-                    "to", self.maxTortillas-self.currentTortillas)
+                    "to", self.maxTortillas-self.currentTortillas, 1)
             else:
                 # Si no se espera hasta que le llegue (temporal esta forma)
                 logging.info("Taquero waits for tortillas :(")
@@ -314,7 +314,7 @@ class PersonalTaqueria(threading.Thread):
         elif("sa" in self.currentIngridientList):
             if(self.currentSalsa > 0):
                 self.currentSalsa -= 1
-                self.requestIngridient("sa", self.maxSalsa-self.currentSalsa)
+                self.requestIngridient("sa", self.maxSalsa-self.currentSalsa, 3)
             else:
                 while(self.currentSalsa == 0):
                     time.sleep(0.1)
@@ -324,7 +324,7 @@ class PersonalTaqueria(threading.Thread):
             if(self.currentGuacamole > 0):
                 self.currentGuacamole -= 1
                 self.requestIngridient(
-                    "gu", self.maxGuacamole-self.currentGuacamole)
+                    "gu", self.maxGuacamole-self.currentGuacamole, 2)
             else:
                 while(self.currentGuacamole == 0):
                     time.sleep(0.1)
@@ -334,7 +334,7 @@ class PersonalTaqueria(threading.Thread):
             if(self.currentCilantro > 0):
                 self.currentCilantro -= 1
                 self.requestIngridient(
-                    "ci", self.maxCilantro-self.currentCilantro)
+                    "ci", self.maxCilantro-self.currentCilantro, 4)
             else:
                 while(self.currentCilantro == 0):
                     time.sleep(0.1)
@@ -344,12 +344,31 @@ class PersonalTaqueria(threading.Thread):
             if(self.currentCebolla > 0):
                 self.currentCebolla -= 1
                 self.requestIngridient(
-                    "ce", self.maxCebolla-self.currentCebolla)
+                    "ce", self.maxCebolla-self.currentCebolla, 4)
             else:
                 while(self.currentCebolla == 0):
                     time.sleep(0.1)
                 self.currentCebolla -= 1
             self.currentIngridientList.remove("ce")
+
+    def checkIngridients(self):
+        # Esto intenta aliviar el error de diseño en que no se piden ingredientes
+        #  faltantes porque no se usan (y solo se hacia la llamada de requestIngridients() en el uso)
+        if((self.currentSalsa != self.maxSalsa) and ("sa" not in self.listOfRquestedIngridients)):
+            self.requestIngridient("sa",self.maxSalsa - self.currentSalsa, 3)
+            logging.info("La idea corre Omar a")
+        if((self.currentGuacamole != self.maxGuacamole) and ("gu" not in self.listOfRquestedIngridients)):
+            self.requestIngridient("gu",self.maxGuacamole - self.currentGuacamole, 2)
+            logging.info("La idea corre Omar b")
+        if((self.currentCebolla != self.maxCebolla) and ("ce" not in self.listOfRquestedIngridients)):
+            self.requestIngridient("ce",self.maxCebolla - self.currentCebolla, 4)
+            logging.info("La idea corre Omar c")
+        if((self.currentCilantro != self.maxCilantro) and ("ci" not in self.listOfRquestedIngridients)):
+            self.requestIngridient("ci",self.maxCilantro - self.currentCilantro, 4)
+            logging.info("La idea corre Omar d")
+        if((self.currentCilantro != self.maxTortillas) and ("to" not in self.listOfRquestedIngridients)):
+            self.requestIngridient("to",self.maxTortillas - self.currentTortillas, 1)
+            logging.info("La idea corre Omar e")
 
     def pickShortestOrderIndex(self):
         # Esperar a que no se este haciendo sort o split para conseguir
@@ -404,6 +423,8 @@ class PersonalTaqueria(threading.Thread):
                     time.sleep(self.cookUnitDelta)
                     # Gastar ingredientes
                     self.spendIngredients()
+                    # Checar si faltan ingredientes incluso si no se usaron
+                    self.checkIngridients()
                     # Logica del taco counter
                     self.deltasPerTaco -= 1
                     if(self.deltasPerTaco == 0):
@@ -506,15 +527,31 @@ class ChalanTaquero(threading.Thread):
         self.queueA = multiprocessing.Queue()
         self.queueB = multiprocessing.Queue()
         # Aquí estan las solicitudes ya en la cabeza del chalan
-        self.queueCabeza = []
+        self.priorityQueueCabeza = []
         # Apuntador a los cocineros asignados (A es el solo, B es de los paralelos)
         #  lo asigna la cocina
         self.cocinerosAsignados = [None, None]
         pass
 
+    def sortRequests(self):
+        """
+            [Tabla de prioridades]
+            1)Tortillas (se gastan siempre y rápido :c )
+            2)Guacamole
+            3)Salsa
+            4)Cebolla y cilantro 
+        """
+        self.priorityQueueCabeza = sorted(
+            self.priorityQueueCabeza,
+            key=lambda x: x[3],
+        )
+        x = 7
+        y = 8
+        pass
+
     def gotoStoreAndRefill(self, orderTypeToRefill, taqueroIDToRefill, quantityToRefill, timeToRefill):
         # Imprimir la lista de solicitudes si no está vacia
-        logging.info(self.queueCabeza)
+        logging.info(self.priorityQueueCabeza)
         # Hacer el relleno yendo a la tienda
         logging.info(
             f"Chalan will go to the store for {orderTypeToRefill}")
@@ -551,7 +588,7 @@ class ChalanTaquero(threading.Thread):
             logging.info(
                 f"Chalan returned and has given {quantityToRefill} cebollas to taquero {taqueroIDToRefill}")  
         # Remover de la cabeza                  
-        self.queueCabeza.pop(0)
+        self.priorityQueueCabeza.pop(0)
         
     def main(self):
         """
@@ -574,38 +611,41 @@ class ChalanTaquero(threading.Thread):
             if(self.queueA.empty()):
                 pass
             else:
-                # Si hubo una solicitud de rellenar que lo lea del pizarron y se lo meta en su cabeza
-                self.queueCabeza.append(self.queueA.get_nowait())
+                # Si hubo una solicitud de rellenar que lo lea del pizarron, que se lo meta en su cabeza
+                while(not self.queueA.empty()):
+                    self.priorityQueueCabeza.append(self.queueA.get_nowait())
             pass
             if(self.queueB.empty()):
                 pass
             else:
-                # Si hubo una solicitud de rellenar que lo lea del pizarron y se lo meta en su cabeza
-                self.queueCabeza.append(self.queueB.get_nowait())
+                while(not self.queueB.empty()):
+                    self.priorityQueueCabeza.append(self.queueB.get_nowait())
             pass
             # Decidir si tiene que rellenar algo en base a la solicitud más reciente
-            if(len(self.queueCabeza) > 0):
-                quantityToRefill = self.queueCabeza[0][1]
-                taqueroIDToRefill = self.queueCabeza[0][2]
+            if(len(self.priorityQueueCabeza) > 0):
+                # But first, ordenar la prioridad
+                self.sortRequests()
+                quantityToRefill = self.priorityQueueCabeza[0][1]
+                taqueroIDToRefill = self.priorityQueueCabeza[0][2]
                 if(taqueroIDToRefill == 0 or taqueroIDToRefill == 3):
                     #Si es 0 o 3 es de un chalan solitario
                     taqueroIDToRefill = 0
                 else: #Si no es de los taqueros paralelos
                     taqueroIDToRefill = 1
                 # Definir el tiempo necesario para rellenar
-                if(self.queueCabeza[0][0] == "to"):
+                if(self.priorityQueueCabeza[0][0] == "to"):
                     timeToRefill = 5
                     orderTypeToRefill = "to"
-                elif(self.queueCabeza[0][0] == "sa"):
+                elif(self.priorityQueueCabeza[0][0] == "sa"):
                     timeToRefill = 15
                     orderTypeToRefill = "sa"
-                elif(self.queueCabeza[0][0] == "gu"):
+                elif(self.priorityQueueCabeza[0][0] == "gu"):
                     timeToRefill = 20
                     orderTypeToRefill = "gu"
-                elif(self.queueCabeza[0][0] == "ci"):
+                elif(self.priorityQueueCabeza[0][0] == "ci"):
                     timeToRefill = 10
                     orderTypeToRefill = "ci"
-                elif(self.queueCabeza[0][0] == "ce"):
+                elif(self.priorityQueueCabeza[0][0] == "ce"):
                     timeToRefill = 10
                     orderTypeToRefill = "ce"
                 pass
@@ -613,7 +653,7 @@ class ChalanTaquero(threading.Thread):
                 # Si no hay ordenes entonces que siga estando al tanto
                 pass
 
-            if(len(self.queueCabeza) > 0):
+            if(len(self.priorityQueueCabeza) > 0):
                 # Si hay tareas, ir a la tienda y rellenar
                 self.gotoStoreAndRefill(
                     orderTypeToRefill, taqueroIDToRefill, quantityToRefill, timeToRefill
