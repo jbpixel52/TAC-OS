@@ -46,6 +46,7 @@ programas = multiprocessing.Queue()
 
 def main():
 <<<<<<< HEAD
+<<<<<<< HEAD
     # Este queue contiene jsons con datos acerca de la cocina
     overseerBridge = Queue()
     dashboard = dashboard_main.dashboard("Dashboard", overseerBridge)
@@ -54,6 +55,13 @@ def main():
     #Luego de arrancar el dashboard inica la taqueria
     print("Preparing to boot...")
     open_taqueria(overseerBridge)
+=======
+    taqueria = Process(target=open_taqueria)
+    taqueria.start()
+    
+    dashboard = Process(target=dashboard_main.dashboard)
+    #dashboard.start()
+>>>>>>> parent of 6775375 (Cocina runs again)
 =======
     taqueria = Process(target=open_taqueria)
     taqueria.start()

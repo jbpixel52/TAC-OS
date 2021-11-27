@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 2021-11-26 14:54:08,188 INFO     {}
 2021-11-26 14:54:08,189 INFO     HeadsofOrders:[]
 2021-11-26 14:54:08,189 INFO     Taco counter: 0
@@ -440,5 +441,7 @@
 2021-11-26 15:07:19,117 INFO     Sorting start
 2021-11-26 15:07:19,122 INFO     Sorting end
 2021-11-26 15:07:19,123 INFO     Finalizada la particion y organización de orden x
+=======
+>>>>>>> parent of 6775375 (Cocina runs again)
 =======
 >>>>>>> parent of 6775375 (Cocina runs again)

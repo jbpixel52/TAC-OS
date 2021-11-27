@@ -578,6 +578,7 @@ class ChalanTaquero(threading.Thread):
         self.cocineroAsignadoA = None
         pass
 
+<<<<<<< HEAD
     def sortRequests(self):
         """
             [Tabla de prioridades]
@@ -630,6 +631,8 @@ class ChalanTaquero(threading.Thread):
         # Remover de la cabeza                  
         self.priorityQueueCabeza.pop(0)
         
+=======
+>>>>>>> parent of 6775375 (Cocina runs again)
     def main(self):
         print(f"Chalan {self.name} en linea")
         # Estar escuchando a los taqueros asignados a que le digan algo
@@ -655,6 +658,7 @@ class ChalanTaquero(threading.Thread):
             pass
             # Decidir si tiene que rellenar algo en base a la solicitud más reciente
 <<<<<<< HEAD
+<<<<<<< HEAD
             if(len(self.priorityQueueCabeza) > 0):
                 # But first, ordenar la prioridad
                 self.sortRequests()
@@ -668,6 +672,8 @@ class ChalanTaquero(threading.Thread):
                 # Definir el tiempo necesario para rellenar
                 if(self.priorityQueueCabeza[0][0] == "to"):
 =======
+=======
+>>>>>>> parent of 6775375 (Cocina runs again)
             if(len(self.queueCabeza) > 0):
                 quantityToRefill = self.queueCabeza[0][1]
                 taqueroIDToRefill = self.queueCabeza[0][2]
@@ -777,8 +783,11 @@ class CocinaQuesadillero():
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 def open_taqueria(overseerBridge):
 =======
+=======
+>>>>>>> parent of 6775375 (Cocina runs again)
 
 
 
