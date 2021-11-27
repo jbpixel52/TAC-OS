@@ -1,13 +1,33 @@
+import logging
+import multiprocessing
+import threading
 import dash
 from dash import dcc
 from dash import html
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 
-class dashboard:
-    def __init__(self):
+class dashboard(multiprocessing.Process):
+    def __init__(self, _name, Bridge):
+        super(dashboard, self).__init__(target=self.main, name=_name)
+        self.commsChannel = Bridge
+        self.recieverThread = threading.Thread(
+            target = self.recieverFunction,
+            args = ()
+        )
+        pass
+
+    def recieverFunction(self):
+        while(True):
+            print(self.commsChannel.get())
+        pass
+
+    def main(self):
         self.external_stylesheets = [
             'https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+        if(self.commsChannel):
+            self.recieverThread.start()
 
         self.app = dash.Dash(
             __name__, external_stylesheets=self.external_stylesheets)

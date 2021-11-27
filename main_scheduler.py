@@ -710,11 +710,29 @@ class CocinaTaqueros(multiprocessing.Process):
         # SuperConsteructor
         super(CocinaTaqueros, self).__init__(target=self.main, name=_name)
         self.personal = []
+        self.overseerBridge = None
+        self.commsBridge = threading.Thread(
+            target=self.overseerFunction,
+            args=()
+        )
+        self.commsDelta = 0.5 #segundos hace un refresh de envio de datos
+
+    def overseerFunction(self):
+        print("I can see the kitchen because i Am the kitchen")
+        while(True):
+            print(self.personal)
+            if(self.overseerBridge):
+                self.overseerBridge.put("wah")
+                pass
+            time.sleep(self.commsDelta)
+        pass
 
     def main(self):
         print("Cocina encendida")
+        print("Puente hacia el dashboard abierto")
+        
 
-    def IngresoPersonal(self, cocina):
+    def IngresoPersonal(self, cocina, overseerBridge):
         """
         [IDs de taqueros]
             0 -> Adobaba
@@ -723,19 +741,24 @@ class CocinaTaqueros(multiprocessing.Process):
             3 -> Tripa y cabeza 
             4 -> El de las quesadillas
         """
+        # Aviso: la cocina no puede hacer esto en primer persona
+        # (o sea con self), si se hace no pasa nada o pasan comportamientos 
+        #  no deseados para Omar
         cocina.personal.append(PersonalTaqueria("Omar"))
         cocina.personal[0].chalanAsignado = ChalanTaquero("Julio")
         cocina.personal[0].chalanAsignado.cocinerosAsignados[0] = cocina.personal[0]
         cocina.personal[0].ID = 0
         cocina.personal[0].start()
         cocina.personal[0].chalanAsignado.start()
+        cocina.commsBridge.start()
+        cocina.overseerBridge = overseerBridge
 
 
 class CocinaQuesadillero():
     pass
 
 
-def open_taqueria():
+def open_taqueria(overseerBridge):
     # Solo poner estas ordenes mientras hacemos pruebas
     ordersToTest = 7
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="a+",
@@ -745,7 +768,7 @@ def open_taqueria():
     # Quesadilleria = CocinaQuesadillas("Quesadilleros")
     # Quesadilleria.start() <- proximamente
     Cocina.start()
-    Cocina.IngresoPersonal(Cocina)
+    Cocina.IngresoPersonal(Cocina, overseerBridge)
 
     # Aunque leyendo de archivo no es necesario ahora, necesitaremos un while true aquí O
     #  crear otro THREAD (o proceso pero que se llame aquí en este .py) que se encarge de 
