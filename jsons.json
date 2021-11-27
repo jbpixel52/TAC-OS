@@ -7,7 +7,7 @@
             {
                 "part_id": "0-0",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
                 "quantity": 15,
                 "ingredients": [
@@ -19,7 +19,7 @@
             {
                 "part_id": "0-1",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
                 "quantity": 16,
                 "ingredients": [
@@ -31,7 +31,7 @@
             {
                 "part_id": "0-2",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
                 "quantity": 4,
                 "ingredients": [
@@ -49,7 +49,7 @@
             {
                 "part_id": "1-0",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
                 "quantity": 31,
                 "ingredients": [
@@ -68,7 +68,7 @@
             {
                 "part_id": "2-0",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
                 "quantity": 20,
                 "ingredients": [
@@ -79,7 +79,7 @@
             { 
                 "part_id": "2-1",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
                 "quantity": 8,
                 "ingredients": [
@@ -96,7 +96,7 @@
             {
                 "part_id": "3-0",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
                 "quantity": 10,
                 "ingredients": [
@@ -114,10 +114,11 @@
             {
                 "part_id": "4-0",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "suadero",
                 "status": "open",
                 "quantity": 6,
                 "ingredients": [
+                    "salsa",
                     "cilantro"
                 ]
             }
@@ -131,9 +132,9 @@
             {
                 "part_id": "5-0",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
-                "quantity": 25,
+                "quantity": 5,
                 "ingredients": []
             }
         ]
@@ -146,9 +147,9 @@
             {
                 "part_id": "6-0",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
-                "quantity": 42,
+                "quantity": 16,
                 "ingredients": [
                     "salsa",
                     "cilantro",
@@ -157,12 +158,14 @@
             },
             {
                 "part_id": "6-1",
-                "type": "taco",
+                "type": "quesadilla",
                 "meat": "adobada",
                 "status": "open",
-                "quantity": 80,
+                "quantity": 3,
                 "ingredients": [
-                    "guacamole"
+                    "salsa",
+                    "cilantro",
+                    "cebolla"
                 ]
             }
         ]
@@ -175,7 +178,7 @@
             {
                 "part_id": "7-0",
                 "type": "quesadilla",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
                 "quantity": 2,
                 "ingredients": [
@@ -212,7 +215,7 @@
             {
                 "part_id": "9-0",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
                 "quantity": 15,
                 "ingredients": []

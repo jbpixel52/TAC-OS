@@ -1,5 +1,5 @@
 import multiprocessing
-from queue import Empty, PriorityQueue
+from queue import Empty
 import queue
 import threading
 import logging
@@ -72,13 +72,6 @@ class PersonalTaqueria(threading.Thread):
         self.maxCebolla = 200
         self.currentCebolla = 200
         self.currentIngridientList = []
-        # Variables relacionadas con el request de ingredientes
-        self.thresholdOfCilantroAndCebollaRequest = 0.70
-        self.thresholdOfSalsaRequest = 0.65
-        self.thresholdOfGuacamoleRequest = 0.80
-        self.tortillaRequestBoost = 0.25
-        # Para razones de comparativa de estancamiento, existe ingredientes infinitos
-        self.infiniteIngridients = False
         # Chalan asignado, lo asigna la clase cocina
         self.chalanAsignado = None
         # Lista de variables que especifican que ya se solicitó un rellenado
@@ -291,129 +284,91 @@ class PersonalTaqueria(threading.Thread):
                 queueChalan = self.chalanAsignado.queueA
             else:
                 queueChalan = self.chalanAsignado.queueB
-            # Chechar si es tortilla para darle el boost de prioridad
-            if(ingridient == "to"):
-                priority += self.tortillaRequestBoost
-            # Cebolla y cilantro o nunca se rellenaban o lo hacian demasiado
-            #  esto termina aqui y ahora de una vez por todas
-            if(ingridient == "ce" or ingridient == "ci" or ingridient == "sa"):
-                if((ingridient == "ce") and self.currentCebolla/self.maxCebolla \
-                    <= self.thresholdOfCilantroAndCebollaRequest):
-                    self.listOfRquestedIngridients.append(ingridient)
-                    queueChalan.put((ingridient, quantity, self.ID, priority))
-                    pass
-                elif((ingridient == "ci") and self.currentCilantro/self.maxCilantro \
-                    <= self.thresholdOfCilantroAndCebollaRequest):
-                    self.listOfRquestedIngridients.append(ingridient)
-                    queueChalan.put((ingridient, quantity, self.ID, priority))
-                    pass
-                elif((ingridient == "sa") and self.currentSalsa/self.maxSalsa \
-                    <= self.thresholdOfSalsaRequest):
-                    self.listOfRquestedIngridients.append(ingridient)
-                    queueChalan.put((ingridient, quantity, self.ID, priority))
-                    pass
-                elif((ingridient == "gu") and self.currentGuacamole/self.maxGuacamole \
-                    <= self.thresholdOfGuacamoleRequest):
-                    self.listOfRquestedIngridients.append(ingridient)
-                    queueChalan.put((ingridient, quantity, self.ID, priority))
-                    pass
-            else:
-                queueChalan.put((ingridient, quantity, self.ID, priority))
-                self.listOfRquestedIngridients.append(ingridient)
+            queueChalan.put((ingridient, quantity, self.ID, priority))
             # queueChalan.put_nowait((self,ingridient,quantity))
             # self.chalanAsignado.queueCabeza.append("lol")
             # Tambien se marca que se pidió, el chalan lo quita de tal listado
-            #self.listOfRquestedIngridients.append(ingridient)
+            self.listOfRquestedIngridients.append(ingridient)
         pass
 
     def spendIngredients(self):
         # Lógica del consumo de ingredientes
         # hastag no se me vino esta idea de aquí https://youtu.be/LwKtRnlongU?t=55
-        if(not self.infiniteIngridients):
-            if("to" in self.currentIngridientList):
-                # Revisar si en la orden en la lista ingredientes se usa un ingrediente
-                if(self.currentTortillas > 0):
-                    # Si se tiene se gasta
-                    self.currentTortillas -= 1
-                    # Solicitar ingrediente
-                    self.requestIngridient(
-                        "to", self.maxTortillas-self.currentTortillas,
-                        self.currentTortillas/self.maxTortillas)
-                else:
-                    # Si no se espera hasta que le llegue (temporal esta forma)
-                    logging.info("Taquero waits for tortillas :(")
-                    while(self.currentTortillas == 0):
-                        time.sleep(0.1)
-                    # Una vez llega sigue trabajando
-                    self.currentTortillas -= 1
-                # quitarlo de la lista al fin de todo modo
-                self.currentIngridientList.remove("to")
-            elif("sa" in self.currentIngridientList):
-                if(self.currentSalsa > 0):
-                    self.currentSalsa -= 1
-                    self.requestIngridient("sa", self.maxSalsa-self.currentSalsa, 
-                    self.currentSalsa/self.maxSalsa)
-                else:
-                    logging.info("Taquero waits for salsas :(")
-                    while(self.currentSalsa == 0):
-                        time.sleep(0.1)
-                    self.currentSalsa -= 1
-                self.currentIngridientList.remove("sa")
-            elif("gu" in self.currentIngridientList):
-                if(self.currentGuacamole > 0):
-                    self.currentGuacamole -= 1
-                    self.requestIngridient(
-                        "gu", self.maxGuacamole-self.currentGuacamole,
-                        self.currentGuacamole/self.maxGuacamole)
-                else:
-                    logging.info("Taquero waits for guacamoles")
-                    while(self.currentGuacamole == 0):
-                        time.sleep(0.1)
-                    self.currentGuacamole -= 1
-                self.currentIngridientList.remove("gu")
-            elif("ci" in self.currentIngridientList):
-                if(self.currentCilantro > 0):
-                    self.currentCilantro -= 1
-                    self.requestIngridient(
-                        "ci", self.maxCilantro-self.currentCilantro,
-                        self.currentCilantro/self.maxCilantro)
-                else:
-                    logging.info("Taquero waits fot cilantro")
-                    while(self.currentCilantro == 0):
-                        time.sleep(0.1)
-                    self.currentCilantro -= 1
-                self.currentIngridientList.remove("ci")
-            elif("ce" in self.currentIngridientList):
-                if(self.currentCebolla > 0):
-                    self.currentCebolla -= 1
-                    self.requestIngridient(
-                        "ce", self.maxCebolla-self.currentCebolla,
-                        self.currentCebolla/self.maxCebolla)
-                else:
-                    while(self.currentCebolla == 0):
-                        time.sleep(0.1)
-                    self.currentCebolla -= 1
-                self.currentIngridientList.remove("ce")
+        if("to" in self.currentIngridientList):
+            # Revisar si en la orden en la lista ingredientes se usa un ingrediente
+            if(self.currentTortillas > 0):
+                # Si se tiene se gasta
+                self.currentTortillas -= 1
+                # Solicitar ingrediente
+                self.requestIngridient(
+                    "to", self.maxTortillas-self.currentTortillas, 1)
+            else:
+                # Si no se espera hasta que le llegue (temporal esta forma)
+                logging.info("Taquero waits for tortillas :(")
+                while(self.currentTortillas == 0):
+                    time.sleep(0.1)
+                # Una vez llega sigue trabajando
+                self.currentTortillas -= 1
+            # quitarlo de la lista al fin de todo modo
+            self.currentIngridientList.remove("to")
+        elif("sa" in self.currentIngridientList):
+            if(self.currentSalsa > 0):
+                self.currentSalsa -= 1
+                self.requestIngridient("sa", self.maxSalsa-self.currentSalsa, 3)
+            else:
+                while(self.currentSalsa == 0):
+                    time.sleep(0.1)
+                self.currentSalsa -= 1
+            self.currentIngridientList.remove("sa")
+        elif("gu" in self.currentIngridientList):
+            if(self.currentGuacamole > 0):
+                self.currentGuacamole -= 1
+                self.requestIngridient(
+                    "gu", self.maxGuacamole-self.currentGuacamole, 2)
+            else:
+                while(self.currentGuacamole == 0):
+                    time.sleep(0.1)
+                self.currentGuacamole -= 1
+            self.currentIngridientList.remove("gu")
+        elif("ci" in self.currentIngridientList):
+            if(self.currentCilantro > 0):
+                self.currentCilantro -= 1
+                self.requestIngridient(
+                    "ci", self.maxCilantro-self.currentCilantro, 4)
+            else:
+                while(self.currentCilantro == 0):
+                    time.sleep(0.1)
+                self.currentCilantro -= 1
+            self.currentIngridientList.remove("ci")
+        elif("ce" in self.currentIngridientList):
+            if(self.currentCebolla > 0):
+                self.currentCebolla -= 1
+                self.requestIngridient(
+                    "ce", self.maxCebolla-self.currentCebolla, 4)
+            else:
+                while(self.currentCebolla == 0):
+                    time.sleep(0.1)
+                self.currentCebolla -= 1
+            self.currentIngridientList.remove("ce")
 
     def checkIngridients(self):
-        if(not self.infiniteIngridients):
-            # Esto intenta aliviar el error de diseño en que no se piden ingredientes
-            #  faltantes porque no se usan (y solo se hacia la llamada de requestIngridients() en el uso)
-            if((self.currentSalsa != self.maxSalsa) and ("sa" not in self.listOfRquestedIngridients)):
-                self.requestIngridient("sa",self.maxSalsa - self.currentSalsa,
-                self.maxSalsa/(self.currentSalsa))
-            if((self.currentGuacamole != self.maxGuacamole) and ("gu" not in self.listOfRquestedIngridients)):
-                self.requestIngridient("gu",self.maxGuacamole - self.currentGuacamole,
-                self.maxGuacamole/(self.currentGuacamole))
-            if((self.currentCebolla != self.maxCebolla) and ("ce" not in self.listOfRquestedIngridients)):
-                self.requestIngridient("ce",self.maxCebolla - self.currentCebolla,
-                self.maxCebolla/(self.currentCebolla))
-            if((self.currentCilantro != self.maxCilantro) and ("ci" not in self.listOfRquestedIngridients)):
-                self.requestIngridient("ci",self.maxCilantro - self.currentCilantro,
-                self.maxCilantro/(self.currentCilantro))
-            if((self.currentCilantro != self.maxTortillas) and ("to" not in self.listOfRquestedIngridients)):
-                self.requestIngridient("to",self.maxTortillas - self.currentTortillas,
-                self.maxTortillas/(self.currentTortillas))
+        # Esto intenta aliviar el error de diseño en que no se piden ingredientes
+        #  faltantes porque no se usan (y solo se hacia la llamada de requestIngridients() en el uso)
+        if((self.currentSalsa != self.maxSalsa) and ("sa" not in self.listOfRquestedIngridients)):
+            self.requestIngridient("sa",self.maxSalsa - self.currentSalsa, 3)
+            logging.info("La idea corre Omar a")
+        if((self.currentGuacamole != self.maxGuacamole) and ("gu" not in self.listOfRquestedIngridients)):
+            self.requestIngridient("gu",self.maxGuacamole - self.currentGuacamole, 2)
+            logging.info("La idea corre Omar b")
+        if((self.currentCebolla != self.maxCebolla) and ("ce" not in self.listOfRquestedIngridients)):
+            self.requestIngridient("ce",self.maxCebolla - self.currentCebolla, 4)
+            logging.info("La idea corre Omar c")
+        if((self.currentCilantro != self.maxCilantro) and ("ci" not in self.listOfRquestedIngridients)):
+            self.requestIngridient("ci",self.maxCilantro - self.currentCilantro, 4)
+            logging.info("La idea corre Omar d")
+        if((self.currentCilantro != self.maxTortillas) and ("to" not in self.listOfRquestedIngridients)):
+            self.requestIngridient("to",self.maxTortillas - self.currentTortillas, 1)
+            logging.info("La idea corre Omar e")
 
     def pickShortestOrderIndex(self):
         # Esperar a que no se este haciendo sort o split para conseguir
@@ -586,7 +541,12 @@ class ChalanTaquero(threading.Thread):
             3)Salsa
             4)Cebolla y cilantro 
         """
-        self.priorityQueueCabeza = sorted(self.priorityQueueCabeza, key=lambda tup: tup[3], reverse= True)
+        self.priorityQueueCabeza = sorted(
+            self.priorityQueueCabeza,
+            key=lambda x: x[3],
+        )
+        x = 7
+        y = 8
         pass
 
     def gotoStoreAndRefill(self, orderTypeToRefill, taqueroIDToRefill, quantityToRefill, timeToRefill):
@@ -698,7 +658,6 @@ class ChalanTaquero(threading.Thread):
                 self.gotoStoreAndRefill(
                     orderTypeToRefill, taqueroIDToRefill, quantityToRefill, timeToRefill
                 )
-                pass
 
             # Volver a revisar los pizarrones, necesario ese sleep?
             time.sleep(0.25)
@@ -760,7 +719,7 @@ class CocinaQuesadillero():
 
 def open_taqueria(overseerBridge):
     # Solo poner estas ordenes mientras hacemos pruebas
-    ordersToTest = 7
+    ordersToTest = 4
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="a+",
                         format="%(asctime)-15s %(levelname)-8s %(message)s")
     print("Clients activating...")
