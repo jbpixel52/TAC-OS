@@ -31,12 +31,10 @@ programas = multiprocessing.Queue()
 def main():
     taqueria = Process(target=open_taqueria)
     taqueria.start()
-    
-    dashboard = Process(target=dashboard_main.dashboard)
-    dashboard.start()
+   # dashboard = Process(target=dashboard_main.dashboard)
+   # dashboard.start()
+   
 
 
 if __name__ == '__main__':
     main()
-    while(True):
-        time.sleep(99)  

@@ -54,12 +54,13 @@ class dashboard():
         @self.app.callback(Output('live-update-graph', 'figure'),
                     Input('interval-component', 'n_intervals'))
         def update_graph_live(self):
-            data = readjson('logs/staff/taqueros/Omar.json')
+            pass
+            # data = readjson('logs/staff/taqueros/Omar.json')
             
-            ydata = [0,int(data['stackcounter'])]
-            t = np.linspace(len())
-            self.fig = px.line(x=t, y=, labels={'x':'time', 'y':'stack counter'})
-            return self.fig.show()
+            # ydata = [0,int(data['stackcounter'])]
+            # t = np.linspace(len())
+            # self.fig = px.line(x=t, y=, labels={'x':'time', 'y':'stack counter'})
+            # return self.fig.show()
         
         #RUN DASH APP SERVER    
         self.app.run_server(debug=True) 
