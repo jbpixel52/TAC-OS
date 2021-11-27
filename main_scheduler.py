@@ -1,6 +1,7 @@
 import multiprocessing
 from queue import Empty, PriorityQueue
 import queue
+import emoji
 import threading
 import logging
 import datetime
@@ -33,6 +34,10 @@ class PersonalTaqueria(threading.Thread):
         )
         self.StarvingTaxerThread = threading.Thread(
             target=self.starvingTaxer,
+            args=()
+        )
+        self.FanThread = threading.Thread(
+            target=self.fanChecker,
             args=()
         )
         self.emojis = ''
@@ -83,6 +88,10 @@ class PersonalTaqueria(threading.Thread):
         # Lista de variables que especifican que ya se solicitó un rellenado
         #  de ingredientes, el chalan se encarga de quitarlos de tal lista
         self.listOfRquestedIngridients = []
+        # Variables del ventilador
+        self.isFanActive = False
+        self.fanThreshold = 32 #Default es 600 pero debo probarlo pequeño antes
+        self.useTimeOfFan = 60 # tiempo que se usa el ventilador
 
     def main(self):
         # Decir que se está en linea
@@ -90,6 +99,7 @@ class PersonalTaqueria(threading.Thread):
         self.OrderRecieverThread.start()
         self.CookerThread.start()
         self.StarvingTaxerThread.start()
+        self.FanThread.start()
 
     def taquitos_emojis(self):
         print(f"ORDENES:", end='')
@@ -533,14 +543,19 @@ class PersonalTaqueria(threading.Thread):
             # Siempre estar dando impuestos a las cabezas cada segundo y haciendo
             # sort ¿tardá mucho? ya veremos jesjes
             for headIndex in self.ordenesHeads:
-                UTIs = self.ordenes[str(headIndex)][0]
-                base = (UTIs ** -1) * 10
-                tax = (
-                    UTIs
-                    * self.constStarving
-                    * (time.time() - self.ordenes[str(headIndex)][3])
-                )
-                self.ordenes[str(headIndex)][1] = (base + tax)
+                try:
+                    UTIs = self.ordenes[str(headIndex)][0]
+                    base = (UTIs ** -1) * 10
+                    tax = (
+                        UTIs
+                        * self.constStarving
+                        * (time.time() - self.ordenes[str(headIndex)][3])
+                    )
+                    self.ordenes[str(headIndex)][1] = (base + tax)
+                except Exception as e:
+                    logging.error(
+                        f"Concurrency error at {self.name}'s  taxer, tried to tax a head in transition to death"
+                    )
 
             if debug_state is True:
                 time.sleep(1.0)
@@ -559,7 +574,30 @@ class PersonalTaqueria(threading.Thread):
         logging.info("Sorting end")
         pass
 
-
+    def fanChecker(self):
+        # Thread que se encarga de revisar el taco counter y encender
+        # el ventilador cuando es necesario
+        deltaA = self.tacoCounter
+        while(True):
+            # La operacion sera division residuo
+            deltaB = self.tacoCounter
+            # si la resta entre B - A es > que tl threshold, encender
+            # ventilador
+            if((deltaB - deltaA) >= self.fanThreshold):
+                self.isFanActive = True
+                logging.info(
+                    f"{self.name}'s fan has been activated at a TC of {self.tacoCounter}"
+                )
+                time.sleep(self.useTimeOfFan)
+                logging.info(
+                    f"{self.name}'s fan is off"
+                )
+                deltaA = self.tacoCounter
+            # Estar checando cada 0.25  segs, que es un intervalo más
+            #  pequeño que le delta de cocina, por lo tanto no *deberia* fallar
+            time.sleep(0.20)
+        pass
+    
 class ChalanTaquero(threading.Thread):
     def __init__(self, _name):
         # SuperConsteructor
