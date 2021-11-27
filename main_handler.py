@@ -9,7 +9,6 @@ import datetime
 import string
 import time
 import json
-import emoji
 from time import sleep
 import sys
 import datetime
@@ -21,6 +20,7 @@ from dash.dependencies import Input, Output
 import dashboard_main
 
 abcdario = list(string.ascii_uppercase)
+
 debug_state = True
 
 programas = multiprocessing.Queue()

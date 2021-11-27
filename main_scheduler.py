@@ -7,7 +7,6 @@ import datetime
 import string
 import time
 import json
-import emoji
 from time import sleep
 import sys
 abcdario = list(string.ascii_uppercase)
