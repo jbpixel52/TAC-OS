@@ -575,7 +575,7 @@ class ChalanTaquero(threading.Thread):
         self.priorityQueueCabeza = []
         # Apuntador a los cocineros asignados (A es el solo, B es de los paralelos)
         #  lo asigna la cocina
-        self.cocinerosAsignados = [None, None]
+        self.cocineroAsignadoA = None
         pass
 
     def sortRequests(self):
@@ -631,14 +631,6 @@ class ChalanTaquero(threading.Thread):
         self.priorityQueueCabeza.pop(0)
         
     def main(self):
-        """
-        [IDs de taqueros]
-            0 -> Adobaba
-            1 -> Asada y Suadero (1)
-            2 -> Asada y Suadero (2)
-            3 -> Tripa y cabeza 
-            4 -> El de las quesadillas
-        """
         print(f"Chalan {self.name} en linea")
         # Estar escuchando a los taqueros asignados a que le digan algo
         while(True):
@@ -662,6 +654,7 @@ class ChalanTaquero(threading.Thread):
                     self.priorityQueueCabeza.append(self.queueB.get_nowait())
             pass
             # Decidir si tiene que rellenar algo en base a la solicitud más reciente
+<<<<<<< HEAD
             if(len(self.priorityQueueCabeza) > 0):
                 # But first, ordenar la prioridad
                 self.sortRequests()
@@ -674,6 +667,12 @@ class ChalanTaquero(threading.Thread):
                     taqueroIDToRefill = 1
                 # Definir el tiempo necesario para rellenar
                 if(self.priorityQueueCabeza[0][0] == "to"):
+=======
+            if(len(self.queueCabeza) > 0):
+                quantityToRefill = self.queueCabeza[0][1]
+                taqueroIDToRefill = self.queueCabeza[0][2]
+                if(self.queueCabeza[0][0] == "to"):
+>>>>>>> parent of 6775375 (Cocina runs again)
                     timeToRefill = 5
                     orderTypeToRefill = "to"
                 elif(self.priorityQueueCabeza[0][0] == "sa"):
@@ -693,12 +692,31 @@ class ChalanTaquero(threading.Thread):
                 # Si no hay ordenes entonces que siga estando al tanto
                 pass
 
+<<<<<<< HEAD
             if(len(self.priorityQueueCabeza) > 0):
                 # Si hay tareas, ir a la tienda y rellenar
                 self.gotoStoreAndRefill(
                     orderTypeToRefill, taqueroIDToRefill, quantityToRefill, timeToRefill
                 )
                 pass
+=======
+            if(len(self.queueCabeza) > 0):
+                # Imprimir la lista de solicitudes si no está vacia
+                logging.info(self.queueCabeza)
+                # Hacer el relleno yendo a la tienda
+                logging.info(
+                    f"Chalan will go to the store for {orderTypeToRefill}")
+                time.sleep(timeToRefill)
+                if(orderTypeToRefill == "to"):
+                    self.cocineroAsignadoA.currentTortillas += quantityToRefill
+                    # Decirle al taquero que ya le dio los ingredientes solicitados
+                    self.cocineroAsignadoA.listOfRquestedIngridients.remove(
+                        "to")
+                    logging.info(
+                        f"Chalan returned and has given {quantityToRefill} tortillas to taquero {taqueroIDToRefill}")
+                # Remover de su queue de cabeza esa tarea
+                self.queueCabeza.pop(0)
+>>>>>>> parent of 6775375 (Cocina runs again)
 
             # Volver a revisar los pizarrones, necesario ese sleep?
             time.sleep(0.25)
@@ -746,7 +764,7 @@ class CocinaTaqueros(multiprocessing.Process):
         #  no deseados para Omar
         cocina.personal.append(PersonalTaqueria("Omar"))
         cocina.personal[0].chalanAsignado = ChalanTaquero("Julio")
-        cocina.personal[0].chalanAsignado.cocinerosAsignados[0] = cocina.personal[0]
+        cocina.personal[0].chalanAsignado.cocineroAsignadoA = cocina.personal[0]
         cocina.personal[0].ID = 0
         cocina.personal[0].start()
         cocina.personal[0].chalanAsignado.start()
@@ -758,25 +776,27 @@ class CocinaQuesadillero():
     pass
 
 
+<<<<<<< HEAD
 def open_taqueria(overseerBridge):
+=======
+
+
+
+def open_taqueria():
+>>>>>>> parent of 6775375 (Cocina runs again)
     # Solo poner estas ordenes mientras hacemos pruebas
     ordersToTest = 7
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="a+",
                         format="%(asctime)-15s %(levelname)-8s %(message)s")
-    print("Clients activating...")
+    print("Scheduler test 1")
     Cocina = CocinaTaqueros("Taqueros")
-    # Quesadilleria = CocinaQuesadillas("Quesadilleros")
-    # Quesadilleria.start() <- proximamente
     Cocina.start()
     Cocina.IngresoPersonal(Cocina, overseerBridge)
 
-    # Aunque leyendo de archivo no es necesario ahora, necesitaremos un while true aquí O
-    #  crear otro THREAD (o proceso pero que se llame aquí en este .py) que se encarge de 
-    # mandar las ordenes por SQS. Y Julio, la cocina ya era un proceso .....
     while(True):
         with open("jsons.json") as OrdenesJSON:
             ListadoOrdenes = json.load(OrdenesJSON)
             for i in range(ordersToTest):
                 orden = ListadoOrdenes[i]
                 Cocina.personal[0].queue.put(orden)
-        time.sleep(9999)
+        #x = input()
