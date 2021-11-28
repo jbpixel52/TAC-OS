@@ -91,7 +91,7 @@ class PersonalTaqueria(threading.Thread):
         #  de ingredientes, el chalan se encarga de quitarlos de tal lista
         self.listOfRquestedIngridients = []
         # Variables del ventilador
-        self.isFanActive =
+        self.isFanActive = False
         self.fanThreshold = 32  # Default es 600 pero debo probarlo pequeño antes
         self.useTimeOfFan = 60  # tiempo que se usa el ventilador
 
