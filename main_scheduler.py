@@ -54,17 +54,22 @@ class PersonalTaqueria(threading.Thread):
         self.cuadernilloSalidas = {}  # Cuadrerno con los jsons de salida
         self.ordenes = {}  # dict in mind per worker
         self.ordenesHeads = []  # lista con las cabezas de subordenenes
-        # Variables
+        # Variables Delta
         self.ordersPerSecondDelta = 3  # ^-1
         self.cookUnitDelta = 0.5  # Minimo para cocinar
-        self.tacoCounter = 0
-        self.orderCounter = 0
-        # Antes conocido como tacoCounter (incorrectamente)
-        self.stackCounter = 0
         self.deltasPerTaco = 0  # Definida por el thread cooker, varia por stack
+        # La quadfecta de las variables counter
+        self.tacoCounter = 0
+        self.stackCounter = 0
+        self.stackCounterCompleted = 0 # stackCounter ya era usada para registro
+        self.subOrderCounter = 0
+        self.orderCounter = 0
+        self.orderCounterCompleted = 0 # tambien ya era usada para registros
+        # Constantes relevantes
         self.constMagnitud = 40  # ya no es p90 lol, ni para 4 tacos con todo alcanzaba
         # blah blah + [utis*const*tiempoatrasado], consultar desmos para demo
         self.constStarving = 0.005
+        # Stack actual
         self.shortestOrderIndex = None  # Una vez inicia un stack no lo detiene
         # Variables de chaches de ingredientes, una es Maximo y otra es cuantas quedan
         self.maxTortillas = 50
@@ -193,7 +198,7 @@ class PersonalTaqueria(threading.Thread):
                         listaIngridients
                     ]
                     logging.info(
-                        f"Stack {self.stackCounter} has ben put ahead")
+                        f"Stack {self.stackCounter} has been put ahead")
                     subSplitIndex += 1
                     self.stackCounter += 1
                 else:
@@ -283,6 +288,8 @@ class PersonalTaqueria(threading.Thread):
             logging.info(
                 f"Remaining ingridients:{self.currentSalsa}|{self.currentGuacamole}|{self.currentCilantro}|{self.currentCebolla}|{self.currentTortillas}"
             )
+            logging.info(
+                f"Taquero {self.name} stats: OC:{self.orderCounterCompleted}|SOC:{self.subOrderCounter}|STC:{self.stackCounterCompleted}|TC:{self.tacoCounter}")
             if(self.queue.empty()):
                 pass
             else:
@@ -331,7 +338,7 @@ class PersonalTaqueria(threading.Thread):
     
     def endStack(self):
         #Esta funcion es el ultimo bloque de logica 
-        # de la funcion de cocina, cambia cabezas de ordenes y remueve de
+        # de la funcion de cocinar, cambia cabezas de ordenes y remueve de
         #  cosas por hacer los stacks hechos
         if self.ordenes[self.shortestOrderIndex][6] > 0:
             self.ordenes[str(self.shortestOrderIndex)
@@ -358,6 +365,9 @@ class PersonalTaqueria(threading.Thread):
                         # Si no tiene vecinos hermanos entonces solo quitar
                         self.ordenesHeads.remove(
                             int(self.shortestOrderIndex))
+                        # Si no quedan vecinos stacks, la suborden entonces
+                        #  se acabó
+                        self.subOrderCounter += 1
                 else:
                     # Si el ultimo elemento cocinado (en algun insante)
                     # era una cabeza que no pudo ser removida, la
@@ -365,9 +375,13 @@ class PersonalTaqueria(threading.Thread):
                     if(int(self.shortestOrderIndex) in self.ordenesHeads):
                         self.ordenesHeads.remove(
                             int(self.shortestOrderIndex))
+                    # Cada removida de cabeza sin remplazarla == se acabó el stack
+                    self.subOrderCounter +=1
                 # Una vez acabado el proceso le hacemos pop
                 # saca orden del taquero
                 self.ordenes.pop(self.shortestOrderIndex, None)
+                # Señalar al contador de stacks completos que se acabo uno más
+                self.stackCounterCompleted += 1
                 logging.info(
                     f"Stack {self.shortestOrderIndex} completed")
 
