@@ -40,10 +40,8 @@ class PersonalTaqueria(threading.Thread):
             target=self.fanChecker,
             args=()
         )
-        self.savefileThread = threading.Thread(
-            target=self.save_to_json(),
-            args=()
-        )
+        self.saving_memory= threading.Thread(target=self.staff_to_json,args=())
+        
         self.emojis = ''
         self.ID = 0
         # Variables MUTEX
@@ -93,17 +91,23 @@ class PersonalTaqueria(threading.Thread):
         #  de ingredientes, el chalan se encarga de quitarlos de tal lista
         self.listOfRquestedIngridients = []
         # Variables del ventilador
-        self.isFanActive = False
+        self.isFanActive =
         self.fanThreshold = 32  # Default es 600 pero debo probarlo pequeño antes
         self.useTimeOfFan = 60  # tiempo que se usa el ventilador
-    def save_to_json(self):
-        print('sus')
-        self.datadict = {'name':self.name,'ID':self.ID, 'ordenes': self.ordenes, 'order_counter': self.orderCounter, 'stack_counter': self.stackCounter,'taco_counter': self.tacoCounter, 'cooking_status': self.Cooking, 'isFanActive': self.isFanActive, 'chalan_asignado': self.chalanAsignado}
-        path = 'logs/staff/taqueros/'+self.name+'.json'
-        with open(file=path, encoding='utf-8', mode='w') as file:
-            json.load(file, self.datadict)
-            file.close()
+
+    def staff_to_json(self):
+            while True:
+                sleep(5) #HERE WE SET THE SAVING TO DISK INTERVAL e.g., 3 seconds <-
+                print(f"-> saving {self.name} at {getTime()} ...") 
+                self.objects_to_json()
             
+    def objects_to_json(self):
+        path = 'logs/staff/taqueros/'+self.name+'.json'
+        with open(path, mode='w', encoding='utf-8') as file:
+            serialized = {'name':self.name,'ID':self.ID,'ordenes':self.ordenes,'stackcounter':self.stackCounter,'isFanActive':self.isFanActive,'chalan':self.chalanAsignado,'cooking':self.Cooking}
+            json.dump(serialized, file)
+            file.close()
+
     def main(self):
         # Decir que se está en linea
         print(f"Taquero {self.name} en linea")
@@ -111,9 +115,7 @@ class PersonalTaqueria(threading.Thread):
         self.CookerThread.start()
         self.StarvingTaxerThread.start()
         self.FanThread.start()
-        
-        self.savefileThread().start()
-
+        self.saving_memory.start()
 
     def SplitOrder(self, orden):
         pedido = orden
