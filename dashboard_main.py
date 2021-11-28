@@ -42,14 +42,54 @@ app = dash.Dash(
 df = json_to_dataframe('jsons.json')
 
 
-app.layout = html.Div([html.Title('TAC-OS DASHBOARD'),html.H1('TAC-OS DASHBOARD'),html.P('ORDERS'),
-                       dash_table.DataTable(
-    id='table',
-    columns=[{"name": i, "id": i} for i in df.columns],
-    data=df.to_dict('records'),
-)]
-)
+app.layout = html.Div([
+    html.H1('TAC-OS DASHBOARD', style={'display': 'inline-block',
+            'font-size': 'xxx-large', 'background-color': 'coral'}),
+    html.P('ORDERS & SUBORDERS'),
+    html.Div([
+        dash_table.DataTable(
+            id='datatable-interactivity',
+            columns=[
+                {"name": i, "id": i, "deletable": True, "selectable": True} for i in df.columns
+            ],
+            data=df.to_dict('records'),
+            editable=True,
+            filter_action="native",
+            sort_action="native",
+            sort_mode="multi",
+            column_selectable="single",
+            row_selectable="multi",
+            row_deletable=True,
+            selected_columns=[],
+            selected_rows=[],
+            page_action="native",
+            page_current=0,
+            page_size=10,
+        ),
+        html.Div(id='datatable-interactivity-container'),
+        #visual aid comment
+        
+            dcc.Interval(
+            id='interval-component',
+            interval=1*1000, # in milliseconds
+            n_intervals=0
+        ),
+            
+    ])
+
+])
+
+
+@app.callback(Output('live-update-graph', 'figure'),
+              Input('interval-component', 'n_intervals'))
+def update_graph_live(n):
+    data = json_to_dataframe('logs/staff/taqueros/Omar.json')
+    print(data)
+
+
+
+
 
 
 def main():
-    app.run_server(debug=True)
+    app.run_server(debug=True, use_reloader=True)

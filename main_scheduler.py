@@ -840,7 +840,7 @@ class CocinaQuesadillero():
 def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
     ordersToTest = 5
-    logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="a+",
+    logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="w",
                         format="%(asctime)-15s %(levelname)-8s %(message)s")
     Cocina = CocinaTaqueros("Taqueros")
     Cocina.start()
