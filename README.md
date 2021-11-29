@@ -1,2 +1,2 @@
 # TAC-OS
- The Operating System of Tacos
+ The Operating System of tacos
