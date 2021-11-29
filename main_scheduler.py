@@ -13,9 +13,8 @@ import sys
 abcdario = list(string.ascii_uppercase)
 debug_state = True
 
-
 def getTime():
-    LocalTime = datetime.datetime.now().strftime("%H:%M:%S")
+    LocalTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
     return LocalTime
 
 
@@ -44,15 +43,18 @@ class PersonalTaqueria(threading.Thread):
             target=self.staff_to_json, args=())
 
         self.emojis = ''
-        self.ID = 0
+        # Variables de pertnenencia
+        self.ID = None
+        self.meatType = None
+        self.allowedMeatTypes = ["suadero","adobada","asada","cabeza","tripa"]
         # Variables MUTEX
         self.Splitting = False
         self.Rescheduling = False
         self.Cooking = False
         # Esctructuras de datos
-        # Cuaderno con los jsons de entrada (se usará?)
-        self.cuadernilloRecibidos = {}
-        self.cuadernilloSalidas = {}  # Cuadrerno con los jsons de salida
+        # Diccionario de JSONS
+        self.jsonOutputTemplate = None # Se asigna en main
+        self.jsonOutputs = {}  # Cuadrerno con los jsons de salida
         self.ordenes = {}  # dict in mind per worker
         self.ordenesHeads = []  # lista con las cabezas de subordenenes
         self.ordenesSuborders = {}  # Dict con listas de listas sobordenes
@@ -126,12 +128,41 @@ class PersonalTaqueria(threading.Thread):
     def main(self):
         # Decir que se está en linea
         print(f"Taquero {self.name} en linea")
+        # Hacer el templete del output de salidas
+        with open("outputTemplate.json") as jsonSalida:
+            self.jsonOutputTemplate = json.load(jsonSalida)
+            
         self.OrderRecieverThread.start()
         self.CookerThread.start()
         self.StarvingTaxerThread.start()
         self.FanThread.start()
         self.saving_memory.start()
 
+    def startOutputtingOrder(self, orden):
+        #Funcion que crea un indice en los outputs de salidas
+        #  lo hace en base al templete lul
+        ordenID = orden['request_id']
+        self.jsonOutputs[ordenID] = self.jsonOutputTemplate["orderIDGoesHere"]
+        self.jsonOutputs[ordenID]['orden'] = orden['orden']
+        self.jsonOutputs[ordenID]['datetime'] = orden['datetime']
+        self.jsonOutputs[ordenID]['status'] = orden['status']
+        # Reportar el momento de inicio
+        self.jsonOutputs[ordenID]['answer']['start_time'] = getTime()
+        # Reportar el primer paso que es esperar a que se cocine
+        # for i in subordenes
+        for suborden in range(len(orden['orden'])):
+            # Crear slots para pasos si es que son mayores a 0
+            if(suborden > 0): 
+                self.jsonOutputs[ordenID]['answer']['steps'].append({})
+            self.jsonOutputs[ordenID]['answer']['steps'][suborden]["worker_id"] = self.ID
+            self.jsonOutputs[ordenID]['answer']['steps'][suborden]["step"] = suborden
+            self.jsonOutputs[ordenID]['answer']['steps'][suborden]["state"] = "waiting to be cooked"
+            self.jsonOutputs[ordenID]['answer']['steps'][suborden]['part_id'] = [ordenID,suborden]
+            self.jsonOutputs[ordenID]['answer']['steps'][suborden]['start_time'] = getTime()
+            self.jsonOutputs[ordenID]['answer']['steps'][suborden]['end_time'] = 0
+        x = 5
+        pass
+    
     def SplitOrder(self, orden):
         pedido = orden
         numSuborden = 0
@@ -304,10 +335,10 @@ class PersonalTaqueria(threading.Thread):
                 pass
             else:
                 newOrder = self.queue.get_nowait()
-                self.cuadernilloRecibidos[str(self.tacoCounter)] = newOrder
                 logging.info("Iniciando particion de orden x")
                 self.Splitting = True
                 self.SplitOrder(newOrder)
+                self.startOutputtingOrder(newOrder)
                 # self.Splitting = False
                 # logging.info("Finalizada la particion y organización de orden x")
                 try:
@@ -347,6 +378,9 @@ class PersonalTaqueria(threading.Thread):
             # Reiniciar el contador de todos modos
             self.remainingRestingTime = self.maxRestingTime
 
+    def finishOrderOutput(self):
+        pass
+    
     def checkOrderCompletion(self, orderToCheckIndex):
         #Funcion usada por endStack() para revisar si al acabar
         # un stack que acabó una suborden tambien acabó una orden
@@ -426,6 +460,9 @@ class PersonalTaqueria(threading.Thread):
 
                 self.shortestOrderIndex = None
 
+    def writeOutputSteps(self):
+        pass
+    
     def requestIngridient(self, ingridient, quantity, priority):
         if(ingridient not in self.listOfRquestedIngridients):
             # Si no está el ingrediente en la lista de solicitados, se pide
@@ -586,6 +623,7 @@ class PersonalTaqueria(threading.Thread):
             # Varia por stack, cada x deltas se hace un taco y debemos contarlos
             self.deltasPerTaco = self.ordenes[self.shortestOrderIndex][7] / \
                 self.cookUnitDelta
+
         else:
             if(self.shortestOrderIndex == None):
                 logging.info(
