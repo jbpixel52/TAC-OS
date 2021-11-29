@@ -1,0 +1,29 @@
+{
+    "orderIDGoesHere": {
+        "datetime": "2021-09-14 16:15:55.421246",
+        "request_id": 1,
+        "status": "open",
+        "answer": {
+            "start_time": "2021-09-14 16:15:55.421246",
+            "end_time": "2021-09-14 16:15:55.421246",
+            "steps": [{
+                "worker_id": 1321,
+                "step": 1,
+                "state": "running",
+                "part_id": [1, 0],
+                "start_time": "2021-09-14 16:15:55.421246",
+                "end_time": "2021-09-14 16:15:55.421246"
+            }]
+        },
+        "orden": [{
+            "responsable_orden": 0,
+            "parent_id": "request_id",
+            "part_id": "1-0",
+            "type": "taco",
+            "meat": "suadero",
+            "status": "open",
+            "quantity": 0,
+            "ingredients": []
+        }]
+    }
+}
