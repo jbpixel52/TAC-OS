@@ -27,7 +27,7 @@ from main_scheduler import (ChalanTaquero, CocinaQuesadillero, CocinaTaqueros,
 
 abcdario = list(string.ascii_uppercase)
 
-debug_state = True
+debug_state = False
 
 programas = multiprocessing.Queue()
 

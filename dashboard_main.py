@@ -90,6 +90,7 @@ def update_graph_live(n):
 
 
 
-
+#Nota para Julio, eso lo pongo en false para que no se corra dos veces
+# la taqueria a la vez, deberá quedarse en false cuando usemos el SQS
 def main():
-    app.run_server(debug=True, use_reloader=True)
+    app.run_server(debug=False, use_reloader=False)
