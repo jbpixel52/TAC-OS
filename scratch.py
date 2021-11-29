@@ -1,27 +1,28 @@
 import pandas as pd
 import json
 
+def test(a=None, b=None):
+    if a is None or b is None:
+        print(f'{a=} and {b=}')
+    else:
+        print('None were None...')
 
-import dash
-import dash_table
-import pandas as pd
+                            
 
+def json_to_dataframe(filepath, normal_column=None):
+    if normal_column is None:
+        return pd.read_json(filepath)
+    elif normal_column is not None:
+        with open(filepath, mode='r') as file:
+            data = json.loads(file.read())
+            df_nested = pd.json_normalize(
+                data, record_path=[str(normal_column)])
+            file.close()
+        return df_nested
 
-def json_to_dataframe(filepath):
-    with open(filepath, mode='r') as file:
-        data = json.loads(file.read())
-        file.close()
-    df_nested_orders = pd.json_normalize(data, record_path=['orden'])
-    print(df_nested_orders)
-    return df_nested_orders
-df = json_to_dataframe('jsons.json')
-app = dash.Dash(__name__)
+with open('logs/staff/taqueros/Omar.json', mode='r') as file:
+    data = json.load(file)
+    file.close()
+df = pd.DataFrame(data.get('ordenes')).transpose()
+#df_new=pd.DataFrame(df['ordenes'],index = list(df['ordenes'].keys()))
 
-app.layout = dash_table.DataTable(
-    id='table',
-    columns=[{"name": i, "id": i} for i in df.columns],
-    data=df.to_dict('records'),
-)
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
