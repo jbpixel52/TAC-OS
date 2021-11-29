@@ -18,10 +18,10 @@ import pandas as pd
 import plotly
 import plotly.express as px
 import plotly.graph_objects as go
+import dashboard_main
 from dash import dash_table, dcc, html
 from dash.dependencies import Input, Output
 
-import dashboard_main
 from main_scheduler import (ChalanTaquero, CocinaQuesadillero, CocinaTaqueros,
                             PersonalTaqueria, getTime, open_taqueria)
 

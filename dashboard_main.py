@@ -120,46 +120,14 @@ app = dash.Dash(
     __name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
-    html.H1('TAC-OS DASHBOARD', style={'display': 'inline-block',
+    html.H1('TAC-OS DASHBOARD', style={'display': 'inline-block','text-align':'center',
                                        'font-size': 'xxx-large', 'background-color': 'coral'}),
     html.Div(id='table-div'),
     dcc.Interval(
         id='interval-component',
-        interval=2*1000,  # in milliseconds
-        n_intervals=0
+        interval=5*1000,  # in milliseconds
+        n_intervals=2
     )
-
-    # dash_table.DataTable(
-    #     id='datatable',
-    #     columns=[
-    #         {"name": i, "id": i, "deletable": True, "selectable": True} for i in df.columns
-    #     ],
-    #     data=df.to_dict('records'),
-    #     editable=False,
-    #     filter_action="native",
-    #     sort_action="native",
-    #     sort_mode="multi",
-    #     column_selectable="single",
-    #     row_selectable="multi",
-    #     row_deletable=False,
-    #     selected_columns=[],
-    #     selected_rows=[],
-    #     page_action="native",
-    #     page_current=0,
-    #     page_size=10,
-    # ),
-    # dash_table.DataTable(
-    #     id='datatable_taquero',
-    #     data=dfOmar.to_dict('records'),
-    #     editable=False,
-    #     filter_action="native",
-    #     sort_action="native",
-    #     sort_mode="multi",
-    #     page_action="native",
-    #     page_current=0,
-    #     page_size=10,
-    # ),
-
 
 ])
 
@@ -178,10 +146,8 @@ def update(n_intervals):
                     {"name": i, "id": i, "deletable": True, "selectable": True} for i in df.columns
                 ],
                 id='datatable_taquero',
-                data=json_to_dataframe(
-                    filepath='jsons.json', normal_column='orden').to_dict('records'),
+                data=json_to_dataframe(filepath='jsons.json', normal_column='orden').to_dict('records'),
                 sort_action="native",
-                sort_mode="multi",
                 page_action="native",
                 page_current=0,
                 page_size=10),
@@ -191,11 +157,10 @@ def update(n_intervals):
                     {"name": str(i), "id": str(i)} for i in dfOmar.columns
                 ],
                 id='datatable_taquero',
-                data=dfOmar.to_dict('records'),
+                data=nested_dict_to_dataframe('logs/staff/taqueros/Omar.json', 'ordenes').to_dict('records'),
                 editable=False,
                 filter_action="native",
                 sort_action="native",
-                sort_mode="multi",
                 page_action="native",
                 page_current=0,
                 page_size=10,
@@ -231,69 +196,3 @@ def get_status(filepath,key):
 def main():
     app.run_server(debug=True, use_reloader=True)
 
-@app.callback(
-    Output('table-div', 'children'),
-    Input('interval-component', 'n_intervals')
-)
-def update(n_intervals):
-    if n_intervals > 0:
-        # json_to_dataframe(filepath='jsons.json', normal_column='orden').to_dict('records')
-        # nested_dict_to_dataframe('logs/staff/taqueros/Omar.json','ordenes').to_dict('records')
-        return [
-            dash_table.DataTable(
-                columns=[
-                    {"name": i, "id": i, "deletable": True, "selectable": True} for i in df.columns
-                ],
-                id='datatable_taquero',
-                data=json_to_dataframe(
-                    filepath='jsons.json', normal_column='orden').to_dict('records'),
-                sort_action="native",
-                sort_mode="multi",
-                page_action="native",
-                page_current=0,
-                page_size=10),
-                
-            dash_table.DataTable(
-                columns=[
-                    {"name": str(i), "id": str(i)} for i in dfOmar.columns
-                ],
-                id='datatable_taquero',
-                data=dfOmar.to_dict('records'),
-                editable=False,
-                filter_action="native",
-                sort_action="native",
-                sort_mode="multi",
-                page_action="native",
-                page_current=0,
-                page_size=10,
-            ),
-            html.P(f"Is Omar cooking? {get_status('logs/staff/taqueros/Omar.json',key ='cooking')}"),
-            html.P(f"Is Omar\'s fan active? {get_status('logs/staff/taqueros/Omar.json',key ='isFanActive')}"),
-            html.P(f"Who Is Omar\'s chalan? {get_status('logs/staff/taqueros/Omar.json',key ='chalan')}"),
-
-        ]
-
-
-
-def get_status(filepath,key):    
-    metadata = readjson(filepath)
-    if key in metadata:     
-        if metadata.get(key) is True:
-            if key == 'cooking' or 'isFanActive':
-                 return 'YES'
-            else:
-                return metada.get(key)
-        elif metadata.get(key) is False:
-            if key == 'cooking' or 'isFanActive':
-                 return 'NO'
-            else:
-                return metada.get(key)          
-    else:
-        return 'key doesn\'t exist in given metadata dictionary.'
-    
-    
-# Nota para Julio, eso lo pongo en false para que no se corra dos veces
-# la taqueria a la vez, deberá quedarse en false cuando usemos el SQS
-# LO NECESITO AHORITA
-def main():
-    app.run_server(debug=True, use_reloader=True)
