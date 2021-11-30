@@ -3,32 +3,31 @@
 The operating system of a taqueria?
 ## Description
 
-School project simulating the inner workings of a taqueria production line.
+School project simulating the inner workings of a taqueria's production line.
 ## Getting Started
-
+* Let's cook Jesse!
 ### Dependencies
-
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
-
+* Python 3.6.8
+* Dependencies in requirements.txt.
+* Linux, Windows or MacOS compatible.
 ### Installing
-
-* How/where to download your program
-* Any modifications needed to be made to files/folders
-
+* Install with pip or the required dependencies
+```
+pip install -r requirements.txt
+```
 ### Executing program
 
 * How to run the program
 * Step-by-step bullets
 ```
-code blocks for commands
+python main.py
 ```
 
 ## Help
 
-Any advise for common problems or issues.
+In main.py you can change debug_state to True for even more system info.
 ```
-command to run if program contains helper info
+debug_state = True
 ```
 
 ## Authors
