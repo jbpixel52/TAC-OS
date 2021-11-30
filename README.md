@@ -35,11 +35,11 @@ debug_state = True
 Contributors names and contact info
 
 ex. jbpixel  
-ex. [@jbpixel52](https://github.com/jbpixel52)
-ex. Omar Duran
-ex.[@OktaOEDC](https://github.com/OktaOEDC)
+ex. [@jbpixel52](https://github.com/jbpixel52)  
+ex. Omar Duran  
+ex.[@OktaOEDC](https://github.com/OktaOEDC)  
 ex. Marcelino Montes
-ex.[@Marcelino18](https://github.com/Marcelino18)
+ex.[@Marcelino18](https://github.com/Marcelino18)  
 ## Version History
 
 * 0.2
