@@ -1,4 +1,4 @@
 logfile.log
 *.log
 __pycache__/
-logfile.log
+scratch.py
