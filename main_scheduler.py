@@ -14,6 +14,7 @@ import sys
 abcdario = list(string.ascii_uppercase)
 debug_state = True
 
+
 def getTime():
     LocalTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
     return LocalTime
@@ -47,13 +48,14 @@ class PersonalTaqueria(threading.Thread):
         # Variables de pertnenencia
         self.ID = None
         self.meatType = None
-        self.allowedMeatTypes = ["suadero","adobada","asada","cabeza","tripa"]
+        self.allowedMeatTypes = ["suadero",
+                                 "adobada", "asada", "cabeza", "tripa"]
         # Variables MUTEX
         self.Splitting = False
         self.Rescheduling = False
         self.Cooking = False
         # Esctructuras de datos y cosas del output
-        self.jsonOutputTemplate = None # Se asigna en main
+        self.jsonOutputTemplate = None  # Se asigna en main
         self.hasCookedSomething = False
         self.jsonOutputs = {}  # Cuadrerno con los jsons de salida
         self.ordenes = {}  # dict in mind per worker
@@ -125,8 +127,9 @@ class PersonalTaqueria(threading.Thread):
         path = 'logs/staff/taqueros/'+self.name+'.json'
         with open(path, mode='w', encoding='utf-8') as file:
             serialized = {'name': self.name, 'ID': self.ID, 'ordenes': self.ordenes, 'stackcounter': self.stackCounter,
-                          'isFanActive': self.isFanActive, 'chalan': self.chalanAsignado.name, 'cooking': self.Cooking}
-            json.dump(serialized, file,indent=4,sort_keys=True)
+                          'isFanActive': self.isFanActive, 'chalan': self.chalanAsignado.name, 'cooking': self.Cooking,'resting':self.isResting,'Owl':self.isAnOwl,
+                          'currentTortillas':self.currentTortillas,'currentCebolla':self.currentCebolla,'currentCilantro':self.currentCilantro,'currentSalsa':self.currentSalsa,'currentGuacamole':self.currentGuacamole,'currentWorkingOrder':self.currentWorkingOrder,'currentWorkingSuborder':self.currentWorkingSuborder}
+            json.dump(serialized, file, indent=4, sort_keys=True)
             file.close()
 
     def main(self):
@@ -135,7 +138,7 @@ class PersonalTaqueria(threading.Thread):
         # Hacer el templete del output de salidas
         with open("outputTemplate.json") as jsonSalida:
             self.jsonOutputTemplate = json.load(jsonSalida)
-            
+
         self.OrderRecieverThread.start()
         self.CookerThread.start()
         self.StarvingTaxerThread.start()
@@ -143,8 +146,8 @@ class PersonalTaqueria(threading.Thread):
         self.saving_memory.start()
 
     def startOutputtingOrder(self, orden):
-        #Funcion que crea un indice en los outputs de salidas
-        #  lo hace en base al templete lul     
+        # Funcion que crea un indice en los outputs de salidas
+        #  lo hace en base al templete lul
         ordenID = orden['request_id']
         logging.info(f"Outputting input of {ordenID}")
         # condenado seas python y tu inabilidad de copiar cosas por valor al 100%
@@ -161,15 +164,17 @@ class PersonalTaqueria(threading.Thread):
         # for i in subordenes
         for suborden in range(len(orden['orden'])):
             # Crear slots para pasos si es que son mayores a 0
-            if(suborden > 0): 
+            if(suborden > 0):
                 self.jsonOutputs[ordenID]['answer']['steps'].append({})
             self.jsonOutputs[ordenID]['answer']['steps'][suborden]["worker_id"] = self.ID
             self.jsonOutputs[ordenID]['answer']['steps'][suborden]["step"] = suborden
             self.jsonOutputs[ordenID]['answer']['steps'][suborden]["state"] = "waiting to be cooked"
-            self.jsonOutputs[ordenID]['answer']['steps'][suborden]['part_id'] = [ordenID,suborden][:]
-            self.jsonOutputs[ordenID]['answer']['steps'][suborden]['time_stamp'] = getTime()
+            self.jsonOutputs[ordenID]['answer']['steps'][suborden]['part_id'] = [
+                ordenID, suborden][:]
+            self.jsonOutputs[ordenID]['answer']['steps'][suborden]['time_stamp'] = getTime(
+            )
         pass
-    
+
     def SplitOrder(self, orden):
         pedido = orden
         numSuborden = 0
@@ -338,10 +343,10 @@ class PersonalTaqueria(threading.Thread):
             )
             logging.info(
                 f"Taquero {self.name} stats: OC:{self.orderCounterCompleted}|SOC:{self.subOrderCounter}|STC:{self.stackCounterCompleted}|TC:{self.tacoCounter}")
-            ###Placeholder de output json
+            # Placeholder de output json
             with open("outputs.json", "w") as outputs:
-                json.dump(self.jsonOutputs,outputs)
-            ####Placeholder end
+                json.dump(self.jsonOutputs, outputs)
+            # Placeholder end
             if(self.queue.empty()):
                 pass
             else:
@@ -367,7 +372,7 @@ class PersonalTaqueria(threading.Thread):
                     pass
             # if debug_state is True:
             time.sleep(self.ordersPerSecondDelta)
-    
+
     def sleepHandler(self):
         if(not self.isAnOwl):
             if(self.remainingRestingTime <= 0):
@@ -388,27 +393,27 @@ class PersonalTaqueria(threading.Thread):
                 pass
             # Reiniciar el contador de todos modos
             self.remainingRestingTime = self.maxRestingTime
-    
+
     def checkOrderCompletion(self, orderToCheckIndex):
-        #Funcion usada por endStack() para revisar si al acabar
+        # Funcion usada por endStack() para revisar si al acabar
         # un stack que acabó una suborden tambien acabó una orden
         allSubOrdersWereCompleted = True
         for suborden in self.ordenesSuborders[orderToCheckIndex]:
-            #Indice 0 es suborden Index y indice 1 es su estado (0 vs 1)
+            # Indice 0 es suborden Index y indice 1 es su estado (0 vs 1)
             if(suborden[1] == 0):
                 allSubOrdersWereCompleted = False
             pass
         if(allSubOrdersWereCompleted):
-            #self.finisherOutput("order",(orderToCheckIndex,0,0))
+            # self.finisherOutput("order",(orderToCheckIndex,0,0))
             logging.info(f"Order {orderToCheckIndex} is complete")
             self.orderCounterCompleted += 1
             return True
         else:
             return False
         pass
-    
+
     def endStack(self):
-        ## Variables para la logica del json output
+        # Variables para la logica del json output
         finishedASubOrder = False
         finishedAnOrder = False
         # Esta funcion es el ultimo bloque de logica
@@ -447,11 +452,12 @@ class PersonalTaqueria(threading.Thread):
                         # Declarar en el registro de subordenes de ordenes
                         #   su completación (completición?)
                         self.ordenesSuborders[orderToCheckIndex
-                        ][subOrderToEndIndex][1] = 1
-                        #self.finisherOutput("subOrder",(orderToCheckIndex,subOrderToEndIndex,0))
-                        logging.info(f"Suborder {self.subOrderCounter} completed")
+                                              ][subOrderToEndIndex][1] = 1
+                        # self.finisherOutput("subOrder",(orderToCheckIndex,subOrderToEndIndex,0))
+                        logging.info(
+                            f"Suborder {self.subOrderCounter} completed")
                         finishedASubOrder = True
-                        self.checkOrderCompletion(orderToCheckIndex) 
+                        self.checkOrderCompletion(orderToCheckIndex)
                 else:
                     # Si el ultimo elemento cocinado (en algun insante)
                     # era una cabeza que no pudo ser removida, la
@@ -463,19 +469,20 @@ class PersonalTaqueria(threading.Thread):
                     self.subOrderCounter += 1
                     # Declarar que suborden x de orden y se acabó
                     self.ordenesSuborders[orderToCheckIndex
-                        ][subOrderToEndIndex][1] = 1
-                    #self.finisherOutput("subOrder",(orderToCheckIndex,subOrderToEndIndex,0))
+                                          ][subOrderToEndIndex][1] = 1
+                    # self.finisherOutput("subOrder",(orderToCheckIndex,subOrderToEndIndex,0))
                     logging.info(f"Suborder {self.subOrderCounter} completed")
                     finishedASubOrder = True
                     # Revisar si se acabó la orden
-                    finishedAnOrder = self.checkOrderCompletion(orderToCheckIndex) 
+                    finishedAnOrder = self.checkOrderCompletion(
+                        orderToCheckIndex)
                 # Una vez acabado el proceso le hacemos pop
                 # saca orden del taquero
                 self.ordenes.pop(self.shortestOrderIndex, None)
                 # Señalar al contador de stacks completos que se acabo uno más
                 self.stackCounterCompleted += 1
                 self.finisherOutput(
-                    "stack",(
+                    "stack", (
                         orderToCheckIndex,
                         subOrderToEndIndex,
                         int(self.shortestOrderIndex))
@@ -484,15 +491,16 @@ class PersonalTaqueria(threading.Thread):
                 #  del stack, si es al mismo timestamp de todos modos
                 #  pero así suena más lógico
                 if(finishedASubOrder):
-                    self.finisherOutput("subOrder",(orderToCheckIndex,subOrderToEndIndex,0))
+                    self.finisherOutput(
+                        "subOrder", (orderToCheckIndex, subOrderToEndIndex, 0))
                 if(finishedAnOrder):
-                    self.finisherOutput("order",(orderToCheckIndex,0,0))
+                    self.finisherOutput("order", (orderToCheckIndex, 0, 0))
                 logging.info(
                     f"Stack {self.shortestOrderIndex} completed")
 
                 self.shortestOrderIndex = None
 
-    def finisherOutput(self,type,tupID):
+    def finisherOutput(self, type, tupID):
         orderID = tupID[0]
         subOrderID = tupID[1]
         stackID = tupID[2]
@@ -501,26 +509,26 @@ class PersonalTaqueria(threading.Thread):
         step["worker_id"] = self.ID
         step["step"] = nextStepID
         step["state"] = None
-        step["part_id"] = [orderID,subOrderID][:]
+        step["part_id"] = [orderID, subOrderID][:]
         step["time_stamp"] = getTime()
-        if(type=="order"):
+        if(type == "order"):
             step["state"] = f"Order {orderID} complete"
             pass
-        elif(type=="subOrder"):
+        elif(type == "subOrder"):
             step["state"] = f"Suborder {subOrderID} complete"
             pass
         else:
             step["state"] = f"Stack {stackID} complete"
-            pass 
-        self.jsonOutputs[orderID]["answer"]["steps"].append(step) 
+            pass
+        self.jsonOutputs[orderID]["answer"]["steps"].append(step)
         pass
-    
+
     def writeOutputSteps(self, action, tupleID):
         orderID = tupleID[0]
         subOrderID = tupleID[1]
         stackID = tupleID[2]
         numOfTacos = self.ordenes[self.shortestOrderIndex][4]
-        # Scenario de cambio 1: ninguno jaja 
+        # Scenario de cambio 1: ninguno jaja
         if(orderID == self.currentWorkingOrder and subOrderID == self.currentWorkingSuborder):
             nextStepID = len(self.jsonOutputs[orderID]["answer"]["steps"])
             step = {}
@@ -528,14 +536,14 @@ class PersonalTaqueria(threading.Thread):
                 step["worker_id"] = self.ID
                 step["step"] = nextStepID
                 step["state"] = f"cooking stack #{self.shortestOrderIndex} of {numOfTacos} tacos"
-                step["part_id"] = [orderID,subOrderID][:]
+                step["part_id"] = [orderID, subOrderID][:]
                 step["time_stamp"] = getTime()
-                self.jsonOutputs[orderID]["answer"]["steps"].append(step)            
+                self.jsonOutputs[orderID]["answer"]["steps"].append(step)
         # Scenario de cambio 2: misma orden otra suborden
-        elif((orderID == self.currentWorkingOrder and subOrderID != self.currentWorkingSuborder)\
-            or orderID != self.currentWorkingOrder):
+        elif((orderID == self.currentWorkingOrder and subOrderID != self.currentWorkingSuborder)
+             or orderID != self.currentWorkingOrder):
             # Ahora crear otro paso que diga que esta suborden fue pausada
-            #Saber que mensaje dar
+            # Saber que mensaje dar
             message = ""
             if(orderID == self.currentWorkingOrder):
                 message = f"Switching to suborder {subOrderID}"
@@ -543,27 +551,30 @@ class PersonalTaqueria(threading.Thread):
                 message = f"Switching to order {orderID}"
             pauseStep = {}
             pauseStep["worker_id"] = self.ID
-            pauseStep["step"] = len(self.jsonOutputs[self.currentWorkingOrder]["answer"]["steps"])
+            pauseStep["step"] = len(
+                self.jsonOutputs[self.currentWorkingOrder]["answer"]["steps"])
             pauseStep["state"] = message
-            pauseStep["part_id"] = [self.currentWorkingOrder,self.currentWorkingSuborder]
+            pauseStep["part_id"] = [
+                self.currentWorkingOrder, self.currentWorkingSuborder]
             pauseStep["time_stamp"] = getTime()
-            self.jsonOutputs[self.currentWorkingOrder]["answer"]["steps"].append(pauseStep)
+            self.jsonOutputs[self.currentWorkingOrder]["answer"]["steps"].append(
+                pauseStep)
             # Y hagamos el nuevo paso de cooking en la activa
             nextStepID = len(self.jsonOutputs[orderID]["answer"]["steps"])
             step = {}
             step["worker_id"] = self.ID
             step["step"] = nextStepID
             step["state"] = f"cooking stack #{self.shortestOrderIndex} of {numOfTacos} tacos"
-            step["part_id"] = [orderID,subOrderID][:]
+            step["part_id"] = [orderID, subOrderID][:]
             step["time_stamp"] = getTime()
-            self.jsonOutputs[orderID]["answer"]["steps"].append(step)  
+            self.jsonOutputs[orderID]["answer"]["steps"].append(step)
             pass
         # Scenario 3, la orden por completo es pausada
         elif(self.currentWorkingOrder != orderID):
-            #Algo me dice que es igual a la previa.....
-            pass            
+            # Algo me dice que es igual a la previa.....
+            pass
         pass
-    
+
     def requestIngridient(self, ingridient, quantity, priority):
         if(ingridient not in self.listOfRquestedIngridients):
             # Si no está el ingrediente en la lista de solicitados, se pide
@@ -728,17 +739,17 @@ class PersonalTaqueria(threading.Thread):
             orderID = self.ordenes[self.shortestOrderIndex][2][0]
             suborderID = self.ordenes[self.shortestOrderIndex][2][1]
             stackID = self.shortestOrderIndex
-            ## Sección de codigo exlcuisva del json output
+            # Sección de codigo exlcuisva del json output
             if(self.currentWorkingOrder == None):
                 self.currentWorkingOrder = self.ordenes[self.shortestOrderIndex][2][0]
                 self.currentWorkingSuborder = self.ordenes[self.shortestOrderIndex][2][1]
                 self.currentWorkingStack = self.shortestOrderIndex
             self.writeOutputSteps(
-                "asigned",(orderID,suborderID,stackID)
+                "asigned", (orderID, suborderID, stackID)
             )
             self.currentWorkingOrder = self.ordenes[self.shortestOrderIndex][2][0]
             self.currentWorkingSuborder = self.ordenes[self.shortestOrderIndex][2][1]
-            self.currentWorkingStack= self.shortestOrderIndex
+            self.currentWorkingStack = self.shortestOrderIndex
             ##
         else:
             if(self.shortestOrderIndex == None):
@@ -1034,7 +1045,7 @@ def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
     ordersToTest = 3
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="w",
-    format="%(asctime)s - [%(levelname)s] - [%(threadName)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s")
+                        format="%(asctime)s - [%(levelname)s] - [%(threadName)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s")
     Cocina = CocinaTaqueros("Taqueros")
     Cocina.start()
     Cocina.IngresoPersonal(Cocina)
