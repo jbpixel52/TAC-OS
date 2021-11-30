@@ -2,3 +2,4 @@ logfile.log
 *.log
 __pycache__/
 scratch.py
+scratch.py
