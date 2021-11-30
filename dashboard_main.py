@@ -17,10 +17,12 @@ from dash.dependencies import Input, Output
 LOGLINE=0
 
 def read_log(filepath=None):
+    HTMLparagraphs = []
     with open(filepath,mode='r') as file:
-        while True():
-            pass
-            
+        for line in file:
+            HTMLparagraphs.append(html.P(line))
+        file.close()
+    return HTMLparagraphs            
 
 
 def json_to_dataframe(filepath, normal_column=None):
@@ -78,10 +80,8 @@ app.layout = html.Div([
 )
 def update(n_intervals):
     if n_intervals > 0:
-        # json_to_dataframe(filepath='jsons.json', normal_column='orden').to_dict('records')
-        # nested_dict_to_dataframe('logs/staff/taqueros/Omar.json','ordenes').to_dict('records')
         return [
-            dash_table.DataTable(
+            html.Div(style={'display':'flex','flex-direction':'row','justify-content':'space-evenly','max-width':'90%','align-items':'center'},children=[dash_table.DataTable(
                 columns=[
                     {"name": i, "id": i, "deletable": True, "selectable": True} for i in df.columns
                 ],
@@ -99,16 +99,19 @@ def update(n_intervals):
                 id='datatable_taquero',
                 data=nested_dict_to_dataframe('logs/staff/taqueros/Omar.json', 'ordenes').to_dict('records'),
                 editable=False,
-                filter_action="native",
                 sort_action="native",
                 page_action="native",
                 page_current=0,
                 page_size=10,
-            ),
+            ),]),
+            
             html.P(f"Is Omar cooking? {get_status('logs/staff/taqueros/Omar.json',key ='cooking')}"),
             html.P(f"Is Omar\'s fan active? {get_status('logs/staff/taqueros/Omar.json',key ='isFanActive')}"),
             html.P(f"Who Is Omar\'s chalan? {get_status('logs/staff/taqueros/Omar.json',key ='chalan')}"),
-
+            ####### 
+            html.H2('TAC-OS LOGS'),
+            html.Div(children=read_log('logfile.log'),style={'overflow':'auto','height':'200px','background-color':'coral'}),
+            
         ]
 
 
@@ -125,7 +128,9 @@ def get_status(filepath,key):
             if key == 'cooking' or 'isFanActive':
                  return 'NO'
             else:
-                return metada.get(key)          
+                return metada.get(key)     
+        else:
+            return metadata.get(key) #ESTO ES PARA LOS CASOS COMO NOMBRES O NON BINARY VALUES     
     else:
         return 'key doesn\'t exist in given metadata dictionary.'
     
@@ -134,5 +139,5 @@ def get_status(filepath,key):
 # la taqueria a la vez, deberá quedarse en false cuando usemos el SQS
 # LO NECESITO AHORITA
 def main():
-    app.run_server(debug=False, use_reloader=False)
+    app.run_server(debug=True, use_reloader=False)
 
