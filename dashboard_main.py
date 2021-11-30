@@ -194,5 +194,5 @@ def get_status(filepath,key):
 # la taqueria a la vez, deberá quedarse en false cuando usemos el SQS
 # LO NECESITO AHORITA
 def main():
-    app.run_server(debug=True, use_reloader=True)
+    app.run_server(debug=False, use_reloader=False)
 

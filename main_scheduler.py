@@ -388,9 +388,6 @@ class PersonalTaqueria(threading.Thread):
                 pass
             # Reiniciar el contador de todos modos
             self.remainingRestingTime = self.maxRestingTime
-
-    def finishOrderOutput(self):
-        pass
     
     def checkOrderCompletion(self, orderToCheckIndex):
         #Funcion usada por endStack() para revisar si al acabar
@@ -402,11 +399,18 @@ class PersonalTaqueria(threading.Thread):
                 allSubOrdersWereCompleted = False
             pass
         if(allSubOrdersWereCompleted):
+            #self.finisherOutput("order",(orderToCheckIndex,0,0))
             logging.info(f"Order {orderToCheckIndex} is complete")
             self.orderCounterCompleted += 1
+            return True
+        else:
+            return False
         pass
     
     def endStack(self):
+        ## Variables para la logica del json output
+        finishedASubOrder = False
+        finishedAnOrder = False
         # Esta funcion es el ultimo bloque de logica
         # de la funcion de cocinar, cambia cabezas de ordenes y remueve de
         #  cosas por hacer los stacks hechos
@@ -444,7 +448,9 @@ class PersonalTaqueria(threading.Thread):
                         #   su completación (completición?)
                         self.ordenesSuborders[orderToCheckIndex
                         ][subOrderToEndIndex][1] = 1
+                        #self.finisherOutput("subOrder",(orderToCheckIndex,subOrderToEndIndex,0))
                         logging.info(f"Suborder {self.subOrderCounter} completed")
+                        finishedASubOrder = True
                         self.checkOrderCompletion(orderToCheckIndex) 
                 else:
                     # Si el ultimo elemento cocinado (en algun insante)
@@ -458,39 +464,62 @@ class PersonalTaqueria(threading.Thread):
                     # Declarar que suborden x de orden y se acabó
                     self.ordenesSuborders[orderToCheckIndex
                         ][subOrderToEndIndex][1] = 1
+                    #self.finisherOutput("subOrder",(orderToCheckIndex,subOrderToEndIndex,0))
                     logging.info(f"Suborder {self.subOrderCounter} completed")
+                    finishedASubOrder = True
                     # Revisar si se acabó la orden
-                    self.checkOrderCompletion(orderToCheckIndex) 
+                    finishedAnOrder = self.checkOrderCompletion(orderToCheckIndex) 
                 # Una vez acabado el proceso le hacemos pop
                 # saca orden del taquero
                 self.ordenes.pop(self.shortestOrderIndex, None)
                 # Señalar al contador de stacks completos que se acabo uno más
                 self.stackCounterCompleted += 1
-                self.hasCookedSomething = True
+                self.finisherOutput(
+                    "stack",(
+                        orderToCheckIndex,
+                        subOrderToEndIndex,
+                        int(self.shortestOrderIndex))
+                )
+                # Hacer los outputs de reporte luego de que se reporte el fin
+                #  del stack, si es al mismo timestamp de todos modos
+                #  pero así suena más lógico
+                if(finishedASubOrder):
+                    self.finisherOutput("subOrder",(orderToCheckIndex,subOrderToEndIndex,0))
+                if(finishedAnOrder):
+                    self.finisherOutput("order",(orderToCheckIndex,0,0))
                 logging.info(
                     f"Stack {self.shortestOrderIndex} completed")
 
                 self.shortestOrderIndex = None
 
+    def finisherOutput(self,type,tupID):
+        orderID = tupID[0]
+        subOrderID = tupID[1]
+        stackID = tupID[2]
+        nextStepID = len(self.jsonOutputs[orderID]["answer"]["steps"])
+        step = {}
+        step["worker_id"] = self.ID
+        step["step"] = nextStepID
+        step["state"] = None
+        step["part_id"] = [orderID,subOrderID][:]
+        step["time_stamp"] = getTime()
+        if(type=="order"):
+            step["state"] = f"Order {orderID} complete"
+            pass
+        elif(type=="subOrder"):
+            step["state"] = f"Suborder {subOrderID} complete"
+            pass
+        else:
+            step["state"] = f"Stack {stackID} complete"
+            pass 
+        self.jsonOutputs[orderID]["answer"]["steps"].append(step) 
+        pass
+    
     def writeOutputSteps(self, action, tupleID):
         orderID = tupleID[0]
         subOrderID = tupleID[1]
         stackID = tupleID[2]
         numOfTacos = self.ordenes[self.shortestOrderIndex][4]
-        #But first, decir que se acabó el stack previo
-        # if(self.currentWorkingStack != stackID):
-        #     # Si hubo un cambio de stack entonces c-acabó
-        #     nextStepID = len(self.jsonOutputs[orderID]["answer"]["steps"])
-        #     step = {}
-        #     if(action == "asigned"):
-        #         step["worker_id"] = self.ID
-        #         step["step"] = nextStepID
-        #         step["state"] = f"stack #{self.currentWorkingStack} is done"
-        #         step["part_id"] = [orderID,subOrderID][:]
-        #         step["time_stamp"] = getTime()
-        #         self.jsonOutputs[orderID]["answer"]["steps"].append(step)                        
-        # Si el stack nuevo cambia de suborden o orden, hay
-        #  que finalizar ese paso
         # Scenario de cambio 1: ninguno jaja 
         if(orderID == self.currentWorkingOrder and subOrderID == self.currentWorkingSuborder):
             nextStepID = len(self.jsonOutputs[orderID]["answer"]["steps"])
@@ -509,9 +538,9 @@ class PersonalTaqueria(threading.Thread):
             #Saber que mensaje dar
             message = ""
             if(orderID == self.currentWorkingOrder):
-                message = f"the suborder {self.currentWorkingSuborder} has been paused"
+                message = f"Switching to suborder {subOrderID}"
             else:
-                message = "the order has been paused for me"
+                message = f"Switching to order {orderID}"
             pauseStep = {}
             pauseStep["worker_id"] = self.ID
             pauseStep["step"] = len(self.jsonOutputs[self.currentWorkingOrder]["answer"]["steps"])
