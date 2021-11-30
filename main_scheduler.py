@@ -126,7 +126,7 @@ class PersonalTaqueria(threading.Thread):
         with open(path, mode='w', encoding='utf-8') as file:
             serialized = {'name': self.name, 'ID': self.ID, 'ordenes': self.ordenes, 'stackcounter': self.stackCounter,
                           'isFanActive': self.isFanActive, 'chalan': self.chalanAsignado.name, 'cooking': self.Cooking}
-            json.dump(serialized, file)
+            json.dump(serialized, file,indent=4,sort_keys=True)
             file.close()
 
     def main(self):
@@ -1033,8 +1033,8 @@ class CocinaQuesadillero():
 def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
     ordersToTest = 3
-    logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="a+",
-                        format="%(asctime)-15s %(levelname)-8s %(message)s")
+    logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="w",
+    format="%(asctime)s - [%(levelname)s] - [%(threadName)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s")
     Cocina = CocinaTaqueros("Taqueros")
     Cocina.start()
     Cocina.IngresoPersonal(Cocina)

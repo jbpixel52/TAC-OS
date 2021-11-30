@@ -14,6 +14,14 @@ import plotly.graph_objects as go
 from dash import dash_table, dcc, html
 from dash.dependencies import Input, Output
 
+LOGLINE=0
+
+def read_log(filepath=None):
+    with open(filepath,mode='r') as file:
+        while True():
+            pass
+            
+
 
 def json_to_dataframe(filepath, normal_column=None):
     if normal_column is None:
@@ -63,74 +71,6 @@ app.layout = html.Div([
         n_intervals=0
     )
 ])
-
-import datetime
-import json
-import logging
-import multiprocessing
-import threading
-
-import dash
-import jsonpickle
-import numpy as np
-import pandas as pd
-import plotly
-import plotly.express as px
-import plotly.graph_objects as go
-from dash import dash_table, dcc, html
-from dash.dependencies import Input, Output
-
-
-def json_to_dataframe(filepath, normal_column=None):
-    if normal_column is None:
-        return pd.read_json(filepath)
-    elif normal_column is not None:
-        with open(filepath, mode='r') as file:
-            data = json.loads(file.read())
-            df_nested = pd.json_normalize(
-                data, record_path=[str(normal_column)])
-            file.close()
-        return df_nested
-
-
-def nested_dict_to_dataframe(filepath, column):
-    with open(filepath, mode='r') as file:
-        data = json.load(file)
-        file.close()
-    df = pd.DataFrame(data.get(column)).transpose()
-    return df
-
-
-def readjson(filepath):
-    data = dict()
-    with open(filepath, mode='r') as file:
-        data = json.load(file)
-        #print(data)
-        file.close()
-    return dict(data)
-
-
-df = json_to_dataframe('jsons.json', normal_column='orden')
-dfOmar = nested_dict_to_dataframe('logs/staff/taqueros/Omar.json', 'ordenes')
-
-external_stylesheets = [
-    'https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-app = dash.Dash(
-    __name__, external_stylesheets=external_stylesheets)
-
-app.layout = html.Div([
-    html.H1('TAC-OS DASHBOARD', style={'display': 'inline-block','text-align':'center',
-                                       'font-size': 'xxx-large', 'background-color': 'coral'}),
-    html.Div(id='table-div'),
-    dcc.Interval(
-        id='interval-component',
-        interval=5*1000,  # in milliseconds
-        n_intervals=2
-    )
-
-])
-
 
 @app.callback(
     Output('table-div', 'children'),
