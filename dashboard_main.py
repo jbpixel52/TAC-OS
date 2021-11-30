@@ -83,7 +83,7 @@ def update(n_intervals):
     if n_intervals > 0:
         return [
             html.H1('TAC-OS DASHBOARD', style={'display': 'inline-block',
-                                               'font-size': 'xxx-large', 'background-color': 'coral'}),
+                                               'font-size': 'xxx-large', 'background-color': 'SlateBlue'}),
 
             html.Div(style={'display': 'flex', 'flex-direction': 'row', 'justify-content': 'space-evenly', 'max-width': '90%', 'align-items': 'center'},
                      children=[
@@ -115,8 +115,8 @@ def update(n_intervals):
                     page_size=10,
                 ), ]),
             # METADA DEL TAQUERO
-            html.H2(f"Metadata del taquero {get_status(OMARPATH, 'name')} ID:{get_status(OMARPATH, 'ID')}", style={
-                    'background-color': 'CornflowerBlue', 'max-width': '40%'}),
+            html.H2(f"Metadata del taquero {get_status(OMARPATH, 'name')}", style={
+                    'background-color': 'CornflowerBlue', 'max-width': '20%'}),
             html.P(
                 f"Is Omar cooking? {get_status(OMARPATH,key ='cooking')}"),
             html.P(
@@ -141,9 +141,12 @@ def update(n_intervals):
             #######
             html.H2('TAC-OS LOGS'),
             html.Div(children=read_log('logfile.log'), style={
-                     'overflow': 'auto', 'height': '200px', 'background-color': 'coral'}),
+                     'overflow': 'auto', 'height': '200px', 'background-color': 'SlateBlue'}),
 
         ]
+
+def tableandtile(title,table):
+    pass
 
 
 def get_status(filepath, key):

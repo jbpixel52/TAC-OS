@@ -1,0 +1,5 @@
+jsonpickle
+numpy
+pandas
+plotly
+dash
