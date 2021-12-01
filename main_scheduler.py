@@ -512,17 +512,18 @@ class PersonalTaqueria(threading.Thread):
                     # Revisar si se acabó la orden
                     finishedAnOrder = self.checkOrderCompletion(
                         orderToCheckIndex)
+                # Antes de hacer pop reportar su finalización en el json
+                self.finisherOutput(
+                    "stack", (
+                        orderToCheckIndex,
+                        subOrderToEndIndex,
+                        self.ordenes[self.shortestOrderIndex][2][2])
+                )
                 # Una vez acabado el proceso le hacemos pop
                 # saca orden del taquero
                 self.ordenes.pop(self.shortestOrderIndex, None)
                 # Señalar al contador de stacks completos que se acabo uno más
                 self.stackCounterCompleted += 1
-                self.finisherOutput(
-                    "stack", (
-                        orderToCheckIndex,
-                        subOrderToEndIndex,
-                        int(self.shortestOrderIndex))
-                )
                 # Hacer los outputs de reporte luego de que se reporte el fin
                 #  del stack, si es al mismo timestamp de todos modos
                 #  pero así suena más lógico
@@ -555,7 +556,7 @@ class PersonalTaqueria(threading.Thread):
             step["state"] = f"Suborder {subOrderID} complete"
             pass
         else:
-            step["state"] = f"Stack {stackID} complete"
+            step["state"] = f"Stack#{stackID}({self.shortestOrderIndex}) complete"
             pass
         self.jsonOutputs[orderID]["answer"]["steps"].append(step)
         pass
