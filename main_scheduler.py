@@ -17,8 +17,8 @@ debug_state = True
 
 
 def getTime():
-    LocalTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
-    return LocalTime
+    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+   
 
 
 class PersonalTaqueria(threading.Thread):
