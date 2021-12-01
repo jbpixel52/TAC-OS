@@ -1,17 +1,18 @@
 #%%
 import datetime
+from datetime import datetime
 from time import sleep
-def nowTime():
-    return datetime.datetime.now()
-    
+import threading
+from multiprocessing import Process
+
+def clock():
+    start_time = datetime.now()
+    print(start_time)
+    while True:
+        if (datetime.now() - start_time).seconds == 1:
+            start_time = datetime.now()
+            print(start_time)
+
+    # %%
 
 
-EPOCH = getTime()
-ENDTIMES = None
-DELTATIME = None
-
-while True:
-    sleep(1)
-    ENDTIMES = getTime()
-    DELTATIME = ENDTIMES - EPOCH
-    print(DELTATIME)

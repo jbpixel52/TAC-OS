@@ -10,15 +10,16 @@ import threading
 import time
 from queue import Empty, PriorityQueue
 from time import sleep
+from datetime import datetime
 
 
 abcdario = list(string.ascii_uppercase)
 debug_state = True
 
 
+
 def getTime():
-    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
-   
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
 
 
 class PersonalTaqueria(threading.Thread):
@@ -1126,7 +1127,6 @@ class CocinaTaqueros(multiprocessing.Process):
 class CocinaQuesadillero():
     pass
 
-
 def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
     ordersToTest = 3
@@ -1135,7 +1135,8 @@ def open_taqueria():
     Cocina = CocinaTaqueros("Taqueros")
     Cocina.start()
     Cocina.ingreso_personal(Cocina)
-
+   
+    
     while(True):
         with open("jsons.json") as OrdenesJSON:
             ListadoOrdenes = json.load(OrdenesJSON)
