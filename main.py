@@ -24,12 +24,7 @@ import dashboard_main
 from main_scheduler import (ChalanTaquero, CocinaQuesadillero, CocinaTaqueros,
                             PersonalTaqueria, getTime, open_taqueria)
 
-abcdario = list(string.ascii_uppercase)
-
 debug_state = False
-
-programas = multiprocessing.Queue()
-
 
 def main():
     taqueria = Process(target = open_taqueria)
