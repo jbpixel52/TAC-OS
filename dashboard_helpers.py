@@ -12,6 +12,14 @@ staff_style = {'display': 'flex', 'flex-direction': 'row',
 
 
 def read_log(filepath=None):
+    """[summary]
+
+    Args:
+        filepath ([type], optional): [description]. Defaults to None.
+
+    Returns:
+        [list]: [description]
+    """    
     HTMLparagraphs = []
     with open(filepath, mode='r') as file:
         for line in file:
@@ -21,6 +29,15 @@ def read_log(filepath=None):
 
 
 def json_to_dataframe(filepath, normal_column=None):
+    """[summary]
+
+    Args:
+        filepath ([type]): [description]
+        normal_column ([type], optional): [description]. Defaults to None.
+
+    Returns:
+        [type]: [description]
+    """    
     if normal_column is None:
         return pd.read_json(filepath)
     elif normal_column is not None:
@@ -33,6 +50,15 @@ def json_to_dataframe(filepath, normal_column=None):
 
 
 def nested_dict_to_dataframe(filepath, column):
+    """[summary]
+
+    Args:
+        filepath ([type]): [description]
+        column ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """    
     with open(filepath, mode='r') as file:
         data = json.load(file)
         file.close()
@@ -41,6 +67,14 @@ def nested_dict_to_dataframe(filepath, column):
 
 
 def readjson(filepath):
+    """[summary]
+
+    Args:
+        filepath ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """    
     data = dict()
     with open(filepath, mode='r') as file:
         data = json.load(file)
@@ -50,6 +84,15 @@ def readjson(filepath):
 
 
 def get_status(filepath, key):
+    """[summary]
+
+    Args:
+        filepath ([string]): [description]
+        key ([string]): [description]
+
+    Returns:
+        [type]: [description]
+    """    
     metadata = readjson(filepath)
     if key in metadata:
         if metadata.get(key) is True:
@@ -97,6 +140,7 @@ def staff_metadata_html(directory='logs/staff/taqueros'):
     return elements_list
 
 def taqueroOrderTable(filepath,dataframe= None):
+    
     dash_table.DataTable(
                     columns=[
                         {"name": str(i), "id": str(i)} for i in dataframe.columns
