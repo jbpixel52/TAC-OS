@@ -342,7 +342,8 @@ class PersonalTaqueria(threading.Thread):
 
     def recieveClientOrders(self):
         while(True):
-            logging.info(self.ordenes)
+            #COMENTE ESTA PRIMERA LINEA PORQUE LAS ORDENES EN EL LOG HACE MUCHOOOO RUIDO
+            #logging.info(self.ordenes)
             logging.info(self.ordenesSuborders)
             logging.info(f"{self.name}'s headsofOrders:{self.ordenesHeads}")
             logging.info(f"{self.name}'s taco counter: {self.tacoCounter}")
