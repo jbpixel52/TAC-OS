@@ -1,0 +1,18 @@
+{
+    "ID": 0,
+    "Owl": false,
+    "chalan": "Jeff",
+    "cooking": false,
+    "currentCebolla": 200,
+    "currentCilantro": 200,
+    "currentGuacamole": 100,
+    "currentSalsa": 150,
+    "currentTortillas": 50,
+    "currentWorkingOrder": null,
+    "currentWorkingSuborder": null,
+    "isFanActive": false,
+    "name": "Marcelino",
+    "ordenes": {},
+    "resting": false,
+    "stackcounter": 0
+}
