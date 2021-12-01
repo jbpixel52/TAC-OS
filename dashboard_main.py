@@ -169,8 +169,5 @@ def get_status(filepath, key):
         return 'key doesn\'t exist in given metadata dictionary.'
 
 
-# Nota para Julio, eso lo pongo en false para que no se corra dos veces
-# la taqueria a la vez, deberá quedarse en false cuando usemos el SQS
-# LO NECESITO AHORITA
 def main():
-    app.run_server(debug=True, use_reloader=False)
+    app.run_server(debug=False, use_reloader=False)
