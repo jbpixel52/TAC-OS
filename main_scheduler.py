@@ -188,7 +188,8 @@ class PersonalTaqueria(threading.Thread):
     def is_order_rejectable(self, orden):
         for subOrden in orden['orden']:
             if((subOrden['type'] in self.allowedOrderTypes) \
-                and (subOrden['meat'] in self.allowedMeatTypes)):
+                and (subOrden['meat'] in self.allowedMeatTypes) \
+                and (subOrden['quantity'] > 0)):
                 return False
         logging.info(f"order {orden['request_id']} has to be rejected")
         self.writeOutputSteps("rejectOrder",(orden['request_id'],0,0), None)
@@ -1155,7 +1156,7 @@ class CocinaQuesadillero():
 
 def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
-    ordersToTest = 5
+    ordersToTest = 7
     # si se desean ver ordenes en cabeza, cambiar nivel a debug
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="w",
                         format="%(asctime)s - [%(levelname)s] - [%(threadName)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s")
