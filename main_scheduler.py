@@ -516,7 +516,11 @@ class PersonalTaqueria(threading.Thread):
                         logging.info(
                             f"{self.name}'s suborder {self.subOrderCounter} completed")
                         finishedASubOrder = True
-                        self.checkOrderCompletion(orderToCheckIndex)
+                        # Revisar si se acabó la orden
+                        finishedAnOrder = self.checkOrderCompletion(
+                            orderToCheckIndex
+                        )
+                        # Revisar si se acabó la orden
                 else:
                     # Si el ultimo elemento cocinado (en algun insante)
                     # era una cabeza que no pudo ser removida, la
