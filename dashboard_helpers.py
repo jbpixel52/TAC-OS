@@ -5,10 +5,7 @@ import os
 import pandas as pd
 from dash import dash_table, html
 
-primary_color = 'SlateBlue'
-mdata_header_style = {'background-color': primary_color, }
-staff_style = {'display': 'flex', 'flex-direction': 'row',
-               'justify-content': 'space-evenly', 'align-items': 'center'}
+
 
 
 def read_log(filepath=None):
@@ -19,7 +16,7 @@ def read_log(filepath=None):
 
     Returns:
         [list]: [description]
-    """    
+    """
     HTMLparagraphs = []
     with open(filepath, mode='r') as file:
         for line in file:
@@ -37,7 +34,7 @@ def json_to_dataframe(filepath, normal_column=None):
 
     Returns:
         [type]: [description]
-    """    
+    """
     if normal_column is None:
         return pd.read_json(filepath)
     elif normal_column is not None:
@@ -49,16 +46,7 @@ def json_to_dataframe(filepath, normal_column=None):
         return df_nested
 
 
-def nested_dict_to_dataframe(filepath, column):
-    """[summary]
-
-    Args:
-        filepath ([type]): [description]
-        column ([type]): [description]
-
-    Returns:
-        [type]: [description]
-    """    
+def taqueroToDataFrame(filepath=None, column=None):
     with open(filepath, mode='r') as file:
         data = json.load(file)
         file.close()
@@ -74,7 +62,7 @@ def readjson(filepath):
 
     Returns:
         [type]: [description]
-    """    
+    """
     data = dict()
     with open(filepath, mode='r') as file:
         data = json.load(file)
@@ -92,7 +80,7 @@ def get_status(filepath, key):
 
     Returns:
         [type]: [description]
-    """    
+    """
     metadata = readjson(filepath)
     if key in metadata:
         if metadata.get(key) is True:
@@ -112,6 +100,43 @@ def get_status(filepath, key):
         return 'key doesn\'t exist in given metadata dictionary.'
 
 
+def Tables(directory='logs/staff/taqueros'):
+    elements_list = []
+    df = json_to_dataframe('jsons.json',normal_column='orden')
+    """elements_list.append(dash_table.DataTable(
+        columns=[
+            {"name": i, "id": i, "deletable": True, "selectable": True} for i in df.columns
+        ],
+        id='global-orders',
+        data=json_to_dataframe(
+            filepath='jsons.json', normal_column='orden').to_dict('records'),
+        sort_action="native",
+        page_action="native",
+        page_current=0,
+        page_size=5))"""
+    filepaths = []
+    for subdir, dirs, files in os.walk(directory):
+        for file in files:
+            filepaths.append(os.path.join(subdir, file))
+
+    for file in filepaths:
+        DataFrame = taqueroToDataFrame(file)
+        elements_list.append(
+            dash_table.DataTable(
+                columns=[
+                    {"name": str(i), "id": str(i)} for i in DataFrame.columns
+                ],
+                data=DataFrame,
+                editable=False,
+                sort_action="native",
+                page_action="native",
+                page_current=0,
+                page_size=5,
+            )
+        )
+    return elements_list
+
+
 def staff_metadata_html(directory='logs/staff/taqueros'):
     """[summary]
 
@@ -120,7 +145,7 @@ def staff_metadata_html(directory='logs/staff/taqueros'):
 
     Returns:
         [list]: [created html wrapped elements for DASH]
-    """    
+    """
     elements_list = []
     filepaths = []
     for subdir, dirs, files in os.walk(directory):
@@ -131,7 +156,7 @@ def staff_metadata_html(directory='logs/staff/taqueros'):
         metadata = readjson(file)
         taquero_div = []
         taquero_div.append(
-            html.H3(f"metadata for {metadata.get('name')}", style=mdata_header_style))
+            html.H3(f"metadata for {metadata.get('name')}"))
         for key, value in metadata.items():
             if key != 'ordenes':
                 taquero_div.append(html.P(f" {key} = {value}"))
@@ -139,22 +164,22 @@ def staff_metadata_html(directory='logs/staff/taqueros'):
 
     return elements_list
 
-def taqueroOrderTable(filepath,dataframe= None):
-    
+
+def taqueroOrderTable(filepath, dataframe=None):
+
     dash_table.DataTable(
-                    columns=[
-                        {"name": str(i), "id": str(i)} for i in dataframe.columns
-                    ],
-                    id='datatable_taquero',
-                    data=nested_dict_to_dataframe(filepath, 'ordenes').to_dict('records'),
-                    editable=False,
-                    style_cell={'padding': '5px',
-                                'background-color': 'FloralWhite'},
-                    sort_action="native",
-                    page_action="native",
-                    page_current=0,
-                    page_size=10,
-                )
+        columns=[
+            {"name": str(i), "id": str(i)} for i in dataframe.columns
+        ],
+        id='datatable_taquero',
+        data=nested_dict_to_dataframe(filepath, 'ordenes').to_dict('records'),
+        editable=False,
+        sort_action="native",
+        page_action="native",
+        page_current=0,
+        page_size=10,
+    )
+
 
 if __name__ == "__main__":
     staffhtml = staff_metadata_html()

@@ -9,17 +9,10 @@ import plotly.graph_objects as go
 from dash import dash_table, dcc, html
 from dash.dependencies import Input, Output
 
-from dashboard_helpers import (get_status, json_to_dataframe,
-                               nested_dict_to_dataframe, read_log, readjson,
-                               staff_metadata_html)
-metada_style = {'display': 'flex', 'flex-direction': 'row',
-                'justify-content': 'space-evenly', 'max-width': '90%', 'align-items': 'center'}
-LOGLINE = 0
-OMARPATH = 'logs/staff/taqueros/Omar.json'
+import dashboard_helpers as helpers
 
 
-df = json_to_dataframe('jsons.json', normal_column='orden')
-dfOmar = nested_dict_to_dataframe('logs/staff/taqueros/Omar.json', 'ordenes')
+
 
 app = dash.Dash(
     __name__, external_stylesheets=['style.css'])
@@ -28,7 +21,7 @@ app.layout = html.Div([
     html.Div(id='table-div'),
     dcc.Interval(
         id='interval-component',
-        interval=2*1000,  # in milliseconds
+        interval=5*1000,  # in milliseconds
         n_intervals=0
     )
 ])
@@ -43,37 +36,12 @@ def update(n_intervals):
         return [
             html.H1('TAC-OS DASHBOARD'),
 
-            html.Div(children=[
-                dash_table.DataTable(
-                    columns=[
-                        {"name": i, "id": i, "deletable": True, "selectable": True} for i in df.columns
-                    ],
-                    id='datatable_taquero',
-                    data=json_to_dataframe(
-                        filepath='jsons.json', normal_column='orden').to_dict('records'),
-                    sort_action="native",
-                    page_action="native",
-                    page_current=0,
-                    page_size=10),
-
-                dash_table.DataTable(
-                    columns=[
-                        {"name": str(i), "id": str(i)} for i in dfOmar.columns
-                    ],
-                    id='datatable_taquero',
-                    data=nested_dict_to_dataframe(
-                        'logs/staff/taqueros/Omar.json', 'ordenes').to_dict('records'),
-                    editable=False,
-                    sort_action="native",
-                    page_action="native",
-                    page_current=0,
-                    page_size=10,
-                ), ]),
+            html.Div(children= helpers.Tables()),
             # METADA DE LOS TAQUERO
-            html.Div(children=staff_metadata_html(), style=metada_style),
+            html.Div(children= helpers.staff_metadata_html()),
             #######
             html.H2('TAC-OS LOGS'),
-            html.Div(children=read_log('logfile.log')),
+            html.Div(children= helpers.read_log('logfile.log')),
 
         ]
 

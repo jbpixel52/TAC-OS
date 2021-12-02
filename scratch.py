@@ -1,22 +1,18 @@
 #%%
- 
-A = {'a':'112','b':'22','c':'52'} #test dict
+import pandas as pd
+import json
+from dash import dash_table, html
 
 
 
-print(A)
-keys = [] #key list
-values = [] #value list
-
-for key, value in A.items():
-    keys.append(key)
-    values.append(int(value)) #CLAVE AQUI QUE LO CASTEO A INT, si no no se hace sort
+def taqueroToJSON(filepath = None,column=None):
+    with open(filepath, mode='r') as file:
+        data = json.load(file)
+        file.close()
+    df = pd.DataFrame(data.get(column)).transpose()
+    return df
     
-print(f"KEYS: {keys}")
-print(f"VALUES PRE SORT {values}")
-values = sorted(values)
-print(f"ValUES POST SORT {values}")
-zip_iterator = zip(keys, values)
-FINAL = dict(zip_iterator)
-print(f"FINAL DICT {FINAL}")
-# %%
+print(taqueroToJSON('logs/staff/taqueros/Omar.json', column = 'ordenes'))
+
+
+dash_table.DataTable(data = taqueroToJSON('logs/staff/taqueros/Omar.json'))
