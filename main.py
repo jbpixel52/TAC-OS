@@ -30,8 +30,8 @@ def main():
     taqueria = Process(target = open_taqueria)
     taqueria.start()
     dashboard = Process(target = dashboard_main.main())
-    #performance = Process(target= metrics.main())
-    #performance.start()
+    performance = Process(target= metrics.main())
+    performance.start()
     dashboard.start()
 
 

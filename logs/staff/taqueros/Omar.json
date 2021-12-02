@@ -2,26 +2,28 @@
     "ID": 0,
     "Owl": false,
     "chalan": "Julio",
+    "completedOrdersCounter": 1,
+    "completedStackCOunter": 8,
     "cooking": true,
-    "currentCebolla": 164,
+    "currentCebolla": 165,
     "currentCilantro": 184,
     "currentGuacamole": 95,
-    "currentSalsa": 108,
-    "currentTortillas": 38,
-    "currentWorkingOrder": 3,
+    "currentSalsa": 110,
+    "currentTortillas": 40,
+    "currentWorkingOrder": 2,
     "currentWorkingSuborder": 0,
     "isFanActive": true,
     "name": "Omar",
     "ordenes": {
         "10": [
             30,
-            13.388428636391957,
+            12.49507060845693,
             [
                 6,
                 0,
                 0
             ],
-            1638473900.434229,
+            1638476472.4579525,
             10,
             3,
             15.0,
@@ -34,18 +36,39 @@
                 "to"
             ]
         ],
+        "6": [
+            39.66669,
+            18.716063922880004,
+            [
+                2,
+                0,
+                2
+            ],
+            1638476460.4406471,
+            7.0,
+            5.66667,
+            2.5,
+            2.0,
+            [
+                "sa",
+                "",
+                "",
+                "ce",
+                "to"
+            ]
+        ],
         "9": [
             35.833349999999996,
-            17.488302048810603,
+            16.420454927087842,
             [
                 3,
                 0,
                 1
             ],
-            1638473891.4167182,
+            1638476463.4447966,
             5.0,
             7.16667,
-            8.5,
+            10.0,
             2.0,
             [
                 "sa",
@@ -56,6 +79,7 @@
             ]
         ]
     },
-    "resting": true,
-    "stackcounter": 11
+    "resting": false,
+    "stackcounter": 11,
+    "suborderCounter": 2
 }

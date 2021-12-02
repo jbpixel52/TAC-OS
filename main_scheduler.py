@@ -13,9 +13,8 @@ from time import sleep
 from datetime import datetime
 
 
-abcdario = list(string.ascii_uppercase)
-debug_state = True
-
+alphabet = list(string.ascii_uppercase)
+DEBUG = True
 
 
 def getTime():
@@ -50,10 +49,9 @@ class PersonalTaqueria(threading.Thread):
         self.saving_memory = threading.Thread(
             target=self.staff_to_json,
             args=(),
-            name=f"{self.name}'s Dash communicator"
+            name=f"{self.name}'s ETCHER"
         )
 
-        self.emojis = ''
         # Variables de pertnenencia
         self.ID = None
         self.meatType = None
@@ -61,16 +59,16 @@ class PersonalTaqueria(threading.Thread):
         self.allowedMeatTypes = ["suadero", "lengua",
                                  "adobada", "asada", "cabeza", "tripa"]
         # Variables MUTEX
-        self.Splitting = False
-        self.Rescheduling = False
-        self.Cooking = False
+        self.splitting = False
+        self.rescheduling = False
+        self.cooking = False
         # Esctructuras de datos y cosas del output
         self.jsonOutputTemplate = None  # Se asigna en main
         self.hasCookedSomething = False
         self.jsonOutputs = {}  # Cuadrerno con los jsons de salida
-        self.ordenes = {}  # dict in mind per worker
-        self.ordenesHeads = []  # lista con las cabezas de subordenenes
-        self.ordenesSuborders = {}  # Dict con listas de listas sobordenes
+        self.orders = {}  # dict in mind per worker
+        self.ordersHeads = []  # lista con las cabezas de subordenenes
+        self.suborders = {}  # Dict con listas de listas sobordenes
         # Variables Delta
         self.ordersPerSecondDelta = 3  # ^-1
         self.cookUnitDelta = 0.5  # Minimo para cocinar
@@ -78,10 +76,10 @@ class PersonalTaqueria(threading.Thread):
         # La quadfecta de las variables counter
         self.tacoCounter = 0
         self.stackCounter = 0
-        self.stackCounterCompleted = 0  # stackCounter ya era usada para registro
-        self.subOrderCounter = 0
+        self.completedStackCunter = 0  # stackCounter ya era usada para registro
+        self.suborderCounter = 0
         self.orderCounter = 0
-        self.orderCounterCompleted = 0  # tambien ya era usada para registros
+        self.completedOrdersCounter = 0  # tambien ya era usada para registros
         # Constantes relevantes
         self.constMagnitud = 40  # ya no es p90 lol, ni para 4 tacos con todo alcanzaba
         # blah blah + [utis*const*tiempoatrasado], consultar desmos para demo
@@ -135,10 +133,13 @@ class PersonalTaqueria(threading.Thread):
 
     def objects_to_json(self):
         path = 'logs/staff/taqueros/'+self.name+'.json'
+        serialized = {'name': self.name, 'ID': self.ID, 'ordenes': self.orders, 'stackcounter': self.stackCounter,
+                        'isFanActive': self.isFanActive, 'chalan': self.chalanAsignado.name, 'cooking': self.cooking, 'resting': self.isResting, 'Owl': self.isAnOwl,
+                        'currentTortillas': self.currentTortillas, 'currentCebolla': self.currentCebolla, 'currentCilantro': self.currentCilantro, 'currentSalsa': self.currentSalsa, 'currentGuacamole': self.currentGuacamole, 'currentWorkingOrder': self.currentWorkingOrder, 'currentWorkingSuborder': self.currentWorkingSuborder,
+                        'completedStackCOunter': self.completedStackCunter, 'suborderCounter': self.suborderCounter,
+                        'completedOrdersCounter':self.completedOrdersCounter
+                        }
         with open(path, mode='w', encoding='utf-8') as file:
-            serialized = {'name': self.name, 'ID': self.ID, 'ordenes': self.ordenes, 'stackcounter': self.stackCounter,
-                          'isFanActive': self.isFanActive, 'chalan': self.chalanAsignado.name, 'cooking': self.Cooking, 'resting': self.isResting, 'Owl': self.isAnOwl,
-                          'currentTortillas': self.currentTortillas, 'currentCebolla': self.currentCebolla, 'currentCilantro': self.currentCilantro, 'currentSalsa': self.currentSalsa, 'currentGuacamole': self.currentGuacamole, 'currentWorkingOrder': self.currentWorkingOrder, 'currentWorkingSuborder': self.currentWorkingSuborder}
             json.dump(serialized, file, indent=4, sort_keys=True)
             file.close()
 
@@ -279,9 +280,9 @@ class PersonalTaqueria(threading.Thread):
                         if(costoUTIs < self.constMagnitud):
                             # No dividir, solo 1 stack por esta suborden
                             prioridad = ((costoUTIs**-1)*10)
-                            self.ordenesHeads.append(self.stackCounter)
+                            self.ordersHeads.append(self.stackCounter)
                             subSplitIndex = 0
-                            self.ordenes[str(self.stackCounter)] = [
+                            self.orders[str(self.stackCounter)] = [
                                 costoUTIs,
                                 prioridad,
                                 (self.orderCounter, numSuborden, subSplitIndex),
@@ -324,10 +325,10 @@ class PersonalTaqueria(threading.Thread):
                             # Si hubo residuo ponemos cola, si no entonces no
                             if(residuoUTIS > 0):
                                 prioridad = ((residuoUTIS**-1)*10)
-                                self.ordenesHeads.append(self.stackCounter)
+                                self.ordersHeads.append(self.stackCounter)
                                 subSplitIndex = 0
                                 residuoTiempo = tiempoCocinarIndividual * tacosSobrantes
-                                self.ordenes[str(self.stackCounter)] = [
+                                self.orders[str(self.stackCounter)] = [
                                     residuoUTIS,
                                     prioridad,
                                     (self.orderCounter, numSuborden, subSplitIndex),
@@ -345,11 +346,11 @@ class PersonalTaqueria(threading.Thread):
                             else:
                                 # Si la orden esta partida perfectamente
                                 # en stacks iguales, le ponemos la cabeza aquí
-                                self.ordenesHeads.append(self.stackCounter)
+                                self.ordersHeads.append(self.stackCounter)
                             for numStack in range(int(numStacks)):
                                 costoStack = tacosPorStack * costoUTIsIndividual
                                 prioridad = ((costoStack**-1)*10)
-                                self.ordenes[str(self.stackCounter)] = [
+                                self.orders[str(self.stackCounter)] = [
                                     costoStack,
                                     prioridad,
                                     (self.orderCounter, numSuborden, subSplitIndex),
@@ -377,22 +378,22 @@ class PersonalTaqueria(threading.Thread):
                     renglonOrden.append([subordenesNumber, 0])
                 else:
                     renglonOrden.append([subordenesNumber, 1])
-            self.ordenesSuborders[self.orderCounter] = renglonOrden
+            self.suborders[self.orderCounter] = renglonOrden
             self.orderCounter += 1
             pass
 
     def recieveClientOrders(self):
         while(True):
             #COMENTE ESTA PRIMERA LINEA PORQUE LAS ORDENES EN EL LOG HACE MUCHOOOO RUIDO
-            logging.debug(self.ordenes)
-            logging.info(self.ordenesSuborders)
-            logging.info(f"{self.name}'s headsofOrders:{self.ordenesHeads}")
+            logging.debug(self.orders)
+            logging.info(self.suborders)
+            logging.info(f"{self.name}'s headsofOrders:{self.ordersHeads}")
             logging.info(f"{self.name}'s taco counter: {self.tacoCounter}")
             logging.info(
                 f"{self.name}'s remaining ingridients:{self.currentSalsa}|{self.currentGuacamole}|{self.currentCilantro}|{self.currentCebolla}|{self.currentTortillas}"
             )
             logging.info(
-                f"Taquero {self.name} stats: OC:{self.orderCounterCompleted}|SOC:{self.subOrderCounter}|STC:{self.stackCounterCompleted}|TC:{self.tacoCounter}")
+                f"Taquero {self.name} stats: OC:{self.completedOrdersCounter}|SOC:{self.suborderCounter}|STC:{self.completedStackCunter}|TC:{self.tacoCounter}")
             # Placeholder de output json
             with open("outputs.json", "w") as outputs:
                 json.dump(self.jsonOutputs, outputs)
@@ -403,18 +404,18 @@ class PersonalTaqueria(threading.Thread):
                 newOrder = self.queue.get_nowait()
                 logging.info(
                     f"{self.name} está iniciando particion de orden {self.orderCounter}")
-                self.Splitting = True
+                self.splitting = True
                 #Primero se hace el output para poder ser rechazada
                 self.startOutputtingOrder(newOrder)
                 self.splitOrder(newOrder)  
                 try:
-                    self.Rescheduling = True
+                    self.rescheduling = True
                     self.sortOrders()
-                    self.Rescheduling = False
+                    self.rescheduling = False
                     # Esto va aqui intencionalmente porque en esa corta ventana sin MUTEX
                     # se podria agarrar un indice incorrecto porque no se alcanzaba a
                     # ordear las ordenes
-                    self.Splitting = False
+                    self.splitting = False
                     logging.info(
                         f"{self.name} ha finalizado la particion y organización de orden {self.orderCounter-1}")
                 except Exception as e:
@@ -433,20 +434,20 @@ class PersonalTaqueria(threading.Thread):
                     f"Taquero {self.name} has already rested too much so he won't"
                 )
                 self.writeOutputSteps(
-                    "noSleep", self.ordenes[self.shortestOrderIndex][2], None)
+                    "noSleep", self.orders[self.shortestOrderIndex][2], None)
                 pass
             else:
                 logging.info(
                     f"Taquero {self.name} must rest {self.remainingRestingTime} seconds"
                 )
                 self.writeOutputSteps(
-                    "yesSleep", self.ordenes[self.shortestOrderIndex][2], None)
+                    "yesSleep", self.orders[self.shortestOrderIndex][2], None)
                 self.isResting = True
                 time.sleep(self.remainingRestingTime)
                 self.isResting = False
                 logging.info(f"Taquero {self.name} has rested")
                 self.writeOutputSteps(
-                    "wakeUp", self.ordenes[self.shortestOrderIndex][2], None)
+                    "wakeUp", self.orders[self.shortestOrderIndex][2], None)
                 # Una vez que duerma reiniciar el contador de sleep
                 pass
             # Reiniciar el contador de todos modos
@@ -456,7 +457,7 @@ class PersonalTaqueria(threading.Thread):
         # Funcion usada por endStack() para revisar si al acabar
         # un stack que acabó una suborden tambien acabó una orden
         allSubOrdersWereCompleted = True
-        for suborden in self.ordenesSuborders[orderToCheckIndex]:
+        for suborden in self.suborders[orderToCheckIndex]:
             # Indice 0 es suborden Index y indice 1 es su estado (0 vs 1)
             if(suborden[1] == 0):
                 allSubOrdersWereCompleted = False
@@ -465,7 +466,7 @@ class PersonalTaqueria(threading.Thread):
             # self.finisherOutput("order", (orderToCheckIndex, 0, 0))
             logging.info(
                 f"{self.name}'s order {orderToCheckIndex} is complete")
-            self.orderCounterCompleted += 1
+            self.completedOrdersCounter += 1
             return True
         else:
             return False
@@ -478,60 +479,60 @@ class PersonalTaqueria(threading.Thread):
         # Esta funcion es el ultimo bloque de logica
         # de la funcion de cocinar, cambia cabezas de ordenes y remueve de
         #  cosas por hacer los stacks hechos
-        orderToCheckIndex = self.ordenes[self.shortestOrderIndex][2][0]
-        subOrderToEndIndex = self.ordenes[self.shortestOrderIndex][2][1]
-        if self.ordenes[self.shortestOrderIndex][6] > 0:
-            self.ordenes[str(self.shortestOrderIndex)
+        orderToCheckIndex = self.orders[self.shortestOrderIndex][2][0]
+        subOrderToEndIndex = self.orders[self.shortestOrderIndex][2][1]
+        if self.orders[self.shortestOrderIndex][6] > 0:
+            self.orders[str(self.shortestOrderIndex)
                          ][6] -= self.cookUnitDelta
             # resta el costo del taco hecho
-            if(self.ordenes[self.shortestOrderIndex][6] == 0):
+            if(self.orders[self.shortestOrderIndex][6] == 0):
                 # Remover de las ordenes cabeza
                 # Poner la nueva cabeza si es necesario
                 # y hacerle pop del diccionario de stacks/ordenes
-                if(str(int(self.shortestOrderIndex)+1) in self.ordenes):
+                if(str(int(self.shortestOrderIndex)+1) in self.orders):
                     # primero revisar si hay un taco counter subsecuente
                     # Si se acabo el ultimo stack no hya porque revisar que exista
                     # un sucesor
-                    if(self.ordenes[str(int(self.shortestOrderIndex)+1)][2][0]
-                       == self.ordenes[self.shortestOrderIndex][2][0]):
+                    if(self.orders[str(int(self.shortestOrderIndex)+1)][2][0]
+                       == self.orders[self.shortestOrderIndex][2][0]):
                         # Sí el siguiente taco counter comparte el mismo
                         # padre/inicio entonces hacer el venico la nueva
                         # cabeza al acabar este stack
-                        self.ordenesHeads.remove(
+                        self.ordersHeads.remove(
                             int(self.shortestOrderIndex))
-                        self.ordenesHeads.append(
+                        self.ordersHeads.append(
                             int(self.shortestOrderIndex)+1)
                     else:
                         # Si no tiene vecinos hermanos entonces solo quitar
-                        self.ordenesHeads.remove(
+                        self.ordersHeads.remove(
                             int(self.shortestOrderIndex))
                         # Si no quedan vecinos stacks, la suborden entonces
                         #  se acabó
-                        self.subOrderCounter += 1
+                        self.suborderCounter += 1
                         # Declarar en el registro de subordenes de ordenes
                         #   su completación (completición?)
-                        self.ordenesSuborders[orderToCheckIndex
+                        self.suborders[orderToCheckIndex
                                               ][subOrderToEndIndex][1] = 1
                         # self.finisherOutput("subOrder", (orderToCheckIndex, subOrderToEndIndex, 0))
                         logging.info(
-                            f"{self.name}'s suborder {self.subOrderCounter} completed")
+                            f"{self.name}'s suborder {self.suborderCounter} completed")
                         finishedASubOrder = True
                         self.checkOrderCompletion(orderToCheckIndex)
                 else:
                     # Si el ultimo elemento cocinado (en algun insante)
                     # era una cabeza que no pudo ser removida, la
                     # intentamos quitar
-                    if(int(self.shortestOrderIndex) in self.ordenesHeads):
-                        self.ordenesHeads.remove(
+                    if(int(self.shortestOrderIndex) in self.ordersHeads):
+                        self.ordersHeads.remove(
                             int(self.shortestOrderIndex))
                     # Cada removida de cabeza sin remplazarla == se acabó el stack
-                    self.subOrderCounter += 1
+                    self.suborderCounter += 1
                     # Declarar que suborden x de orden y se acabó
-                    self.ordenesSuborders[orderToCheckIndex
+                    self.suborders[orderToCheckIndex
                                           ][subOrderToEndIndex][1] = 1
                     # self.finisherOutput("subOrder", (orderToCheckIndex, subOrderToEndIndex, 0))
                     logging.info(
-                        f"{self.name}'s suborder {self.subOrderCounter} completed")
+                        f"{self.name}'s suborder {self.suborderCounter} completed")
                     finishedASubOrder = True
                     # Revisar si se acabó la orden
                     finishedAnOrder = self.checkOrderCompletion(
@@ -541,13 +542,13 @@ class PersonalTaqueria(threading.Thread):
                     "stack", (
                         orderToCheckIndex,
                         subOrderToEndIndex,
-                        self.ordenes[self.shortestOrderIndex][2][2])
+                        self.orders[self.shortestOrderIndex][2][2])
                 )
                 # Una vez acabado el proceso le hacemos pop
                 # saca orden del taquero
-                self.ordenes.pop(self.shortestOrderIndex, None)
+                self.orders.pop(self.shortestOrderIndex, None)
                 # Señalar al contador de stacks completos que se acabo uno más
-                self.stackCounterCompleted += 1
+                self.completedStackCunter += 1
                 # Hacer los outputs de reporte luego de que se reporte el fin
                 #  del stack, si es al mismo timestamp de todos modos
                 #  pero así suena más lógico
@@ -590,7 +591,7 @@ class PersonalTaqueria(threading.Thread):
         subOrderID = tupleID[1]
         stackID = tupleID[2]
         if(self.shortestOrderIndex):
-            numOfTacos = self.ordenes[self.shortestOrderIndex][4]
+            numOfTacos = self.orders[self.shortestOrderIndex][4]
         else:
             numOfTacos = 0 #Ordenes rechazadas no tienen n tacos registrados
         step = {}
@@ -731,13 +732,13 @@ class PersonalTaqueria(threading.Thread):
                     # Si no se espera hasta que le llegue (temporal esta forma)
                     logging.info(f"Taquero {self.ID} waits for tortillas :(")
                     self.writeOutputSteps(
-                        "starving", self.ordenes[self.shortestOrderIndex][2], "tortillas")
+                        "starving", self.orders[self.shortestOrderIndex][2], "tortillas")
                     while(self.currentTortillas == 0):
                         time.sleep(0.1)
                         self.remainingRestingTime -= 0.1
                         if(self.currentTortillas > 0):
                             self.writeOutputSteps(
-                                "unStarving", self.ordenes[self.shortestOrderIndex][2], "tortillas")
+                                "unStarving", self.orders[self.shortestOrderIndex][2], "tortillas")
                     # Una vez llega sigue trabajando
                     self.currentTortillas -= 1
                 # quitarlo de la lista al fin de todo modo
@@ -750,13 +751,13 @@ class PersonalTaqueria(threading.Thread):
                 else:
                     logging.info(f"Taquero {self.ID} waits for salsas :(")
                     self.writeOutputSteps(
-                        "starving", self.ordenes[self.shortestOrderIndex][2], "salsas")
+                        "starving", self.orders[self.shortestOrderIndex][2], "salsas")
                     while(self.currentSalsa == 0):
                         time.sleep(0.1)
                         self.remainingRestingTime -= 0.1
                         if(self.currentSalsa > 0):
                             self.writeOutputSteps(
-                                "unStarving", self.ordenes[self.shortestOrderIndex][2], "salsas")
+                                "unStarving", self.orders[self.shortestOrderIndex][2], "salsas")
                     self.currentSalsa -= 1
                 self.currentIngridientList.remove("sa")
             elif("gu" in self.currentIngridientList):
@@ -768,13 +769,13 @@ class PersonalTaqueria(threading.Thread):
                 else:
                     logging.info(f"Taquero {self.ID} waits for guacamoles")
                     self.writeOutputSteps(
-                        "starving", self.ordenes[self.shortestOrderIndex][2], "guacamoles")
+                        "starving", self.orders[self.shortestOrderIndex][2], "guacamoles")
                     while(self.currentGuacamole == 0):
                         time.sleep(0.1)
                         self.remainingRestingTime -= 0.1
                         if(self.currentGuacamole > 0):
                             self.writeOutputSteps(
-                                "unStarving", self.ordenes[self.shortestOrderIndex][2], "guacamoles")
+                                "unStarving", self.orders[self.shortestOrderIndex][2], "guacamoles")
                     self.currentGuacamole -= 1
                 self.currentIngridientList.remove("gu")
             elif("ci" in self.currentIngridientList):
@@ -786,13 +787,13 @@ class PersonalTaqueria(threading.Thread):
                 else:
                     logging.info(f"Taquero {self.ID} waits fot cilantro")
                     self.writeOutputSteps(
-                        "starving", self.ordenes[self.shortestOrderIndex][2], "cilantros")
+                        "starving", self.orders[self.shortestOrderIndex][2], "cilantros")
                     while(self.currentCilantro == 0):
                         time.sleep(0.1)
                         self.remainingRestingTime -= 0.1
                         if(self.currentCilantro > 0):
                             self.writeOutputSteps(
-                                "unStarving", self.ordenes[self.shortestOrderIndex][2], "cilantros")
+                                "unStarving", self.orders[self.shortestOrderIndex][2], "cilantros")
                     self.currentCilantro -= 1
                 self.currentIngridientList.remove("ci")
             elif("ce" in self.currentIngridientList):
@@ -804,13 +805,13 @@ class PersonalTaqueria(threading.Thread):
                 else:
                     logging.info(f"Taquero {self.ID} waits fot cebollas")
                     self.writeOutputSteps(
-                        "starving", self.ordenes[self.shortestOrderIndex][2], "cebollas")
+                        "starving", self.orders[self.shortestOrderIndex][2], "cebollas")
                     while(self.currentCebolla == 0):
                         time.sleep(0.1)
                         self.remainingRestingTime -= 0.1
                         if(self.currentCebolla > 0):
                             self.writeOutputSteps(
-                                "unStarving", self.ordenes[self.shortestOrderIndex][2], "cebollas")
+                                "unStarving", self.orders[self.shortestOrderIndex][2], "cebollas")
                     self.currentCebolla -= 1
                 self.currentIngridientList.remove("ce")
 
@@ -837,7 +838,7 @@ class PersonalTaqueria(threading.Thread):
     def pickShortestOrderIndex(self):
         # Esperar a que no se este haciendo sort o split para conseguir
         #  un indice con el que trabajar
-        if((not self.Splitting) and (not self.Rescheduling)):
+        if((not self.splitting) and (not self.rescheduling)):
             # Sí actualmente no trabaja en un stack, darle el indice
             # TODO referirlo como biggestPriorityIndex
             # Sacada respuesta de
@@ -847,30 +848,30 @@ class PersonalTaqueria(threading.Thread):
             logging.info(f"Taquero {self.name} will sort to pick")
             self.sortOrders()
             logging.info(f"Taquero {self.name} has sorted and will pick")
-            self.shortestOrderIndex = str(list(self.ordenes.keys())[0])
+            self.shortestOrderIndex = str(list(self.orders.keys())[0])
             # Tambien que agarre la lista de ingredientes que se usa x cada taco
             # Explicitamente debe hacerce por valor porque la original debe restaurarse
             #  N tacos por cada stack [:] hace eso
-            self.currentIngridientList = self.ordenes[self.shortestOrderIndex][8][:]
+            self.currentIngridientList = self.orders[self.shortestOrderIndex][8][:]
             logging.info(
                 f"{self.name} current working stack is now: {self.shortestOrderIndex}")
             # Varia por stack, cada x deltas se hace un taco y debemos contarlos
-            self.deltasPerTaco = self.ordenes[self.shortestOrderIndex][7] / \
+            self.deltasPerTaco = self.orders[self.shortestOrderIndex][7] / \
                 self.cookUnitDelta
             # acabaste de escojer taquero? ...chido, ahora escribelo en el JSOP
-            orderID = self.ordenes[self.shortestOrderIndex][2][0]
-            suborderID = self.ordenes[self.shortestOrderIndex][2][1]
-            stackID = self.ordenes[self.shortestOrderIndex][2][2]
+            orderID = self.orders[self.shortestOrderIndex][2][0]
+            suborderID = self.orders[self.shortestOrderIndex][2][1]
+            stackID = self.orders[self.shortestOrderIndex][2][2]
             # Sección de codigo exlcuisva del json output
             if(self.currentWorkingOrder == None):
-                self.currentWorkingOrder = self.ordenes[self.shortestOrderIndex][2][0]
-                self.currentWorkingSuborder = self.ordenes[self.shortestOrderIndex][2][1]
+                self.currentWorkingOrder = self.orders[self.shortestOrderIndex][2][0]
+                self.currentWorkingSuborder = self.orders[self.shortestOrderIndex][2][1]
                 self.currentWorkingStack = self.shortestOrderIndex
             self.writeOutputSteps(
                 "asigned", (orderID, suborderID, stackID), None
             )
-            self.currentWorkingOrder = self.ordenes[self.shortestOrderIndex][2][0]
-            self.currentWorkingSuborder = self.ordenes[self.shortestOrderIndex][2][1]
+            self.currentWorkingOrder = self.orders[self.shortestOrderIndex][2][0]
+            self.currentWorkingSuborder = self.orders[self.shortestOrderIndex][2][1]
             self.currentWorkingStack = self.shortestOrderIndex
             ##
         else:
@@ -881,7 +882,7 @@ class PersonalTaqueria(threading.Thread):
 
     def cook(self):
         while(True):
-            if(bool(self.ordenes)):
+            if(bool(self.orders)):
                 # Escojer indice para trabajar si no se tiene uno
                 if(self.shortestOrderIndex == None):
                     self.pickShortestOrderIndex()
@@ -893,11 +894,11 @@ class PersonalTaqueria(threading.Thread):
                 #  activa el MUTEX intencionalmente) y si hay indice disponible
                 # Tampoco si se esta haciendo algun split el taquero porque ni que tuviera
                 #  4 brazos y dos cerebros lol
-                if(not self.Rescheduling
-                        and not self.Splitting
+                if(not self.rescheduling
+                        and not self.splitting
                         and self.shortestOrderIndex != None):
                     # Esta variable la vamos a usar?....
-                    self.Cooking = True
+                    self.cooking = True
                     # La delta ahora se hace primero para evitar reporte
                     # prematura de completicion de stack
                     # if debug_state is True:
@@ -912,12 +913,12 @@ class PersonalTaqueria(threading.Thread):
                         self.tacoCounter += 1
                         # Reiniciar el contador para que calcule las deltas de otro taco
                         #  del mismo tamano dentro del stack
-                        self.deltasPerTaco = self.ordenes[self.shortestOrderIndex][7] / \
+                        self.deltasPerTaco = self.orders[self.shortestOrderIndex][7] / \
                             self.cookUnitDelta
                         # Tambien reiniciar el listado de ingredientes por cada taco
                         #  porque cada taco puede usar 1 ingrediente de cada tipo, no un stack
                         # Aquí tambien debe copiarse por valor y no referencia
-                        self.currentIngridientList = self.ordenes[self.shortestOrderIndex][8][:]
+                        self.currentIngridientList = self.orders[self.shortestOrderIndex][8][:]
                         # Revisar si tiene que descansar una vez que acaba el
                         #   taco y sabe que se hará en el siguiente, o sea
                         #   que al acabar cad a x tacos verá cuanto debe sleep
@@ -928,7 +929,7 @@ class PersonalTaqueria(threading.Thread):
                     # Ver si le queda tiempo por cocinar al stack, si no quitar
                     self.endStack()
             else:
-                self.Cooking = False
+                self.cooking = False
 
     def starvingTaxer(self):
         while(True):
@@ -936,35 +937,35 @@ class PersonalTaqueria(threading.Thread):
             # https://www.desmos.com/calculator/ksquctjgyz
             # Siempre estar dando impuestos a las cabezas cada segundo y haciendo
             # sort ¿tardá mucho? ya veremos jesjes
-            for headIndex in self.ordenesHeads:
+            for headIndex in self.ordersHeads:
                 try:
-                    UTIs = self.ordenes[str(headIndex)][0]
+                    UTIs = self.orders[str(headIndex)][0]
                     base = (UTIs ** -1) * 10
                     tax = (
                         UTIs
                         * self.constStarving
-                        * (time.time() - self.ordenes[str(headIndex)][3])
+                        * (time.time() - self.orders[str(headIndex)][3])
                     )
-                    self.ordenes[str(headIndex)][1] = (base + tax)
+                    self.orders[str(headIndex)][1] = (base + tax)
                 except Exception as e:
                     logging.error(
                         f"Concurrency error at {self.name}'s  taxer, tried to tax a head in transition to death"
                     )
 
-            if debug_state is True:
+            if DEBUG is True:
                 time.sleep(1.0)
 
     def sortOrders(self):
         logging.info("Sorting start")
         # Primero sortear por desempate FCFS (se hace esto primero desempate y luego el bueno)
-        sortedOrders = sorted(self.ordenes.items(),
+        sortedOrders = sorted(self.orders.items(),
                               key=lambda item: item[1][3])
         # Luego sortear por pioridad donde mas es mas importante
         # Basado en esta respuesta de stack overflow
         # https://stackoverflow.com/questions/18414995/how-can-i-sort-tuples-by-reverse-yet-breaking-ties-non-reverse-python/18415853#18415853
-        sortedOrders = sorted(self.ordenes.items(),
+        sortedOrders = sorted(self.orders.items(),
                               key=lambda item: item[1][1], reverse=True)
-        self.ordenes = dict(sortedOrders)
+        self.orders = dict(sortedOrders)
         logging.info("Sorting end")
         pass
 
@@ -984,7 +985,7 @@ class PersonalTaqueria(threading.Thread):
                 )
                 try:
                     self.writeOutputSteps(
-                        "fanON", self.ordenes[self.shortestOrderIndex][2], None)
+                        "fanON", self.orders[self.shortestOrderIndex][2], None)
                 except Exception as e:
                     logging.error("My fan was turned on while not cooking")
                 time.sleep(self.useTimeOfFan)
@@ -993,7 +994,7 @@ class PersonalTaqueria(threading.Thread):
                 )
                 try:
                     self.writeOutputSteps(
-                        "fanOFF", self.ordenes[self.shortestOrderIndex][2], None)
+                        "fanOFF", self.orders[self.shortestOrderIndex][2], None)
                 except Exception as e:
                     logging.error("My fan was turned off while not cooking")
                 deltaA = self.tacoCounter
