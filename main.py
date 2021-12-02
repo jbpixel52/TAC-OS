@@ -23,15 +23,16 @@ from dash.dependencies import Input, Output
 import dashboard_main
 from main_scheduler import (ChalanTaquero, CocinaQuesadillero, CocinaTaqueros,
                             PersonalTaqueria, getTime, open_taqueria)
-
+import metrics
 debug_state = False
 
 def main():
     taqueria = Process(target = open_taqueria)
     taqueria.start()
     dashboard = Process(target = dashboard_main.main())
+    #performance = Process(target= metrics.main())
+    #performance.start()
     dashboard.start()
-
 
 
 

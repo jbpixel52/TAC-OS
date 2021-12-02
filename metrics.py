@@ -4,7 +4,7 @@ from datetime import datetime
 from time import sleep
 import threading
 from multiprocessing import Process
-
+import logging
 def clock():
     start_time = datetime.now()
     print(start_time)
@@ -15,4 +15,6 @@ def clock():
 
     # %%
 
+def main():
+    clock()
 
