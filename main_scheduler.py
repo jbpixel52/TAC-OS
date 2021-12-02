@@ -55,7 +55,7 @@ class PersonalTaqueria(threading.Thread):
         # Variables de pertnenencia
         self.ID = None
         self.meatType = None
-        self.allowedOrderTypes = ["taco","quesadilla"]
+        self.allowedOrderTypes = ["taco", "quesadilla"]
         self.allowedMeatTypes = ["suadero", "lengua",
                                  "adobada", "asada", "cabeza", "tripa"]
         # Variables MUTEX
@@ -134,11 +134,11 @@ class PersonalTaqueria(threading.Thread):
     def objects_to_json(self):
         path = 'logs/staff/taqueros/'+self.name+'.json'
         serialized = {'name': self.name, 'ID': self.ID, 'ordenes': self.orders, 'stackcounter': self.stackCounter,
-                        'isFanActive': self.isFanActive, 'chalan': self.chalanAsignado.name, 'cooking': self.cooking, 'resting': self.isResting, 'Owl': self.isAnOwl,
-                        'currentTortillas': self.currentTortillas, 'currentCebolla': self.currentCebolla, 'currentCilantro': self.currentCilantro, 'currentSalsa': self.currentSalsa, 'currentGuacamole': self.currentGuacamole, 'currentWorkingOrder': self.currentWorkingOrder, 'currentWorkingSuborder': self.currentWorkingSuborder,
-                        'completedStackCOunter': self.completedStackCunter, 'suborderCounter': self.suborderCounter,
-                        'completedOrdersCounter':self.completedOrdersCounter
-                        }
+                      'isFanActive': self.isFanActive, 'chalan': self.chalanAsignado.name, 'cooking': self.cooking, 'resting': self.isResting, 'Owl': self.isAnOwl,
+                      'currentTortillas': self.currentTortillas, 'currentCebolla': self.currentCebolla, 'currentCilantro': self.currentCilantro, 'currentSalsa': self.currentSalsa, 'currentGuacamole': self.currentGuacamole, 'currentWorkingOrder': self.currentWorkingOrder, 'currentWorkingSuborder': self.currentWorkingSuborder,
+                      'completedStackCOunter': self.completedStackCunter, 'suborderCounter': self.suborderCounter,
+                      'completedOrdersCounter': self.completedOrdersCounter
+                      }
         with open(path, mode='w', encoding='utf-8') as file:
             json.dump(serialized, file, indent=4, sort_keys=True)
             file.close()
@@ -188,34 +188,35 @@ class PersonalTaqueria(threading.Thread):
 
     def is_order_rejectable(self, orden):
         for subOrden in orden['orden']:
-            if((subOrden['type'] in self.allowedOrderTypes) \
-                and (subOrden['meat'] in self.allowedMeatTypes) \
-                and (subOrden['quantity'] > 0)):
+            if((subOrden['type'] in self.allowedOrderTypes)
+                    and (subOrden['meat'] in self.allowedMeatTypes)
+                    and (subOrden['quantity'] > 0)):
                 return False
         logging.info(f"order {orden['request_id']} has to be rejected")
-        self.writeOutputSteps("rejectOrder",(orden['request_id'],0,0), None)
+        self.writeOutputSteps("rejectOrder", (orden['request_id'], 0, 0), None)
         return True
-    
+
     def is_suborder_rejectable(self, orderID, suborden, suborderID):
-        if((suborden['type'] in self.allowedOrderTypes) \
-            and (suborden['meat'] in self.allowedMeatTypes) \
-            and (suborden['quantity'] > 0)):
+        if((suborden['type'] in self.allowedOrderTypes)
+                and (suborden['meat'] in self.allowedMeatTypes)
+                and (suborden['quantity'] > 0)):
             return False
         else:
             logging.info(f"suborder {suborderID} had to be rejected")
-            self.writeOutputSteps("rejectSuborder",(orderID,suborderID,0), None)
+            self.writeOutputSteps(
+                "rejectSuborder", (orderID, suborderID, 0), None)
             return True
-    
+
     def splitOrder(self, orden):
         pedido = orden
         numSuborden = 0
         rejectedSubs = []
-        ### Primero reviso si toda la orden es rechazable
+        # Primero reviso si toda la orden es rechazable
         if(self.is_order_rejectable(orden)):
             # Subir el contador de orden + 1 pero no registrarlo
             self.orderCounter += 1
             pass
-        else: # Si la orden entera no era rechazable, procedamos
+        else:  # Si la orden entera no era rechazable, procedamos
             # Seccionar en partes la orden (los indices de ['orden'])
             for subOrden in pedido['orden']:
                 # Ok, la orden entera no es rechazable, pero que tal
@@ -274,7 +275,8 @@ class PersonalTaqueria(threading.Thread):
                         costoUTIsIndividual = costoUTIs
                         tiempoCocinarIndividual = tiempoParaCocinar
                         costoUTIs = costoUTIs * subOrden['quantity']
-                        tiempoParaCocinar = tiempoParaCocinar * subOrden['quantity']
+                        tiempoParaCocinar = tiempoParaCocinar * \
+                            subOrden['quantity']
 
                         # Fin del calculo del costo
                         if(costoUTIs < self.constMagnitud):
@@ -384,7 +386,7 @@ class PersonalTaqueria(threading.Thread):
 
     def recieveClientOrders(self):
         while(True):
-            #COMENTE ESTA PRIMERA LINEA PORQUE LAS ORDENES EN EL LOG HACE MUCHOOOO RUIDO
+            # COMENTE ESTA PRIMERA LINEA PORQUE LAS ORDENES EN EL LOG HACE MUCHOOOO RUIDO
             logging.debug(self.orders)
             logging.info(self.suborders)
             logging.info(f"{self.name}'s headsofOrders:{self.ordersHeads}")
@@ -405,9 +407,9 @@ class PersonalTaqueria(threading.Thread):
                 logging.info(
                     f"{self.name} está iniciando particion de orden {self.orderCounter}")
                 self.splitting = True
-                #Primero se hace el output para poder ser rechazada
+                # Primero se hace el output para poder ser rechazada
                 self.startOutputtingOrder(newOrder)
-                self.splitOrder(newOrder)  
+                self.splitOrder(newOrder)
                 try:
                     self.rescheduling = True
                     self.sortOrders()
@@ -483,7 +485,7 @@ class PersonalTaqueria(threading.Thread):
         subOrderToEndIndex = self.orders[self.shortestOrderIndex][2][1]
         if self.orders[self.shortestOrderIndex][6] > 0:
             self.orders[str(self.shortestOrderIndex)
-                         ][6] -= self.cookUnitDelta
+                        ][6] -= self.cookUnitDelta
             # resta el costo del taco hecho
             if(self.orders[self.shortestOrderIndex][6] == 0):
                 # Remover de las ordenes cabeza
@@ -512,7 +514,7 @@ class PersonalTaqueria(threading.Thread):
                         # Declarar en el registro de subordenes de ordenes
                         #   su completación (completición?)
                         self.suborders[orderToCheckIndex
-                                              ][subOrderToEndIndex][1] = 1
+                                       ][subOrderToEndIndex][1] = 1
                         # self.finisherOutput("subOrder", (orderToCheckIndex, subOrderToEndIndex, 0))
                         logging.info(
                             f"{self.name}'s suborder {self.suborderCounter} completed")
@@ -529,7 +531,7 @@ class PersonalTaqueria(threading.Thread):
                     self.suborderCounter += 1
                     # Declarar que suborden x de orden y se acabó
                     self.suborders[orderToCheckIndex
-                                          ][subOrderToEndIndex][1] = 1
+                                   ][subOrderToEndIndex][1] = 1
                     # self.finisherOutput("subOrder", (orderToCheckIndex, subOrderToEndIndex, 0))
                     logging.info(
                         f"{self.name}'s suborder {self.suborderCounter} completed")
@@ -593,7 +595,7 @@ class PersonalTaqueria(threading.Thread):
         if(self.shortestOrderIndex):
             numOfTacos = self.orders[self.shortestOrderIndex][4]
         else:
-            numOfTacos = 0 #Ordenes rechazadas no tienen n tacos registrados
+            numOfTacos = 0  # Ordenes rechazadas no tienen n tacos registrados
         step = {}
         step["worker_id"] = self.ID
         # Asignaciones de stack, suborden o orden
@@ -645,7 +647,7 @@ class PersonalTaqueria(threading.Thread):
             step["time_stamp"] = getTime()
             self.jsonOutputs[orderID]["answer"]["steps"].append(step)
         elif(action == "wakeUp" or action == "noSleep" or action == "yesSleep"
-             or action == "starving" or action == "unStarving" 
+             or action == "starving" or action == "unStarving"
              or action == "rejectOrder" or action == "rejectSuborder"):
             message = ""
             if(action == "wakeUp"):
@@ -1177,9 +1179,11 @@ class CocinaTaqueros(multiprocessing.Process):
         # cocina.personal[1].ID = 0
         # cocina.personal[1].start()
         # cocina.personal[1].chalanAsignado.start()
-        
+
+
 class CocinaQuesadillero():
     pass
+
 
 def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
@@ -1190,8 +1194,7 @@ def open_taqueria():
     Cocina = CocinaTaqueros("Taqueros")
     Cocina.start()
     Cocina.ingreso_personal(Cocina)
-   
-    
+
     while(True):
         with open("jsonsRejectables.json") as OrdenesJSON:
             ListadoOrdenes = json.load(OrdenesJSON)
