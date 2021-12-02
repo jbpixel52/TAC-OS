@@ -92,4 +92,4 @@ def tableandtile(title, table):
 
 
 def main():
-    app.run_server(debug=True, use_reloader=False)
+    app.run_server(debug=False, use_reloader=False)
