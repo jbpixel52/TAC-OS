@@ -7,7 +7,7 @@ School project simulating the inner workings of a taqueria's production line.
 ## Getting Started
 * Let's cook Jesse!
 ### Dependencies
-* Python 3.6.8
+* Python >= 3.7
 * Dependencies in requirements.txt.
 * Linux, Windows or MacOS compatible.
 ### Installing

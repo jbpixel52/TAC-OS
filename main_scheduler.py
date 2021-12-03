@@ -174,6 +174,15 @@ class PersonalTaqueria(threading.Thread):
         # Funcion que crea un indice en los outputs de salidas
         #  lo hace en base al templete lul
         ordenID = orden['request_id']
+        absoluteOrderID = ordenID
+        absoluteSubOrderID = None
+        if(ordenID in self.ordersThatAreNotMine):
+            # Cambiar los valores tupleID a reportar en outputs para que sean
+            #  los del encargado 
+            absoluteOrderID = orden["tupleID"][0]
+            absoluteSubOrderID = orden["tupleID"][1]
+            pass
+
         logging.info(f"{self.ID} is outputting input of {ordenID}")
         # condenado seas python y tu inabilidad de copiar cosas por valor al 100%
         copia = copy.deepcopy(self.jsonOutputTemplate["orderIDGoesHere"])
@@ -182,7 +191,9 @@ class PersonalTaqueria(threading.Thread):
         if(self.orderCounter not in self.ordersThatAreNotMine):
             self.jsonOutputs[ordenID]["responsable_orden"] = self.ID
         else:
+            # Dar el asignado a retornar y recordarle donde va
             self.jsonOutputs[ordenID]['responsable_orden'] = orden["responsable_orden"]
+            self.jsonOutputs[ordenID]['tupleID'] = orden['tupleID']
         self.jsonOutputs[ordenID]['request_id'] = ordenID
         self.jsonOutputs[ordenID]['orden'] = orden['orden']
         self.jsonOutputs[ordenID]['datetime'] = orden['datetime']
@@ -199,8 +210,15 @@ class PersonalTaqueria(threading.Thread):
             self.jsonOutputs[ordenID]['answer']['steps'][suborden]["worker_id"] = self.ID
             self.jsonOutputs[ordenID]['answer']['steps'][suborden]["step"] = suborden
             self.jsonOutputs[ordenID]['answer']['steps'][suborden]["state"] = "waiting to be cooked"
-            self.jsonOutputs[ordenID]['answer']['steps'][suborden]['part_id'] = [
-                ordenID, suborden][:]
+            if(ordenID in self.ordersThatAreNotMine):
+                self.jsonOutputs[ordenID]['answer']['steps'][suborden]['part_id'] = [
+                    absoluteOrderID, absoluteSubOrderID][:]
+                self.jsonOutputs[
+                    ordenID]['answer']['steps'][suborden]["state"] = f"Suborder {absoluteSubOrderID} arrived at taquero {self.name}"
+            else:
+                self.jsonOutputs[ordenID]['answer']['steps'][suborden]['part_id'] = [
+                    absoluteOrderID, suborden][:]
+            
             self.jsonOutputs[ordenID]['answer']['steps'][suborden]['time_stamp'] = getTime(
             )
         pass
@@ -225,7 +243,7 @@ class PersonalTaqueria(threading.Thread):
             self.writeOutputSteps("rejectSuborder",(orderID,suborderID,0), None)
             return True
     
-    def send_suborder_somewhere_else(self, suborder, order):
+    def send_suborder_somewhere_else(self, suborder, order, numSuborden):
         # Revisar a donde lo mandaré
         # Mandar solamente la orden con la suborden buena
         # # veces que Omar olvido copiar por valor: >4 xdxd
@@ -234,6 +252,8 @@ class PersonalTaqueria(threading.Thread):
             if(sub["meat"] in self.meatTypes):
                 ordercopy["orden"].remove(sub)
         indexToSend = self.cocinaDirectory[suborder["meat"]]
+        # Variable de apoyo en el regreso al taquero encargado para saber donde va
+        ordercopy["tupleID"] = (self.orderCounter,numSuborden)
         self.sendQueues[indexToSend].put(ordercopy)
         pass
     
@@ -267,8 +287,8 @@ class PersonalTaqueria(threading.Thread):
                     if(subOrden["meat"] not in self.meatTypes):
                         #Tanto en output como en logica pondre el encargado
                         pedido["responsable_orden"] = self.ID
-                        self.send_suborder_somewhere_else(subOrden, pedido)
-                        numSuborden += 1
+                        self.send_suborder_somewhere_else(subOrden, pedido, numSuborden) 
+                        numSuborden += 1   
                         pass
                     else:
                         """[Explicación de la lista (TB DICT) que conforma al stacl]
@@ -423,32 +443,55 @@ class PersonalTaqueria(threading.Thread):
             self.orderCounter += 1
             pass
 
-    def process_order(self, newOrder):
-        logging.info(
-            f"{self.name} está iniciando particion de orden {self.orderCounter}")
-        self.Splitting = True
-        #Primero se hace el output para poder ser rechazada
-        self.startOutputtingOrder(newOrder)
-        self.splitOrder(newOrder)  
-        try:
-            self.Rescheduling = True
-            self.sortOrders()
-            self.Rescheduling = False
-            # Esto va aqui intencionalmente porque en esa corta ventana sin MUTEX
-            # se podria agarrar un indice incorrecto porque no se alcanzaba a
-            # ordear las ordenes
-            self.Splitting = False
+    def fuse_order(self, orderToFuse):
+        # Objetivo de esta funcion es mezclar los pasos de la orden
+        # retornada, tambien debe haber revision de finalizacion
+        # Marcar como completa la suborden en el diccionario de subordenes
+        #  completas de ordenes
+        orderID = orderToFuse["tupleID"][0]
+        suborderID = orderToFuse["tupleID"][1]
+        self.ordenesSuborders[orderID][suborderID][1] = 1
+        answerStepsToGive = copy.deepcopy(orderToFuse["answer"]["steps"])
+        answerStepsToRecieve = copy.deepcopy(self.jsonOutputs[orderID]["answer"]["steps"])
+        answerStepsToRecieve += answerStepsToGive
+        answerStepsToRecieve = sorted(answerStepsToRecieve, key = lambda date:datetime.strptime(date['time_stamp'], '%Y-%m-%d %H:%M:%S.%f'))
+        # Rehacer el orden de los pasos
+        for step in range(len(answerStepsToRecieve)):
+            answerStepsToRecieve[step]['step'] = step
+        # Reinsertar los pasos en el output
+        self.jsonOutputs[orderID]["answer"]["steps"] = answerStepsToRecieve
+        # Revisar que la orden esté finalizada
+        self.checkOrderCompletion(orderID)
+        
+    def process_order(self, newOrder, returned):
+        if(not returned):
             logging.info(
-                f"{self.name} ha finalizado la particion y organización de orden {self.orderCounter-1}")
-        except Exception as e:
-            logging.exception(
-                f"Error en el sorting de ordenes - > {Exception}")
-            pass
-        pass
+                f"{self.name} está iniciando particion de orden {self.orderCounter}")
+            self.Splitting = True
+            #Primero se hace el output para poder ser rechazada
+            self.startOutputtingOrder(newOrder)
+            self.splitOrder(newOrder)  
+            try:
+                self.Rescheduling = True
+                self.sortOrders()
+                self.Rescheduling = False
+                # Esto va aqui intencionalmente porque en esa corta ventana sin MUTEX
+                # se podria agarrar un indice incorrecto porque no se alcanzaba a
+                # ordear las ordenes
+                self.Splitting = False
+                logging.info(
+                    f"{self.name} ha finalizado la particion y organización de orden {self.orderCounter-1}")
+            except Exception as e:
+                logging.exception(
+                    f"Error en el sorting de ordenes - > {Exception}")
+        else:
+            # Si es una orden de retorno ya fue cocinada, metamosla devuelta
+            #  en su output correspondiende
+            logging.info("f{self.ID} has recieved a completed order by someone else")
+            self.fuse_order(newOrder)
     
     def recieveOrders(self):
         while(True):
-            #COMENTE ESTA PRIMERA LINEA PORQUE LAS ORDENES EN EL LOG HACE MUCHOOOO RUIDO
             logging.debug(self.ordenes)
             logging.info(self.ordenesSuborders)
             logging.info(f"{self.name}'s headsofOrders:{self.ordenesHeads}")
@@ -465,9 +508,13 @@ class PersonalTaqueria(threading.Thread):
             # Las ordenes se procesan a lo dos máximo cada delta
             if(not self.recieveQueue.empty()):
                 self.ordersThatAreNotMine.append(self.orderCounter)
-                self.process_order(self.recieveQueue.get_nowait())
+                self.process_order(self.recieveQueue.get_nowait(), False)
             if(not self.queue.empty()):
-                self.process_order(self.queue.get_nowait())
+                self.process_order(self.queue.get_nowait(), False)
+            # tres si cuentas el recibir ordenes de retorno, dejemoslo en 2 + 1
+            if(not self.recieveQueueReturn.empty()):
+                self.process_order(self.recieveQueueReturn.get_nowait(), True)
+                
             
             # if debug_state is True:
             time.sleep(self.ordersPerSecondDelta)
@@ -622,21 +669,30 @@ class PersonalTaqueria(threading.Thread):
         orderID = tupID[0]
         subOrderID = tupID[1]
         stackID = tupID[2]
+        absoluteOrderID = orderID
+        absoluteSubOrderID = subOrderID
+        if(orderID in self.ordersThatAreNotMine):
+            # Usar el tupleID del encargado, no el relativo
+            absoluteOrderID = self.jsonOutputs[orderID]["tupleID"][0]
+            absoluteSubOrderID =  self.jsonOutputs[orderID]["tupleID"][1]
         nextStepID = len(self.jsonOutputs[orderID]["answer"]["steps"])
         step = {}
         step["worker_id"] = self.ID
         step["step"] = nextStepID
         step["state"] = None
-        step["part_id"] = [orderID, subOrderID][:]
+        step["part_id"] = [absoluteOrderID, absoluteSubOrderID][:]
         step["time_stamp"] = getTime()
         if(type == "order"):
             step["state"] = f"Order {orderID} complete"
             self.jsonOutputs[orderID]["status"] = "complete"
         elif(type == "subOrder"):
-            step["state"] = f"Suborder {subOrderID} complete"
+            step["state"] = f"Suborder {absoluteSubOrderID} complete"
         else:
             step["state"] = f"Stack#{stackID}({self.shortestOrderIndex}) complete"
-        self.jsonOutputs[orderID]["answer"]["steps"].append(step)
+        if(orderID in self.ordersThatAreNotMine and type=="order"):
+            pass # El paso de acabar solo lo hace el encargado
+        else:
+            self.jsonOutputs[orderID]["answer"]["steps"].append(step)
         # Hacer una copia de esta orden en el output para mandarla al encargado
         # y borrarlo de mi parte, pero solo sí se acaba la orden
         if(orderID in self.ordersThatAreNotMine 
@@ -649,10 +705,18 @@ class PersonalTaqueria(threading.Thread):
             self.sendQueuesReturn[indexToReturnTo].put(orderToReturn)
 
     def writeOutputSteps(self, action, tupleID, extraArg):
-
         orderID = tupleID[0]
         subOrderID = tupleID[1]
         stackID = tupleID[2]
+        absoluteOrderID = orderID 
+        absoluteSubOrderID = subOrderID
+        if(orderID in self.ordersThatAreNotMine):
+            # Cambiar los valores tupleID a reportar en outputs para que sean
+            #  los del encargado 
+            absoluteOrderID = self.jsonOutputs[orderID]["tupleID"][0]
+            absoluteSubOrderID = self.jsonOutputs[orderID]["tupleID"][1]
+            pass
+        ## Revisar si no es mia la orden para cambiar la ID y subID
         if(self.shortestOrderIndex):
             numOfTacos = self.ordenes[self.shortestOrderIndex]["quantity"]
         else:
@@ -691,7 +755,7 @@ class PersonalTaqueria(threading.Thread):
             nextStepID = len(self.jsonOutputs[orderID]["answer"]["steps"])
             step["step"] = nextStepID
             step["state"] = f"cooking stack #{stackID}({self.shortestOrderIndex}) of {numOfTacos} tacos"
-            step["part_id"] = [orderID, subOrderID][:]
+            step["part_id"] = [absoluteOrderID, absoluteSubOrderID][:]
             step["time_stamp"] = getTime()
             self.jsonOutputs[orderID]["answer"]["steps"].append(step)
         elif(action == "fanON" or action == "fanOFF"):
@@ -704,7 +768,7 @@ class PersonalTaqueria(threading.Thread):
             nextStepID = len(self.jsonOutputs[orderID]["answer"]["steps"])
             step["step"] = nextStepID
             step["state"] = message
-            step["part_id"] = [orderID, subOrderID][:]
+            step["part_id"] = [absoluteOrderID, absoluteSubOrderID][:]
             step["time_stamp"] = getTime()
             self.jsonOutputs[orderID]["answer"]["steps"].append(step)
         elif(action == "wakeUp" or action == "noSleep" or action == "yesSleep"
@@ -729,7 +793,7 @@ class PersonalTaqueria(threading.Thread):
             nextStepID = len(self.jsonOutputs[orderID]["answer"]["steps"])
             step["step"] = nextStepID
             step["state"] = message
-            step["part_id"] = [orderID, subOrderID][:]
+            step["part_id"] = [absoluteOrderID, absoluteSubOrderID][:]
             step["time_stamp"] = getTime()
             self.jsonOutputs[orderID]["answer"]["steps"].append(step)
             pass
