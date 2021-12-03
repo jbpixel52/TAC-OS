@@ -460,7 +460,7 @@ class PersonalTaqueria(threading.Thread):
                 f"Taquero {self.name} stats: OC:{self.orderCounterCompleted}|SOC:{self.subOrderCounter}|STC:{self.stackCounterCompleted}|TC:{self.tacoCounter}")
             # Placeholder de output json
             with open(f"outputs[{self.ID}].json", "w") as outputs:
-                json.dump(self.jsonOutputs, outputs)
+                json.dump(self.jsonOutputs, outputs,indent=4,sort_keys=True)
             # Placeholder end
             # Las ordenes se procesan a lo dos máximo cada delta
             if(not self.recieveQueue.empty()):

@@ -22,7 +22,7 @@ app.layout = html.Div([
     dcc.Interval(
         id='interval-component',
         interval=5*1000,  # in milliseconds
-        n_intervals=0
+        n_intervals=2
     )
 ])
 
@@ -36,12 +36,12 @@ def update(n_intervals):
         return [
             html.H1('TAC-OS DASHBOARD'),
 
-            html.Div(children= helpers.Tables()),
+            #html.Div(children= helpers.Tables()),
             # METADA DE LOS TAQUERO
-            html.Div(children= helpers.staff_metadata_html()),
+            html.Div(id='metadata-div',children= helpers.staff_metadata_html()),
             #######
             html.H2('TAC-OS LOGS'),
-            html.Div(children= helpers.read_log('logfile.log')),
+            html.Div(id='log-div',children= helpers.read_log('logfile.log')),
 
         ]
 

@@ -6,8 +6,6 @@ import pandas as pd
 from dash import dash_table, html
 
 
-
-
 def read_log(filepath=None):
     """[summary]
 
@@ -50,16 +48,13 @@ def taqueroToDataFrame(filepath=None, column=None):
     with open(filepath, mode='r') as file:
         data = json.load(file)
         file.close()
-    df = pd.DataFrame(data.get(column)).transpose()
-    return df
+    return pd.DataFrame(data.get(column)).transpose()
 
 
 def readjson(filepath):
     """[summary]
-
     Args:
         filepath ([type]): [description]
-
     Returns:
         [type]: [description]
     """
@@ -73,11 +68,9 @@ def readjson(filepath):
 
 def get_status(filepath, key):
     """[summary]
-
     Args:
         filepath ([string]): [description]
         key ([string]): [description]
-
     Returns:
         [type]: [description]
     """
@@ -102,50 +95,39 @@ def get_status(filepath, key):
 
 def Tables(directory='logs/staff/taqueros'):
     elements_list = []
-    df = json_to_dataframe('jsons.json',normal_column='orden')
-    """elements_list.append(dash_table.DataTable(
-        columns=[
-            {"name": i, "id": i, "deletable": True, "selectable": True} for i in df.columns
-        ],
-        id='global-orders',
-        data=json_to_dataframe(
-            filepath='jsons.json', normal_column='orden').to_dict('records'),
-        sort_action="native",
-        page_action="native",
-        page_current=0,
-        page_size=5))"""
+
     filepaths = []
     for subdir, dirs, files in os.walk(directory):
         for file in files:
             filepaths.append(os.path.join(subdir, file))
 
     for file in filepaths:
-        DataFrame = taqueroToDataFrame(file)
-        elements_list.append(
-            dash_table.DataTable(
-                columns=[
-                    {"name": str(i), "id": str(i)} for i in DataFrame.columns
-                ],
-                data=DataFrame,
-                editable=False,
-                sort_action="native",
-                page_action="native",
-                page_current=0,
-                page_size=5,
+        if not readjson(file).get('ordenes'):
+            DataFrame = taqueroToDataFrame(file)
+            elements_list.append(
+                dash_table.DataTable(
+                    columns=[
+                        {"name": str(i), "id": str(i)} for i in DataFrame.columns
+                    ],
+                    data=DataFrame,
+                    editable=False,
+                    sort_action="native",
+                    page_action="native",
+                    page_current=0,
+                    page_size=5,
+                )
             )
-        )
     return elements_list
 
 
 def staff_metadata_html(directory='logs/staff/taqueros'):
     """[summary]
-
     Args:
         directory (str, optional): [description]. Defaults to 'logs/staff/taqueros'.
-
     Returns:
         [list]: [created html wrapped elements for DASH]
     """
+
     elements_list = []
     filepaths = []
     for subdir, dirs, files in os.walk(directory):
@@ -159,8 +141,8 @@ def staff_metadata_html(directory='logs/staff/taqueros'):
             html.H3(f"metadata for {metadata.get('name')}"))
         for key, value in metadata.items():
             if key != 'ordenes':
-                taquero_div.append(html.P(f" {key} = {value}"))
-        elements_list.append(html.Div(children=taquero_div))
+                taquero_div.append(html.P(f" {key} = {value}",id='text-p'))
+        elements_list.append(html.Div(children=taquero_div,id='taquero-div'))
 
     return elements_list
 
