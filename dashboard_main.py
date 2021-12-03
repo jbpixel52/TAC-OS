@@ -34,7 +34,7 @@ app.layout = html.Div([
 def update(n_intervals):
     if n_intervals > 0:
         return [
-            html.H1('TAC-OS DASHBOARD'),
+            html.H1('TAC-OS 🌮'),
 
             #html.Div(children= helpers.Tables()),
             # METADA DE LOS TAQUERO

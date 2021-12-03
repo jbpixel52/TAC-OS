@@ -1,18 +1,62 @@
 body {
-    font-family: sans-serif;
-    background-color:#333333 ;
+    font-family: Helvetica, sans-serif;
+    background-color: #141414;
+    background-image: url('https://images.unsplash.com/photo-1521697860747-271dbc831927?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80');
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation-name: fade-in;
+    animation-duration:  2s;
+    animation-iteration-count:  1;
+    animation-fill-mode: backwards;
 }
-h1,h2{
-    color:black;
-    background-color:#a756ed ;
+
+@keyframes fade-in{
+    0%{
+        opacity: 0;
+        transform: scale(0, 0);
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1, 1);
+    }
+}
+@keyframes bounce-4 {
+    0%   { transform: scale(1,1)    translateX(0); }
+    10%  { transform: scale(1.1,.9) translateX(0); }
+    30%  { transform: scale(.9,1.1) translateX(-100px); }
+    50%  { transform: scale(1,1)    translateX(0); }
+    70%  { transform: scale(.9,1.1) translateX(100px); }
+    100% { transform: scale(1,1)    translateX(0); }
+}
+
+h1 {
+    font-family: Helvetica, sans-serif;
+    color:    #f81ac1  ;
+    text-shadow: 3px 0 30ch #e7b69b, 3px 3px 10px #312183;
+    font-size: 10ch;
+    margin: auto;
+    border-radius: 25px;
+    max-width: max-content;
+    animation-name: bounce-4;
+    animation-timing-function: ease;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    transform-origin: bottom;
+}
+h2 {
+    color: #d9b3d5;
     margin: auto;
     padding: 1ch;
     border-radius: 25px;
     max-width: fit-content;
 }
-h3{
-    color:black;
-    background-color:#a756ed ;
+
+h3 {
+    color: #d9b3d5;
+    font-weight: bolder;
+    font-variant-ligatures: additional-ligatures;
+    font-variant: small-caps;
+    font-family: Helvetica, sans-serif;
     margin-left: 1ch;
     margin-right: 1ch;
     border-radius: 100px;
@@ -21,32 +65,40 @@ h3{
     padding-right: 2ch;
 }
 
-#log-div{
+#log-div {
     border-radius: 25px;
     display: flex;
     flex-direction: column-reverse;
     max-height: 20ch;
+    max-width: fit-content;
     border-color: #a756ed;
     margin: auto;
-    color: white;
+    color: #d9b3d5;
+    background-color: #311e46;
     overflow: auto;
 }
-#metadata-div{
+
+#metadata-div {
     display: flex;
     flex-direction: row;
     flex-grow: 1;
     flex-flow: row wrap;
-    flex-shrink: 3;
+    flex-shrink: 1;
     flex-basis: auto;
     justify-content: center;
     align-items: flex-start;
-    margin: 3ch;
-}
-#taquero-div{
     margin: auto;
 }
-#text-p{
-    background-color: #521bab;
-    color: white;
-    margin:5px;    
+
+#taquero-div {
+    margin: auto;
+}
+
+#text-p {
+    color: #d9b3d5;
+    background-color:rgb(49, 30, 70,0.75);
+    padding-left: 1ch;
+    padding-right: 1ch;
+    border-radius: 25px;
+
 }

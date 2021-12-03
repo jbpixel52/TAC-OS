@@ -138,7 +138,7 @@ def staff_metadata_html(directory='logs/staff/taqueros'):
         metadata = readjson(file)
         taquero_div = []
         taquero_div.append(
-            html.H3(f"metadata for {metadata.get('name')}"))
+            html.H3(f"{metadata.get('name')}\'s metadata"))
         for key, value in metadata.items():
             if key != 'ordenes':
                 taquero_div.append(html.P(f" {key} = {value}",id='text-p'))
