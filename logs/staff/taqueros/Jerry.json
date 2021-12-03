@@ -1,18 +1,18 @@
 {
-    "ID": 0,
+    "ID": 3,
     "Owl": false,
-    "chalan": "Julio",
+    "chalan": "Adan",
     "cooking": false,
-    "currentCebolla": 195,
-    "currentCilantro": 190,
+    "currentCebolla": 200,
+    "currentCilantro": 192,
     "currentGuacamole": 100,
     "currentSalsa": 150,
-    "currentTortillas": 49,
+    "currentTortillas": 50,
     "currentWorkingOrder": 0,
     "currentWorkingSuborder": 0,
     "isFanActive": false,
-    "name": "Omar",
+    "name": "Jerry",
     "ordenes": {},
     "resting": false,
-    "stackcounter": 2
+    "stackcounter": 1
 }
