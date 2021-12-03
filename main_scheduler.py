@@ -178,6 +178,11 @@ class PersonalTaqueria(threading.Thread):
         # condenado seas python y tu inabilidad de copiar cosas por valor al 100%
         copia = copy.deepcopy(self.jsonOutputTemplate["orderIDGoesHere"])
         self.jsonOutputs[ordenID] = copia
+        # Variable que apoya al retorno de ordenes no correspondientes
+        if(self.orderCounter not in self.ordersThatAreNotMine):
+            self.jsonOutputs[ordenID]["responsable_orden"] = self.ID
+        else:
+            self.jsonOutputs[ordenID]['responsable_orden'] = orden["responsable_orden"]
         self.jsonOutputs[ordenID]['request_id'] = ordenID
         self.jsonOutputs[ordenID]['orden'] = orden['orden']
         self.jsonOutputs[ordenID]['datetime'] = orden['datetime']
@@ -244,8 +249,6 @@ class PersonalTaqueria(threading.Thread):
         else: # Si la orden entera no era rechazable, procedamos
             # Seccionar en partes la orden (los indices de ['orden'])
             for subOrden in pedido['orden']:
-                if(self.ID == 0):
-                    x = 5
                 # Ok, la orden entera no es rechazable, pero que tal
                 #  la suborden en sí
                 if(self.is_suborder_rejectable(orden['request_id'], subOrden, numSuborden)):
@@ -262,6 +265,8 @@ class PersonalTaqueria(threading.Thread):
                     #  suborden no es rechazable, pero que tal sí esta suborden
                     #  no es de mi carne?
                     if(subOrden["meat"] not in self.meatTypes):
+                        #Tanto en output como en logica pondre el encargado
+                        pedido["responsable_orden"] = self.ID
                         self.send_suborder_somewhere_else(subOrden, pedido)
                         numSuborden += 1
                         pass
@@ -459,8 +464,8 @@ class PersonalTaqueria(threading.Thread):
             # Placeholder end
             # Las ordenes se procesan a lo dos máximo cada delta
             if(not self.recieveQueue.empty()):
-                self.process_order(self.recieveQueue.get_nowait())
                 self.ordersThatAreNotMine.append(self.orderCounter)
+                self.process_order(self.recieveQueue.get_nowait())
             if(not self.queue.empty()):
                 self.process_order(self.queue.get_nowait())
             
@@ -508,7 +513,10 @@ class PersonalTaqueria(threading.Thread):
             # self.finisherOutput("order", (orderToCheckIndex, 0, 0))
             logging.info(
                 f"{self.name}'s order {orderToCheckIndex} is complete")
-            self.orderCounterCompleted += 1
+            if(orderToCheckIndex not in self.ordersThatAreNotMine):
+                # Solo sumar al contador si esta orden no era mía
+                # el taquero dueño se encarga de reportar la finalización
+                self.orderCounterCompleted += 1
             return True
         else:
             return False
@@ -624,17 +632,24 @@ class PersonalTaqueria(threading.Thread):
         if(type == "order"):
             step["state"] = f"Order {orderID} complete"
             self.jsonOutputs[orderID]["status"] = "complete"
-            pass
         elif(type == "subOrder"):
             step["state"] = f"Suborder {subOrderID} complete"
-            pass
         else:
             step["state"] = f"Stack#{stackID}({self.shortestOrderIndex}) complete"
-            pass
         self.jsonOutputs[orderID]["answer"]["steps"].append(step)
-        pass
+        # Hacer una copia de esta orden en el output para mandarla al encargado
+        # y borrarlo de mi parte, pero solo sí se acaba la orden
+        if(orderID in self.ordersThatAreNotMine 
+                and type == "order"):
+            orderToReturn = copy.deepcopy(self.jsonOutputs[orderID])
+            del self.jsonOutputs[orderID]
+            # Ubicar a que queue se le debe regresar la orden
+            # Todas las subs son iguales así que solo hay que revisar 1
+            indexToReturnTo = orderToReturn["responsable_orden"]
+            self.sendQueuesReturn[indexToReturnTo].put(orderToReturn)
 
     def writeOutputSteps(self, action, tupleID, extraArg):
+
         orderID = tupleID[0]
         subOrderID = tupleID[1]
         stackID = tupleID[2]
