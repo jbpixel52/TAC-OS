@@ -94,30 +94,52 @@ def get_status(filepath, key):
 
 
 def Tables(directory='logs/staff/taqueros'):
-    elements_list = []
-
+    tables = []
     filepaths = []
     for subdir, dirs, files in os.walk(directory):
         for file in files:
             filepaths.append(os.path.join(subdir, file))
 
     for file in filepaths:
-        if not readjson(file).get('ordenes'):
-            DataFrame = taqueroToDataFrame(file)
-            elements_list.append(
-                dash_table.DataTable(
+        tablediv = []
+        DataFrame = taqueroToDataFrame(file, 'ordenes')
+        print(DataFrame)
+        metadata = readjson(file)
+        tablediv.append(html.H3(f"{metadata.get('name')}\'s Orders"))
+        if any(metadata.values()):
+            tablediv.append(
+                dash_table.DataTable(id='table',
                     columns=[
                         {"name": str(i), "id": str(i)} for i in DataFrame.columns
                     ],
-                    data=DataFrame,
+                    data=DataFrame.to_dict('records'),
                     editable=False,
                     sort_action="native",
                     page_action="native",
                     page_current=0,
                     page_size=5,
+                    style_data={
+                        'color': 'black',
+                        'backgroundColor': '#e7b69b'
+                    },
+                    style_data_conditional=[
+                        {
+                            'if': {'row_index': 'odd'},
+                            'backgroundColor': '#d9b3d5',
+                            'border-radius':'25px'
+                        }
+                    ],
+                    style_header={
+                        'backgroundColor': '#940470',
+                        'color': 'white',
+                        'fontWeight': 'bold'
+                    }
                 )
             )
-    return elements_list
+        else:
+            tablediv.append(html.P(f"HAS NO ORDERS AT THE MOMENT"))
+        tables.append(html.Div(id='table-block',children=tablediv))
+    return tables
 
 
 def staff_metadata_html(directory='logs/staff/taqueros'):
@@ -141,8 +163,8 @@ def staff_metadata_html(directory='logs/staff/taqueros'):
             html.H3(f"{metadata.get('name')}\'s metadata"))
         for key, value in metadata.items():
             if key != 'ordenes':
-                taquero_div.append(html.P(f" {key} = {value}",id='text-p'))
-        elements_list.append(html.Div(children=taquero_div,id='taquero-div'))
+                taquero_div.append(html.P(f" {key} = {value}", id='text-p'))
+        elements_list.append(html.Div(children=taquero_div, id='taquero-div'))
 
     return elements_list
 

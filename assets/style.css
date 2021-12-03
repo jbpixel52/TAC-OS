@@ -102,3 +102,32 @@ h3 {
     border-radius: 25px;
 
 }
+
+#table{
+    margin:auto;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-flow: row wrap;
+    flex-shrink: 1;
+    flex-basis: auto;
+    justify-content: center;
+    align-items: flex-start;
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+}
+#table-block{
+    margin:auto;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-flow: row wrap;
+    flex-shrink: 1;
+    flex-basis: auto;
+    justify-content: center;
+    align-items: flex-start;
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+}

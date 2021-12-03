@@ -12,13 +12,11 @@ from dash.dependencies import Input, Output
 import dashboard_helpers as helpers
 
 
-
-
 app = dash.Dash(
     __name__, external_stylesheets=['style.css'])
 
 app.layout = html.Div([
-    html.Div(id='table-div'),
+    html.Div(id='table-div',children=[]),
     dcc.Interval(
         id='interval-component',
         interval=5*1000,  # in milliseconds
@@ -36,12 +34,14 @@ def update(n_intervals):
         return [
             html.H1('TAC-OS 🌮'),
 
-            #html.Div(children= helpers.Tables()),
+            ##########################
             # METADA DE LOS TAQUERO
-            html.Div(id='metadata-div',children= helpers.staff_metadata_html()),
-            #######
+            html.Div(id='metadata-div', children=helpers.staff_metadata_html()),
+            ##################################################
             html.H2('TAC-OS LOGS'),
-            html.Div(id='log-div',children= helpers.read_log('logfile.log')),
+            html.Div(id='log-div', children=helpers.read_log('logfile.log')),
+            html.Div(id='tables-div',children=helpers.Tables()),
+
 
         ]
 
