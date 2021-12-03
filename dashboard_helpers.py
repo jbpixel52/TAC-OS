@@ -106,7 +106,7 @@ def Tables(directory='logs/staff/taqueros'):
         print(DataFrame)
         metadata = readjson(file)
         tablediv.append(html.H3(f"{metadata.get('name')}\'s Orders"))
-        if any(metadata.values()):
+        if len(metadata.get('ordenes')):
             tablediv.append(
                 dash_table.DataTable(id='table',
                     columns=[
@@ -137,7 +137,7 @@ def Tables(directory='logs/staff/taqueros'):
                 )
             )
         else:
-            tablediv.append(html.P(f"HAS NO ORDERS AT THE MOMENT"))
+            tablediv.append(html.P(f"HAS NO ORDERS AT THE MOMENT",id='text-p'))
         tables.append(html.Div(id='table-block',children=tablediv))
     return tables
 
