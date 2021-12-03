@@ -1,0 +1,86 @@
+[{
+        "datetime": "2021-09-14 16:15:55.421215",
+        "request_id": 0,
+        "status": "open",
+        "orden": [{
+                "part_id": "0-0",
+                "type": "taco",
+                "meat": "adobada",
+                "status": "open",
+                "quantity": 5,
+                "ingredients": [
+                    "salsa",
+                    "cilantro",
+                    "cebolla"
+                ]
+            },
+            {
+                "part_id": "0-1",
+                "type": "taco",
+                "meat": "adobada",
+                "status": "open",
+                "quantity": 7,
+                "ingredients": [
+                    "salsa",
+                    "cilantro",
+                    "cebolla"
+                ]
+            },
+            {
+                "part_id": "0-2",
+                "type": "taco",
+                "meat": "adobada",
+                "status": "open",
+                "quantity": 2,
+                "ingredients": [
+                    "salsa",
+                    "cebolla"
+                ]
+            }
+        ]
+    },
+    {
+        "datetime": "2021-09-14 17:15:55.421215",
+        "request_id": 1,
+        "status": "open",
+        "orden": [{
+            "part_id": "1-0",
+            "type": "taco",
+            "meat": "tripa",
+            "status": "open",
+            "quantity": 8,
+            "ingredients": [
+                "guacamole",
+                "cilantro",
+                "cebolla"
+            ]
+        }]
+    },
+    {
+        "datetime": "2021-09-14 17:15:55.421215",
+        "request_id": 2,
+        "status": "open",
+        "orden": [{
+                "part_id": "2-0",
+                "type": "taco",
+                "meat": "cabeza",
+                "status": "open",
+                "quantity": 6,
+                "ingredients": [
+                    "salsa",
+                    "cebolla"
+                ]
+            },
+            {
+                "part_id": "2-1",
+                "type": "taco",
+                "meat": "tripa",
+                "status": "open",
+                "quantity": 8,
+                "ingredients": [
+                    "guacamole"
+                ]
+            }
+        ]
+    }
+]

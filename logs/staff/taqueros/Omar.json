@@ -3,16 +3,16 @@
     "Owl": false,
     "chalan": "Julio",
     "cooking": false,
-    "currentCebolla": 195,
-    "currentCilantro": 190,
+    "currentCebolla": 174,
+    "currentCilantro": 178,
     "currentGuacamole": 100,
-    "currentSalsa": 150,
-    "currentTortillas": 50,
-    "currentWorkingOrder": 0,
-    "currentWorkingSuborder": 0,
+    "currentSalsa": 124,
+    "currentTortillas": 49,
+    "currentWorkingOrder": 3,
+    "currentWorkingSuborder": 1,
     "isFanActive": false,
     "name": "Omar",
     "ordenes": {},
     "resting": false,
-    "stackcounter": 2
+    "stackcounter": 8
 }

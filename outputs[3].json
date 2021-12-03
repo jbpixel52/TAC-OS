@@ -1,1 +1,214 @@
-{}
+{
+    "0": "Unreported index, check taquero's 0 at order 1",
+    "1": "Unreported index, check taquero's 0 at order 2",
+    "2": "Unreported index, check taquero's 0 at order 2",
+    "3": "Unreported index, check taquero's 0 at order 4",
+    "4": {
+        "answer": {
+            "end_time": 0,
+            "start_time": "2021-12-03 15:27:41.074071",
+            "steps": [
+                {
+                    "part_id": [
+                        5,
+                        0
+                    ],
+                    "state": "Suborder 0 arrived at taquero Jerry",
+                    "step": 0,
+                    "time_stamp": "2021-12-03 15:27:41.074071",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        5,
+                        0
+                    ],
+                    "state": "Suborder 0 arrived at taquero Jerry",
+                    "step": 1,
+                    "time_stamp": "2021-12-03 15:27:41.074071",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        5,
+                        0
+                    ],
+                    "state": "cooking stack #0(9) of 8 tacos",
+                    "step": 2,
+                    "time_stamp": "2021-12-03 15:27:48.177451",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        5,
+                        0
+                    ],
+                    "state": "Stack#0(9) complete",
+                    "step": 3,
+                    "time_stamp": "2021-12-03 15:28:00.358529",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        5,
+                        0
+                    ],
+                    "state": "Suborder 0 complete",
+                    "step": 4,
+                    "time_stamp": "2021-12-03 15:28:00.358529",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        1
+                    ],
+                    "state": "Switching to order 3",
+                    "step": 5,
+                    "time_stamp": "2021-12-03 15:28:00.358529",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        5,
+                        0
+                    ],
+                    "state": "cooking stack #0(8) of 6 tacos",
+                    "step": 6,
+                    "time_stamp": "2021-12-03 15:28:53.411838",
+                    "worker_id": 3
+                }
+            ]
+        },
+        "datetime": "2021-09-14 17:15:55.421215",
+        "orden": [
+            {
+                "ingredients": [
+                    "salsa",
+                    "cebolla"
+                ],
+                "meat": "cabeza",
+                "part_id": "2-0",
+                "quantity": 6,
+                "status": "open",
+                "type": "taco"
+            },
+            {
+                "ingredients": [
+                    "guacamole"
+                ],
+                "meat": "tripa",
+                "part_id": "2-1",
+                "quantity": 8,
+                "status": "open",
+                "type": "taco"
+            }
+        ],
+        "request_id": 2,
+        "responsable_orden": 0,
+        "status": "open",
+        "tupleID": [
+            5,
+            0
+        ]
+    },
+    "5": {
+        "answer": {
+            "end_time": 0,
+            "start_time": "2021-12-03 15:27:44.079248",
+            "steps": [
+                {
+                    "part_id": [
+                        5,
+                        1
+                    ],
+                    "state": "Suborder 1 arrived at taquero Jerry",
+                    "step": 0,
+                    "time_stamp": "2021-12-03 15:27:44.079248",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        5,
+                        1
+                    ],
+                    "state": "Suborder 1 arrived at taquero Jerry",
+                    "step": 1,
+                    "time_stamp": "2021-12-03 15:27:44.079248",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        5,
+                        1
+                    ],
+                    "state": "cooking stack #0(11) of 8 tacos",
+                    "step": 2,
+                    "time_stamp": "2021-12-03 15:28:40.743964",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        5,
+                        1
+                    ],
+                    "state": "Stack#0(11) complete",
+                    "step": 3,
+                    "time_stamp": "2021-12-03 15:28:53.302591",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        5,
+                        1
+                    ],
+                    "state": "Suborder 1 complete",
+                    "step": 4,
+                    "time_stamp": "2021-12-03 15:28:53.302591",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        5,
+                        1
+                    ],
+                    "state": "Switching to order 4",
+                    "step": 5,
+                    "time_stamp": "2021-12-03 15:28:53.411838",
+                    "worker_id": 3
+                }
+            ]
+        },
+        "datetime": "2021-09-14 17:15:55.421215",
+        "orden": [
+            {
+                "ingredients": [
+                    "salsa",
+                    "cebolla"
+                ],
+                "meat": "cabeza",
+                "part_id": "2-0",
+                "quantity": 6,
+                "status": "open",
+                "type": "taco"
+            },
+            {
+                "ingredients": [
+                    "guacamole"
+                ],
+                "meat": "tripa",
+                "part_id": "2-1",
+                "quantity": 8,
+                "status": "open",
+                "type": "taco"
+            }
+        ],
+        "request_id": 2,
+        "responsable_orden": 0,
+        "status": "open",
+        "tupleID": [
+            5,
+            1
+        ]
+    }
+}
