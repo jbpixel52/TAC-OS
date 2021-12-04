@@ -33,23 +33,12 @@ def update(n_intervals):
     if n_intervals > 0:
         return [
             html.H1('TAC-OS 🌮'),
-
-            ##########################
-            # METADA DE LOS TAQUERO
             html.Div(id='metadata-div', children=helpers.staff_metadata_html()),
-            ##################################################
             html.H2('TAC-OS LOGS'),
             html.Div(id='log-div', children=helpers.read_log('logfile.log')),
             html.Div(id='tables-div',children=helpers.Tables()),
-            html.Div(id='tables-div',children=helpers.outputsTables(filepath='outputs/'))
-
-
+            html.Div(id='tables-div',children=helpers.outputsTables(directory='outputs/'))
         ]
-
-
-def tableandtile(title, table):
-    pass
-
 
 def main():
     app.run_server(debug=True, use_reloader=False, dev_tools_hot_reload=True)

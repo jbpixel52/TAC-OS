@@ -6,12 +6,12 @@ from dash import dash_table, html
 
 
 data = None
-with open('outputs[0].json',mode='r') as jsonfile:
+with open('outputs/outputs_id_0.json',mode='r') as jsonfile:
     data = json.loads(jsonfile.read())
     jsonfile.close()
 
 df = pd.json_normalize(data).transpose()
 
-dash_table.DataTable(data = df)
+table = dash_table.DataTable(data = df.to_dict('records'))
 
 # %%
