@@ -522,8 +522,10 @@ class PersonalTaqueria(threading.Thread):
             # tres si cuentas el recibir ordenes de retorno, dejemoslo en 2 + 1
             if(not self.recieveQueueReturn.empty()):
                 self.process_order(self.recieveQueueReturn.get_nowait(), True)
-                
-            
+            # Arregla bug que no se piden ingredientes cuando se hace nada
+            # o era intención de Omar y no se acuerda? hmmm... 
+            #  ustedes que dicen, ¿era bug o feature?  
+            self.checkIngridients()
             # if debug_state is True:
             time.sleep(self.ordersPerSecondDelta)
 
@@ -599,10 +601,15 @@ class PersonalTaqueria(threading.Thread):
                     # Si se acabo el ultimo stack no hya porque revisar que exista
                     # un sucesor
                     if(self.ordenes[str(int(self.shortestOrderIndex)+1)]["tupleID"][0]
-                       == self.ordenes[self.shortestOrderIndex]["tupleID"][0]):
+                       == self.ordenes[self.shortestOrderIndex]["tupleID"][0]
+                       and self.ordenes[str(int(self.shortestOrderIndex)+1)]["tupleID"][1]
+                       == self.ordenes[self.shortestOrderIndex]["tupleID"][1]):
                         # Sí el siguiente taco counter comparte el mismo
                         # padre/inicio entonces hacer el venico la nueva
                         # cabeza al acabar este stack
+                        # Omar: se supone que la cabeza solo se pasaba a 
+                        # otros stacks de la sub, raro...
+                        # si esto no lo arregla las cosas se pondran feo
                         self.ordenesHeads.remove(
                             int(self.shortestOrderIndex))
                         self.ordenesHeads.append(
