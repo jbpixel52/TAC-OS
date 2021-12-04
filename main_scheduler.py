@@ -61,7 +61,7 @@ class PersonalTaqueria(threading.Thread):
         self.allowedMeatTypes = ["suadero",
                                  "adobada", "asada", "cabeza", "tripa"]
         self.cocinaDirectory = {
-            "adoaba": 0,
+            "adobada": 0,
             "asada": 1,
             "suadero": 1,
             "unused": 2,
