@@ -143,6 +143,11 @@ class PersonalTaqueria(threading.Thread):
         #   Solo se baja este V cuando hay hangups de ingredientes
         self.remainingRestingTime = self.maxRestingTime
         self.isAnOwl = False  # Si es true no necesita dormir
+        # Exclusivo para logica del uso de los dobles
+        # Para poder verificar las UTIs del otro taquero se necesita ver 
+        # sus stats de UTIS
+        self.pointersToTaquerosDoubles = None 
+        
 
     def staff_to_json(self):
         while True:
@@ -862,8 +867,6 @@ class PersonalTaqueria(threading.Thread):
         pass
 
     def spendIngredients(self):
-        if(self.ID == 2):
-            x = 5
         # Lógica del consumo de ingredientes
         # hastag no se me vino esta idea de aquí https://youtu.be/LwKtRnlongU?t = 55
         if(not self.infiniteIngridients):
@@ -1306,6 +1309,7 @@ class CocinaTaqueros(multiprocessing.Process):
         super(CocinaTaqueros, self).__init__(target=self.main, name=_name)
         self.personal = []
         self.commsDelta = 0.5  # segundos hace un refresh de envio de datos
+        self.current70 = 1 # Taquero al que se le manda el 70% de la carga
 
         pass
 
@@ -1314,6 +1318,41 @@ class CocinaTaqueros(multiprocessing.Process):
         print(
             "Puente hacia el disco casi abierto lol #$%^& Windows y su falta de fork()")
 
+    def calculate_asadaANDsuadero_candidate(self, cocina):
+        # Funcion que tanto metiendo desde SQS o de disco necesitamos
+        #  saber cual de los taqueros dobles (1 y 2) es el mejor para meterle
+        #  la orden, no será 50/50 porque si no se duermen a la vez y vale queso
+        #  (aunque sería 200% y 0% produccion así qu... ¿no da lo mismo?)
+        #  como sea, la intencion es hacerlo 70/30 y tornalo a 30/70
+        stacks1 = cocina.personal[1].ordenes.copy()
+        costoUTIs1 = 0
+        for stack in stacks1:
+            costoUTIs1 += stack["costo utis"]
+        stacks2 = cocina.personal[2].ordenes.copy()
+        costoUTIs2 = 0
+        for stack in stacks2:
+            costoUTIs2 += stack["costo utis"]
+        # Si ambos estan despiertos se le mete al queue con menos UTIS
+        if(not cocina.personal[1].isResting and not cocina.personal[2].isResting):
+            if(costoUTIs1/(costoUTIs2+1) > 0.70):
+                if(self.current70 == 1):
+                    # retornar el indice con menor UTIS
+                    return 2
+                else:
+                    return 1
+            else: # si el que deberia tener el 70% de la carga no tiene su
+                # suficiente carga que se aguante y le mandamos M A S
+                if(self.current70 == 1):
+                    return 1
+                else:
+                    return 2
+        # uno duerme/descansa (no me refiero a usar .sleep()) 
+        #   entonces que se le mande al despierto
+        if(cocina.personal[1].isResting):
+            return 2
+        else:
+            return 1
+        
     def ingreso_personal(self, cocina):
         listOfNames = ["Omar","Marcelino","Jose","Jerry"]
         #         # Queues de mandar pedidos o recibir pedidos no correspondientes
@@ -1397,10 +1436,13 @@ class CocinaTaqueros(multiprocessing.Process):
 class CocinaQuesadillero():
     pass
 
+
+    
 def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
     ordersToTest = 6
     ordersToTest2 = 5
+    ordersToTest3 = 4
     # si se desean ver ordenes en cabeza, cambiar nivel a debug
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="w",
                         format="%(asctime)s - [%(levelname)s] - [%(threadName)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s")
@@ -1416,8 +1458,20 @@ def open_taqueria():
                 orden = ListadoOrdenes[i]
                 Cocina.personal[0].queue.put(orden)
         with open("queuesDisco/jsonJerry.json") as OrdenesJSON:
-                ListadoOrdenes = json.load(OrdenesJSON)
-                for i in range(ordersToTest2):
-                    orden = ListadoOrdenes[i]
-                    Cocina.personal[3].queue.put(orden)
+            ListadoOrdenes = json.load(OrdenesJSON)
+            for i in range(ordersToTest2):
+                orden = ListadoOrdenes[i]
+                Cocina.personal[3].queue.put(orden)
+        with open("queuesDisco/jsonDouble.json") as OrdenesJSON:
+            ListadoOrdenes = json.load(OrdenesJSON)
+            for i in range(ordersToTest3):
+                # indexToGive = Cocina.calculate_asadaANDsuadero_candidate(Cocina)
+                if(Cocina.personal[1].isResting):
+                    indexToGive = 2
+                else:
+                    indexToGive = 1
+                # print(f"The best index to send to doubles are {indexToGive}")
+                orden = ListadoOrdenes[i]
+                Cocina.personal[indexToGive].queue.put(orden)
+            
         time.sleep(999999) # <- recordatorio para Omar -> DEJALO COMO ESTABA

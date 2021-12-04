@@ -8,11 +8,11 @@
     "currentGuacamole": 100,
     "currentSalsa": 124,
     "currentTortillas": 50,
-    "currentWorkingOrder": 9,
+    "currentWorkingOrder": 5,
     "currentWorkingSuborder": 0,
     "isFanActive": true,
     "name": "Jerry",
     "ordenes": {},
     "resting": false,
-    "stackcounter": 16
+    "stackcounter": 17
 }

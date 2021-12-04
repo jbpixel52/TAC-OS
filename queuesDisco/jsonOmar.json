@@ -70,7 +70,7 @@
             {
                 "part_id": "1-1",
                 "type": "taco",
-                "meat": "adobada",
+                "meat": "asada",
                 "status": "open",
                 "quantity": 3,
                 "ingredients": [
