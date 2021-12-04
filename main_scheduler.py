@@ -520,8 +520,10 @@ class PersonalTaqueria(threading.Thread):
             # tres si cuentas el recibir ordenes de retorno, dejemoslo en 2 + 1
             if(not self.recieveQueueReturn.empty()):
                 self.process_order(self.recieveQueueReturn.get_nowait(), True)
-                
-            
+            # Arregla bug que no se piden ingredientes cuando se hace nada
+            # o era intención de Omar y no se acuerda? hmmm... 
+            #  ustedes que dicen, ¿era bug o feature?  
+            self.checkIngridients()
             # if debug_state is True:
             time.sleep(self.ordersPerSecondDelta)
 
