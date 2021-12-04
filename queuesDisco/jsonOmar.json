@@ -7,7 +7,7 @@
                 "type": "taco",
                 "meat": "adobada",
                 "status": "open",
-                "quantity": 5,
+                "quantity": 15,
                 "ingredients": [
                     "salsa",
                     "cilantro",
@@ -19,7 +19,7 @@
                 "type": "taco",
                 "meat": "adobada",
                 "status": "open",
-                "quantity": 7,
+                "quantity": 6,
                 "ingredients": [
                     "salsa",
                     "cilantro",
@@ -31,7 +31,7 @@
                 "type": "taco",
                 "meat": "adobada",
                 "status": "open",
-                "quantity": 2,
+                "quantity": 3,
                 "ingredients": [
                     "salsa",
                     "cebolla"
@@ -48,7 +48,7 @@
             "type": "taco",
             "meat": "tripa",
             "status": "open",
-            "quantity": 8,
+            "quantity": 6,
             "ingredients": [
                 "guacamole",
                 "cilantro",
@@ -65,7 +65,7 @@
                 "type": "taco",
                 "meat": "cabeza",
                 "status": "open",
-                "quantity": 6,
+                "quantity": 5,
                 "ingredients": [
                     "salsa",
                     "cebolla"
@@ -76,7 +76,7 @@
                 "type": "taco",
                 "meat": "tripa",
                 "status": "open",
-                "quantity": 8,
+                "quantity": 12,
                 "ingredients": [
                     "guacamole"
                 ]

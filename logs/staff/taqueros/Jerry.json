@@ -2,62 +2,17 @@
     "ID": 3,
     "Owl": false,
     "chalan": "Adan",
-    "cooking": true,
-    "currentCebolla": 169,
-    "currentCilantro": 184,
-    "currentGuacamole": 90,
-    "currentSalsa": 135,
-    "currentTortillas": 38,
-    "currentWorkingOrder": 4,
+    "cooking": false,
+    "currentCebolla": 189,
+    "currentCilantro": 194,
+    "currentGuacamole": 88,
+    "currentSalsa": 145,
+    "currentTortillas": 42,
+    "currentWorkingOrder": 2,
     "currentWorkingSuborder": 0,
-    "isFanActive": true,
+    "isFanActive": false,
     "name": "Jerry",
-    "ordenes": {
-        "10": {
-            "arrival time": 1638574064.079249,
-            "costo utis": 34.00002,
-            "indiv. time to cook": 2.0,
-            "individual cost": 5.66667,
-            "ingridient list": [
-                "sa",
-                "",
-                "",
-                "ce",
-                "to"
-            ],
-            "outputID": 5,
-            "prioridad": 13.152442288970018,
-            "quantity": 6,
-            "time to cook": 12.0,
-            "tupleID": [
-                5,
-                0,
-                0
-            ]
-        },
-        "8": {
-            "arrival time": 1638574061.074072,
-            "costo utis": 34.00002,
-            "indiv. time to cook": 2.0,
-            "individual cost": 5.66667,
-            "ingridient list": [
-                "sa",
-                "",
-                "",
-                "ce",
-                "to"
-            ],
-            "outputID": 4,
-            "prioridad": 13.663322683062244,
-            "quantity": 6,
-            "time to cook": 6.0,
-            "tupleID": [
-                4,
-                0,
-                0
-            ]
-        }
-    },
+    "ordenes": {},
     "resting": false,
-    "stackcounter": 12
+    "stackcounter": 5
 }

@@ -173,7 +173,7 @@ class PersonalTaqueria(threading.Thread):
     def startOutputtingOrder(self, orden):
         # Funcion que crea un indice en los outputs de salidas
         #  lo hace en base al templete lul
-        ordenID = orden['request_id']
+        ordenID = len(self.jsonOutputs)
         absoluteOrderID = ordenID
         absoluteSubOrderID = None
         if(ordenID in self.ordersThatAreNotMine):
@@ -248,15 +248,17 @@ class PersonalTaqueria(threading.Thread):
         # Mandar solamente la orden con la suborden buena
         # # veces que Omar olvido copiar por valor: >4 xdxd
         ordercopy = copy.deepcopy(order)
-        for sub in ordercopy['orden']:
-            if(sub["meat"] in self.meatTypes):
-                ordercopy["orden"].remove(sub)
+        # No se, creo que mi plan era mandar 1 por uno y no por
+        #  bonche y de alguna forma me acordé hasta ahora que no lo hice
+        #  así pensando que sí, en fin ... arregla esto el sus
+        ordercopy['orden'] = []
+        ordercopy['orden'].append(suborder) # revaciar la lista para mandar 1 x 1
+        #  todo este tiempo ey alfin encontré al (n+noselol)-ultimo sus impostor
         indexToSend = self.cocinaDirectory[suborder["meat"]]
-        # Variable de apoyo en el regreso al taquero encargado para saber donde va
+        # # Variable de apoyo en el regreso al taquero encargado para saber donde va
         ordercopy["tupleID"] = (self.orderCounter,numSuborden)
         self.sendQueues[indexToSend].put(ordercopy)
-        pass
-    
+
     def splitOrder(self, orden):
         pedido = orden
         numSuborden = 0
@@ -336,7 +338,6 @@ class PersonalTaqueria(threading.Thread):
                             tiempoCocinarIndividual = tiempoParaCocinar
                             costoUTIs = costoUTIs * subOrden['quantity']
                             tiempoParaCocinar = tiempoParaCocinar * subOrden['quantity']
-
                             # Fin del calculo del costo
                             if(costoUTIs < self.constMagnitud):
                                 # No dividir, solo 1 stack por esta suborden
@@ -374,8 +375,11 @@ class PersonalTaqueria(threading.Thread):
                                 if(numStacks == 1):
                                     # Pasar el taco sobrante al stack cola si solo
                                     #  hay 1 stack y su cola,
-                                    tacosSobrantes = 1
-                                    tacosPorStack -= 1
+                                    ##tacosSobrantes = 1
+                                    ##tacosPorStack -= 1
+                                    # bueno, ya lo rompí, no duerno hasta arreglarlo 
+                                    #  por las malas...
+                                    pass
                                 # Como habia hecho en el test2 inician
                                 # primero vá la cola
                                 # Si hubo residuo hay una "cola" para evitar problemas
@@ -412,11 +416,11 @@ class PersonalTaqueria(threading.Thread):
                                     costoStack = tacosPorStack * costoUTIsIndividual
                                     prioridad = ((costoStack**-1)*10)
                                     self.ordenes[str(self.stackCounter)] = {
-                                        "costo utis": costoUTIs,
+                                        "costo utis": costoStack,
                                         "prioridad": prioridad,
                                         "tupleID": (self.orderCounter, numSuborden, subSplitIndex),
                                         "arrival time": time.time(),
-                                        "quantity": subOrden['quantity'],
+                                        "quantity": tacosPorStack,
                                         "individual cost": costoUTIsIndividual,
                                         "time to cook": tiempoParaCocinar,
                                         "indiv. time to cook": tiempoCocinarIndividual,
@@ -462,6 +466,8 @@ class PersonalTaqueria(threading.Thread):
         self.jsonOutputs[orderID]["answer"]["steps"] = answerStepsToRecieve
         # Revisar que la orden esté finalizada
         self.checkOrderCompletion(orderID)
+        # Arregla el bug que ordenes de retorno se no marcaban como completas
+        self.finisherOutput("order", (orderID, 0, 0))
         
     def process_order(self, newOrder, returned):
         if(not returned):
@@ -487,7 +493,7 @@ class PersonalTaqueria(threading.Thread):
         else:
             # Si es una orden de retorno ya fue cocinada, metamosla devuelta
             #  en su output correspondiende
-            logging.info("f{self.ID} has recieved a completed order by someone else")
+            logging.info(f"{self.ID} has recieved a completed order by someone else")
             self.fuse_order(newOrder)
     
     def recieveOrders(self):
@@ -698,7 +704,7 @@ class PersonalTaqueria(threading.Thread):
         if(orderID in self.ordersThatAreNotMine 
                 and type == "order"):
             orderToReturn = copy.deepcopy(self.jsonOutputs[orderID])
-            del self.jsonOutputs[orderID]
+            self.jsonOutputs[orderID] = "This index is now somewhere else, Omar will tell you where is he does not snap"
             # Ubicar a que queue se le debe regresar la orden
             # Todas las subs son iguales así que solo hay que revisar 1
             indexToReturnTo = orderToReturn["responsable_orden"]
@@ -740,17 +746,21 @@ class PersonalTaqueria(threading.Thread):
                     message = f"Switching to suborder {subOrderID}"
                 else:
                     message = f"Switching to order {orderID}"
-                pauseStep = {}
-                pauseStep["worker_id"] = self.ID
-                pauseStep["step"] = len(
-                    self.jsonOutputs[self.currentWorkingOrder]["answer"]["steps"])
-                pauseStep["state"] = message
-                pauseStep["part_id"] = [
-                    self.currentWorkingOrder, self.currentWorkingSuborder]
-                pauseStep["time_stamp"] = getTime()
-                self.jsonOutputs[self.currentWorkingOrder]["answer"]["steps"].append(
-                    pauseStep)
-                # Y hagamos el nuevo paso de cooking en la activa
+                if(not isinstance(self.jsonOutputs[self.currentWorkingOrder],str)):
+                    # Asumo que lo que debería decir es esto:a
+                    #  si ya se fue la orden no digo que cambiaré a otra
+                    #   si es un string, ya se fue
+                    pauseStep = {}
+                    pauseStep["worker_id"] = self.ID
+                    pauseStep["step"] = len(
+                        self.jsonOutputs[self.currentWorkingOrder]["answer"]["steps"])
+                    pauseStep["state"] = message
+                    pauseStep["part_id"] = [
+                        self.currentWorkingOrder, self.currentWorkingSuborder]
+                    pauseStep["time_stamp"] = getTime()
+                    self.jsonOutputs[self.currentWorkingOrder]["answer"]["steps"].append(
+                        pauseStep)
+                    # Y hagamos el nuevo paso de cooking en la activa
                 pass
             nextStepID = len(self.jsonOutputs[orderID]["answer"]["steps"])
             step["step"] = nextStepID
@@ -1075,9 +1085,10 @@ class PersonalTaqueria(threading.Thread):
                     )
                     self.ordenes[str(headIndex)]["prioridad"] = (base + tax)
                 except Exception as e:
-                    logging.error(
-                        f"Concurrency error at {self.name}'s  taxer, tried to tax a head in transition to death"
-                    )
+                    #logging.error(
+                     #   f"Concurrency error at {self.name}'s  taxer, tried to tax a head in transition to death"
+                    #)
+                    pass # hora de la almmohada muchacho
 
             if debug_state is True:
                 time.sleep(1.0)
@@ -1344,7 +1355,7 @@ class CocinaQuesadillero():
 
 def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
-    ordersToTest = 1
+    ordersToTest = 3
     # si se desean ver ordenes en cabeza, cambiar nivel a debug
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="w",
                         format="%(asctime)s - [%(levelname)s] - [%(threadName)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s")
@@ -1354,9 +1365,9 @@ def open_taqueria():
    
     
     while(True):
-        with open("someOneElses.json") as OrdenesJSON:
+        with open("queuesDisco/jsonOmar.json") as OrdenesJSON:
             ListadoOrdenes = json.load(OrdenesJSON)
             for i in range(ordersToTest):
                 orden = ListadoOrdenes[i]
                 Cocina.personal[0].queue.put(orden)
-        time.sleep(999999)
+        time.sleep(999999) # <- recordatorio para Omar -> DEJALO COMO ESTABA
