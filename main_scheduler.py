@@ -862,6 +862,8 @@ class PersonalTaqueria(threading.Thread):
         pass
 
     def spendIngredients(self):
+        if(self.ID == 2):
+            x = 5
         # Lógica del consumo de ingredientes
         # hastag no se me vino esta idea de aquí https://youtu.be/LwKtRnlongU?t = 55
         if(not self.infiniteIngridients):
@@ -963,6 +965,8 @@ class PersonalTaqueria(threading.Thread):
 
     def checkIngridients(self):
         if(not self.infiniteIngridients):
+            if(self.ID == 2):
+                x = 5
             # Esto intenta aliviar el error de diseño en que no se piden ingredientes
             #  faltantes porque no se usan (y solo se hacia la llamada de requestIngridients() en el uso)
             if((self.currentSalsa != self.maxSalsa) and ("sa" not in self.listOfRquestedIngridients)):
@@ -977,7 +981,7 @@ class PersonalTaqueria(threading.Thread):
             if((self.currentCilantro != self.maxCilantro) and ("ci" not in self.listOfRquestedIngridients)):
                 self.requestIngridient("ci", self.maxCilantro - self.currentCilantro,
                                        self.maxCilantro/(self.currentCilantro))
-            if((self.currentCilantro != self.maxTortillas) and ("to" not in self.listOfRquestedIngridients)):
+            if((self.currentTortillas != self.maxTortillas) and ("to" not in self.listOfRquestedIngridients)):
                 self.requestIngridient("to", self.maxTortillas - self.currentTortillas,
                                        self.maxTortillas/(self.currentTortillas))
 
@@ -1190,8 +1194,14 @@ class ChalanTaquero(threading.Thread):
         logging.info(
             f"Chalan will go to the store for {orderTypeToRefill} {timeDif()}")
         time.sleep(timeToRefill)
-        if(taqueroIDToRefill == 3):
+        if(taqueroIDToRefill == 3 or taqueroIDToRefill == 0):
             taqueroIDToRefill = 0 # 0 y 3 son 0, 1 y 2 son 1
+        else:
+            taqueroIDToRefill = 1
+            #esto resuleve el bug de que se me olvidó poner el else
+            # dato chido: tambien habia otro bug que hacia siempre pedir tortillas
+            # porque en check ingridients comparaba con la cebolla
+            pass
         if(orderTypeToRefill == "to"):
             self.cocinerosAsignados[taqueroIDToRefill].currentTortillas += quantityToRefill
             # Decirle al taquero que ya le dio los ingredientes solicitados
@@ -1235,6 +1245,7 @@ class ChalanTaquero(threading.Thread):
             quantityToRefill = 0
             taqueroIDToRefill = 0
             orderTypeToRefill = ""
+            whereitCameFrom = 0
             # Escucha ambas solicitudes y luego decide irse o no a la tienda y rellenar
             if(self.queueA.empty()):
                 pass
@@ -1242,12 +1253,14 @@ class ChalanTaquero(threading.Thread):
                 # Si hubo una solicitud de rellenar que lo lea del pizarron, que se lo meta en su cabeza
                 while(not self.queueA.empty()):
                     self.priorityQueueCabeza.append(self.queueA.get_nowait())
+                    whereitCameFrom = 0
             pass
             if(self.queueB.empty()):
                 pass
             else:
                 while(not self.queueB.empty()):
                     self.priorityQueueCabeza.append(self.queueB.get_nowait())
+                    whereitCameFrom = 1
             pass
             # Decidir si tiene que rellenar algo en base a la solicitud más reciente
             if(len(self.priorityQueueCabeza) > 0):
@@ -1276,6 +1289,8 @@ class ChalanTaquero(threading.Thread):
 
             if(len(self.priorityQueueCabeza) > 0):
                 # Si hay tareas, ir a la tienda y rellenar
+                if(taqueroIDToRefill == 2):
+                    x = 5
                 self.gotoStoreAndRefill(
                     orderTypeToRefill, taqueroIDToRefill, quantityToRefill, timeToRefill
                 )
@@ -1300,6 +1315,7 @@ class CocinaTaqueros(multiprocessing.Process):
             "Puente hacia el disco casi abierto lol #$%^& Windows y su falta de fork()")
 
     def ingreso_personal(self, cocina):
+        listOfNames = ["Omar","Marcelino","Jose","Jerry"]
         #         # Queues de mandar pedidos o recibir pedidos no correspondientes
         # self.sendQueues = [None,None,None,None]
         # self.recieveQueues = None
@@ -1312,51 +1328,70 @@ class CocinaTaqueros(multiprocessing.Process):
             1 - > Asada y Suadero (1)
             2 - > Asada y Suadero (2)
             3 - > Tripa y cabeza 
-            4 - > El de las quesadillas
+            4 - > El de las quesadillas [used?]
         """
         # Aviso: la cocina no puede hacer esto en primer persona
         # (o sea con self), si se hace no pasa nada o pasan comportamientos
         #  no deseados para Omar
         # El queue send de uno es el receptor de otro y viceversa
         for i in range(4):
+            # Asignacion de espacios vacios, nombres de personal y ID
             cocina.personal.append(None)
-                    
-        cocina.personal[0] = PersonalTaqueria("Omar")
-        cocina.personal[0].chalanAsignado = ChalanTaquero("Julio")
-        cocina.personal[0].chalanAsignado.cocinerosAsignados[0] = cocina.personal[0]
-        cocina.personal[0].ID = 0
+            cocina.personal[i] = PersonalTaqueria(str(listOfNames[i]))
+            cocina.personal[i].ID = i
+            
+        chalanA = ChalanTaquero("Julio")
+        chalanB = ChalanTaquero("Adan")
+        # Asignación de Chalanes
+        cocina.personal[0].chalanAsignado = cocina.personal[1].chalanAsignado = chalanA
+        cocina.personal[2].chalanAsignado = cocina.personal[3].chalanAsignado = chalanB
+        
+        #Asignación de los 4 tipos de carnes
         cocina.personal[0].meatTypes = ["adobada"]
-        # Marcelino pospuesto hasta acabar la lógica individual
-        cocina.personal[3] = PersonalTaqueria("Jerry")
-        cocina.personal[3].chalanAsignado = ChalanTaquero("Adan")
-        cocina.personal[3].chalanAsignado.cocinerosAsignados[0] = cocina.personal[3]
-        cocina.personal[3].ID = 3
+        cocina.personal[1].meatTypes = ["asada","suadero"]
+        cocina.personal[2].meatTypes = ["asada","suadero"]
         cocina.personal[3].meatTypes = ["tripa","cabeza"]
         
+        #Asignarle a los chalanes sus taqueros correspondientes
+        # el 0 es para los solitarios y el 1 es para los paralelos (asada y suadero)
+        # mejor los llamo dobles..
+        cocina.personal[0].chalanAsignado.cocinerosAsignados[0] = cocina.personal[0]
+        cocina.personal[1].chalanAsignado.cocinerosAsignados[1] = cocina.personal[1]
+        cocina.personal[2].chalanAsignado.cocinerosAsignados[1] = cocina.personal[2]
+        cocina.personal[3].chalanAsignado.cocinerosAsignados[0] = cocina.personal[3]
+        
+        
         for i in range(4):
-            try:
-                for j in range(4):
-                    cocina.personal[i].sendQueues.append(None)
-                    cocina.personal[i].sendQueuesReturn.append(None)
-            except:
-                print(f"Proximamente en la taqueria, el taquero {i}")
+            for j in range(4):
+                cocina.personal[i].sendQueues.append(None)
+                cocina.personal[i].sendQueuesReturn.append(None)
 
         # Asignar buses de envio y recibo de ordenes
-        cocina.personal[0].recieveQueue = Queue()
-        cocina.personal[3].recieveQueue = Queue()
-        cocina.personal[0].sendQueues[3] =  cocina.personal[3].recieveQueue
-        cocina.personal[3].sendQueues[0] =  cocina.personal[0].recieveQueue
-        # Asignar buses de envio y recibo de retornes de (sub)ordenes completas
-        cocina.personal[0].recieveQueueReturn = Queue()
-        cocina.personal[3].recieveQueueReturn = Queue()
-        cocina.personal[0].sendQueuesReturn[3] =  cocina.personal[3].recieveQueueReturn
-        cocina.personal[3].sendQueuesReturn[0] =  cocina.personal[0].recieveQueueReturn
+        #  caminos recpetores de ordenes no correspondientes
+        #  y receptor de retorno de ordenes terminadas que no eran correspondientes
+        for i in range(4):
+            cocina.personal[i].recieveQueue = Queue()
+            cocina.personal[i].recieveQueueReturn = Queue()
+
+        # Asignar queues de envio de ordenes no correspondientes
+        for i in range(0,4):   
+            for j in range(0,4):
+                #Si, tecnicamente le estamos metiendo su propio queue
+                # como un sendqueue, pero eso era más facil que modifcar el for
+                cocina.personal[j].sendQueues[i] =  cocina.personal[i].recieveQueue
+            
         
-        #Arrancar los threads        
-        cocina.personal[0].start()
+        # Asignar queues de envio de retorno de ordenes no correspondientes
+        for i in range(0,4):   
+            for j in range(0,4):
+                #Si, tecnicamente le estamos metiendo su propio queue
+                # como un sendqueue, pero eso era más facil que modifcar el for
+                cocina.personal[j].sendQueuesReturn[i] =  cocina.personal[i].recieveQueueReturn
+        
+        #Arrancar los threads de cocineros y sus chalanes
+        for i in range(4):       
+            cocina.personal[i].start()
         cocina.personal[0].chalanAsignado.start()
-        
-        cocina.personal[3].start()
         cocina.personal[3].chalanAsignado.start()
         
 class CocinaQuesadillero():
