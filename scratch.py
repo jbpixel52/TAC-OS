@@ -2,16 +2,12 @@
 import pandas as pd
 import json
 from dash import dash_table, html
+from time import sleep
+from datetime import datetime,timedelta
 
+EPOCHTIME= datetime.now()
+NOW = datetime.now()
+DIF = NOW-EPOCHTIME
 
-
-data = None
-with open('outputs/outputs_id_0.json',mode='r') as jsonfile:
-    data = json.loads(jsonfile.read())
-    jsonfile.close()
-
-df = pd.json_normalize(data).transpose()
-
-table = dash_table.DataTable(data = df.to_dict('records'))
-
+print(f"{(datetime.now()-EPOCHTIME).total_seconds() * 1000:.2f}ms")
 # %%
