@@ -184,6 +184,20 @@ def taqueroOrderTable(filepath, dataframe=None):
         page_size=10,
     )
 
+def outputsTables(filepath ='' , dataframe = None):
+    data = None
+    elements_list = []
+    filepaths = []
+    for subdir, dirs, files in os.walk(directory):
+        for file in files:
+            filepaths.append(os.path.join(subdir, file))
+    for file in filepaths:
+        df = pd.json_normalize(data).transpose()
+        print()
+
+    return[dash_table.DataTable(data = df)]
+
+
 
 if __name__ == "__main__":
     staffhtml = staff_metadata_html()

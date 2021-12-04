@@ -41,6 +41,7 @@ def update(n_intervals):
             html.H2('TAC-OS LOGS'),
             html.Div(id='log-div', children=helpers.read_log('logfile.log')),
             html.Div(id='tables-div',children=helpers.Tables()),
+            html.Div(id='tables-div',children=helpers.outputsTables(filepath='outputs/'))
 
 
         ]

@@ -161,7 +161,7 @@ class PersonalTaqueria(threading.Thread):
         # Decir que se está en linea
         print(f"Taquero {self.name} en linea")
         # Hacer el templete del output de salidas
-        with open("outputTemplate.json") as jsonSalida:
+        with open("outputs/outputTemplate.json") as jsonSalida:
             self.jsonOutputTemplate = json.load(jsonSalida)
 
         self.OrderRecieverThread.start()
@@ -508,7 +508,7 @@ class PersonalTaqueria(threading.Thread):
             logging.info(
                 f"Taquero {self.name} stats: OC:{self.orderCounterCompleted}|SOC:{self.subOrderCounter}|STC:{self.stackCounterCompleted}|TC:{self.tacoCounter}")
             # Placeholder de output json
-            with open(f"outputs[{self.ID}].json", "w") as outputs:
+            with open(f"outputs/outputs_id_{self.ID}.json", "w") as outputs:
                 json.dump(self.jsonOutputs, outputs,indent=4,sort_keys=True)
             # Placeholder end
             # Las ordenes se procesan a lo dos máximo cada delta
