@@ -1363,6 +1363,7 @@ class CocinaQuesadillero():
 def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
     ordersToTest = 6
+    ordersToTest2 = 5
     # si se desean ver ordenes en cabeza, cambiar nivel a debug
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="w",
                         format="%(asctime)s - [%(levelname)s] - [%(threadName)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s")
@@ -1377,4 +1378,9 @@ def open_taqueria():
             for i in range(ordersToTest):
                 orden = ListadoOrdenes[i]
                 Cocina.personal[0].queue.put(orden)
+        with open("queuesDisco/jsonJerry.json") as OrdenesJSON:
+                ListadoOrdenes = json.load(OrdenesJSON)
+                for i in range(ordersToTest2):
+                    orden = ListadoOrdenes[i]
+                    Cocina.personal[3].queue.put(orden)
         time.sleep(999999) # <- recordatorio para Omar -> DEJALO COMO ESTABA
