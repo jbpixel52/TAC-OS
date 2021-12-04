@@ -2,81 +2,17 @@
     "ID": 3,
     "Owl": false,
     "chalan": "Adan",
-    "cooking": true,
-    "currentCebolla": 191,
-    "currentCilantro": 196,
-    "currentGuacamole": 96,
-    "currentSalsa": 145,
-    "currentTortillas": 41,
-    "currentWorkingOrder": 0,
+    "cooking": false,
+    "currentCebolla": 176,
+    "currentCilantro": 179,
+    "currentGuacamole": 95,
+    "currentSalsa": 126,
+    "currentTortillas": 43,
+    "currentWorkingOrder": 6,
     "currentWorkingSuborder": 0,
-    "isFanActive": false,
+    "isFanActive": true,
     "name": "Jerry",
-    "ordenes": {
-        "1": {
-            "arrival time": 1638583549.0030522,
-            "costo utis": 34.0,
-            "indiv. time to cook": 2.5,
-            "individual cost": 8.5,
-            "ingridient list": [
-                "",
-                "gu",
-                "ci",
-                "ce",
-                "to"
-            ],
-            "prioridad": 3.6971174391578225,
-            "quantity": 4.0,
-            "time to cook": 4.5,
-            "tupleID": [
-                0,
-                0,
-                1
-            ]
-        },
-        "3": {
-            "arrival time": 1638583555.011468,
-            "costo utis": 18.0,
-            "indiv. time to cook": 1.5,
-            "individual cost": 4.5,
-            "ingridient list": [
-                "",
-                "gu",
-                "",
-                "",
-                "to"
-            ],
-            "prioridad": 1.8163865253660414,
-            "quantity": 4.0,
-            "time to cook": 6.0,
-            "tupleID": [
-                2,
-                0,
-                0
-            ]
-        },
-        "4": {
-            "arrival time": 1638583555.011516,
-            "costo utis": 36.0,
-            "indiv. time to cook": 1.5,
-            "individual cost": 4.5,
-            "ingridient list": [
-                "",
-                "gu",
-                "",
-                "",
-                "to"
-            ],
-            "prioridad": 0.2777777777777778,
-            "quantity": 8.0,
-            "time to cook": 12.0,
-            "tupleID": [
-                2,
-                0,
-                1
-            ]
-        }
-    },
+    "ordenes": {},
     "resting": false,
-    "stackcounter": 5
+    "stackcounter": 10
 }
