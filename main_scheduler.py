@@ -1,4 +1,5 @@
 import copy
+import random
 import datetime
 import json
 import logging
@@ -1551,30 +1552,43 @@ def open_taqueria():
     Cocina = CocinaTaqueros("Taqueros")
     Cocina.start()
     Cocina.ingreso_personal(Cocina)
+    ReadingFromDisk = True
    
     
     while(True):
-        with open("queuesDisco/jsonOmar.json") as OrdenesJSON:
-            ListadoOrdenes = json.load(OrdenesJSON)
-            for i in range(ordersToTest):
-                orden = ListadoOrdenes[i]
-                Cocina.personal[0].queue.put(orden)
-        with open("queuesDisco/jsonJerry.json") as OrdenesJSON:
-            ListadoOrdenes = json.load(OrdenesJSON)
-            for i in range(ordersToTest2):
-                orden = ListadoOrdenes[i]
-                Cocina.personal[3].queue.put(orden)
-        with open("queuesDisco/jsonDouble.json") as OrdenesJSON:
-            ListadoOrdenes = json.load(OrdenesJSON)
-            for i in range(ordersToTest3):
-                # indexToGive = Cocina.calculate_asadaANDsuadero_candidate(Cocina)
-                # Si uno duerme, el otro toma control
+        if(ReadingFromDisk):
+            with open("queuesDisco/jsonOmar.json") as OrdenesJSON:
+                ListadoOrdenes = json.load(OrdenesJSON)
+                for i in range(ordersToTest):
+                    orden = ListadoOrdenes[i]
+                    Cocina.personal[0].queue.put(orden)
+            with open("queuesDisco/jsonJerry.json") as OrdenesJSON:
+                ListadoOrdenes = json.load(OrdenesJSON)
+                for i in range(ordersToTest2):
+                    orden = ListadoOrdenes[i]
+                    Cocina.personal[3].queue.put(orden)
+            with open("queuesDisco/jsonDouble.json") as OrdenesJSON:
+                ListadoOrdenes = json.load(OrdenesJSON)
+                for i in range(ordersToTest3):
+                    # indexToGive = Cocina.calculate_asadaANDsuadero_candidate(Cocina)
+                    # Si uno duerme, el otro toma control
+                    if(Cocina.personal[1].isResting):
+                        indexToGive = 2
+                    else:
+                        indexToGive = 1
+                    # print(f"The best index to send to doubles are {indexToGive}")
+                    orden = ListadoOrdenes[i]
+                    Cocina.personal[indexToGive].queue.put(orden)         
+            time.sleep(999999) # <- recordatorio para Omar -> DEJALO COMO ESTABA
+        else:
+            orderMessageFromSQS = None
+            queueToPut = random.randint(0,3)
+            if(queueToPut == 1 or queueToPut ==2):
                 if(Cocina.personal[1].isResting):
-                    indexToGive = 2
+                    queueToPut = 2
                 else:
-                    indexToGive = 1
-                # print(f"The best index to send to doubles are {indexToGive}")
-                orden = ListadoOrdenes[i]
-                Cocina.personal[indexToGive].queue.put(orden)
+                    queueToPut = 1
+            else:
+                pass
+            Cocina.personal[indexToGive].queue.put(orderMessageFromSQS)  
             
-        time.sleep(999999) # <- recordatorio para Omar -> DEJALO COMO ESTABA
