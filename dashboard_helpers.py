@@ -184,7 +184,7 @@ def taqueroOrderTable(filepath, dataframe=None):
         page_size=10,
     )
 
-def outputsTables(filepath ='' , dataframe = None):
+def outputsTables(directory =''):
     data = None
     elements_list = []
     filepaths = []
@@ -192,10 +192,12 @@ def outputsTables(filepath ='' , dataframe = None):
         for file in files:
             filepaths.append(os.path.join(subdir, file))
     for file in filepaths:
+        with open(file,'r') as f:
+            data = json.loads(f.read())
         df = pd.json_normalize(data).transpose()
         print()
 
-    return[dash_table.DataTable(data = df)]
+    return[dash_table.DataTable(data = df.to_dict('records'))]
 
 
 
