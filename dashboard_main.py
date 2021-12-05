@@ -19,7 +19,7 @@ app.layout = html.Div([
     html.Div(id='table-div',children=[]),
     dcc.Interval(
         id='interval-component',
-        interval=5*1000,  # in milliseconds
+        interval=1*1000,  # in milliseconds
         n_intervals=2
     )
 ])

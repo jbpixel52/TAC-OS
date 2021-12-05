@@ -15,11 +15,12 @@ from datetime import datetime
 
 abcdario = list(string.ascii_uppercase)
 debug_state = True
+SAVE_FREQ = 1
 EPOCHTIME= datetime.now()
 def timeDif():
     return f" T+({(datetime.now()-EPOCHTIME).total_seconds() * 1000:.2f}ms)"
-
-
+def pureSeconds():
+    return   round(((datetime.now()-EPOCHTIME).total_seconds()),ndigits=3)
 def getTime():
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
 
@@ -184,7 +185,7 @@ class PersonalTaqueria(threading.Thread):
         
     def staff_to_json(self):
         while True:
-            sleep(5)  # HERE WE SET THE SAVING TO DISK INTERVAL e.g., 3 seconds < -
+            sleep(SAVE_FREQ)  # HERE WE SET THE SAVING TO DISK INTERVAL e.g., 3 seconds < -
             print(f"- > saving {self.name} at {getTime()} ...")
             self.objects_to_json()
 
@@ -442,7 +443,7 @@ class PersonalTaqueria(threading.Thread):
                                     "costo utis": costoUTIs,
                                     "prioridad": prioridad,
                                     "tupleID": (self.orderCounter, numSuborden, subSplitIndex),
-                                    "arrival time": time.time(),
+                                    "arrival time": pureSeconds(),
                                     "quantity": subOrden['quantity'],
                                     "individual cost": costoUTIsIndividual,
                                     "time to cook": tiempoParaCocinar,
@@ -492,7 +493,7 @@ class PersonalTaqueria(threading.Thread):
                                         "costo utis": residuoUTIS,
                                         "prioridad": prioridad,
                                         "tupleID": (self.orderCounter, numSuborden, subSplitIndex),
-                                        "arrival time": time.time(),
+                                        "arrival time": pureSeconds(),
                                         "quantity": tacosSobrantes,
                                         "individual cost": costoUTIsIndividual,
                                         "time to cook": residuoTiempo,
@@ -515,7 +516,7 @@ class PersonalTaqueria(threading.Thread):
                                         "costo utis": costoStack,
                                         "prioridad": prioridad,
                                         "tupleID": (self.orderCounter, numSuborden, subSplitIndex),
-                                        "arrival time": time.time(),
+                                        "arrival time": pureSeconds(),
                                         "quantity": tacosPorStack,
                                         "individual cost": costoUTIsIndividual,
                                         "time to cook": tiempoParaCocinar,
