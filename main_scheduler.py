@@ -23,7 +23,38 @@ def timeDif():
 def getTime():
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
 
-
+def calculate_asadaANDsuadero_candidate(taqeuro1, taquero2):
+    # Funcion que tanto metiendo desde SQS o de disco necesitamos
+    #  saber cual de los taqueros dobles (1 y 2) es el mejor para meterle
+    #  la orden, no será 50/50 porque si no se duermen a la vez y vale queso
+    #  (aunque sería 200% y 0% produccion así qu... ¿no da lo mismo?)
+    #  como sea, la intencion es hacerlo uno de alta carga
+    #  y otro de baja carga, así (casi) nunca deberia sincronizarse los
+    #  descansos
+    stacks1 = taqeuro1.ordenes.copy()
+    costoUTIs1 = 0
+    for stack in stacks1:
+        costoUTIs1 += stacks1[stack]["costo utis"]
+        
+    stacks2 = taquero2.ordenes.copy()
+    costoUTIs2 = 0
+    for stack in stacks2:
+        costoUTIs2 += stacks2[stack]["costo utis"]
+        
+    # Si ambos estan despiertos se le mete al queue con menos UTIS
+    if(not taqeuro1.isResting and not taquero2.isResting):
+        if(costoUTIs1/(costoUTIs2+1) > 0.70):
+            # Meter al de carga baja si tiene pocas UTIS (<70% aprox)
+            return 2
+        else: 
+            # Si el de carga alta no anda muy cargado le metemos  M A S
+            return 1
+    # Esta regla se ignora si se está durmiendo el de alta carga
+    if(taqeuro1.isResting):
+        return 2
+    else:
+        return 1
+        
 class PersonalTaqueria(threading.Thread):
     def __init__(self, _name):
         # SuperConstructor
@@ -146,9 +177,8 @@ class PersonalTaqueria(threading.Thread):
         # Exclusivo para logica del uso de los dobles
         # Para poder verificar las UTIs del otro taquero se necesita ver 
         # sus stats de UTIS
-        self.pointersToTaquerosDoubles = None 
+        self.pointersToTaquerosDoubles = []
         
-
     def staff_to_json(self):
         while True:
             sleep(5)  # HERE WE SET THE SAVING TO DISK INTERVAL e.g., 3 seconds < -
@@ -262,6 +292,14 @@ class PersonalTaqueria(threading.Thread):
         ordercopy['orden'].append(suborder) # revaciar la lista para mandar 1 x 1
         #  todo este tiempo ey alfin encontré al (n+noselol)-ultimo sus impostor
         indexToSend = self.cocinaDirectory[suborder["meat"]]
+        if(indexToSend == 1):
+            # But first, si esto va dirigido a uno de los taqueros dobles
+            # debemos ver cual es el que es el apropiado
+            indexToSend = calculate_asadaANDsuadero_candidate(
+                self.pointersToTaquerosDoubles[0],
+                self.pointersToTaquerosDoubles[1]
+                )
+            pass
         # # Variable de apoyo en el regreso al taquero encargado para saber donde va
         ordercopy["tupleID"] = (self.orderCounter,numSuborden)
         self.sendQueues[indexToSend].put(ordercopy)
@@ -1317,41 +1355,6 @@ class CocinaTaqueros(multiprocessing.Process):
         print("Cocina encendida")
         print(
             "Puente hacia el disco casi abierto lol #$%^& Windows y su falta de fork()")
-
-    def calculate_asadaANDsuadero_candidate(self, cocina):
-        # Funcion que tanto metiendo desde SQS o de disco necesitamos
-        #  saber cual de los taqueros dobles (1 y 2) es el mejor para meterle
-        #  la orden, no será 50/50 porque si no se duermen a la vez y vale queso
-        #  (aunque sería 200% y 0% produccion así qu... ¿no da lo mismo?)
-        #  como sea, la intencion es hacerlo 70/30 y tornalo a 30/70
-        stacks1 = cocina.personal[1].ordenes.copy()
-        costoUTIs1 = 0
-        for stack in stacks1:
-            costoUTIs1 += stack["costo utis"]
-        stacks2 = cocina.personal[2].ordenes.copy()
-        costoUTIs2 = 0
-        for stack in stacks2:
-            costoUTIs2 += stack["costo utis"]
-        # Si ambos estan despiertos se le mete al queue con menos UTIS
-        if(not cocina.personal[1].isResting and not cocina.personal[2].isResting):
-            if(costoUTIs1/(costoUTIs2+1) > 0.70):
-                if(self.current70 == 1):
-                    # retornar el indice con menor UTIS
-                    return 2
-                else:
-                    return 1
-            else: # si el que deberia tener el 70% de la carga no tiene su
-                # suficiente carga que se aguante y le mandamos M A S
-                if(self.current70 == 1):
-                    return 1
-                else:
-                    return 2
-        # uno duerme/descansa (no me refiero a usar .sleep()) 
-        #   entonces que se le mande al despierto
-        if(cocina.personal[1].isResting):
-            return 2
-        else:
-            return 1
         
     def ingreso_personal(self, cocina):
         listOfNames = ["Omar","Marcelino","Jose","Jerry"]
@@ -1427,11 +1430,24 @@ class CocinaTaqueros(multiprocessing.Process):
                 # como un sendqueue, pero eso era más facil que modifcar el for
                 cocina.personal[j].sendQueuesReturn[i] =  cocina.personal[i].recieveQueueReturn
         
-        #Arrancar los threads de cocineros y sus chalanes
+        # Dar apuntadores (voy a ir con la finta que python está haciendo
+        #  esto por referencia) de los taqueros dobles a todos
+        #  ellos son dos personas, IDs 1 y 2
+        for i in range(4):
+            cocina.personal[i].pointersToTaquerosDoubles.append(
+                cocina.personal[1]
+            )
+            cocina.personal[i].pointersToTaquerosDoubles.append(
+                cocina.personal[2]
+            )
+        # Arrancar los threads de cocineros y sus chalanes
+        #  una vez que todos sus datos estan asignados
         for i in range(4):       
             cocina.personal[i].start()
         cocina.personal[0].chalanAsignado.start()
         cocina.personal[3].chalanAsignado.start()
+        
+
         
 class CocinaQuesadillero():
     pass
@@ -1466,6 +1482,7 @@ def open_taqueria():
             ListadoOrdenes = json.load(OrdenesJSON)
             for i in range(ordersToTest3):
                 # indexToGive = Cocina.calculate_asadaANDsuadero_candidate(Cocina)
+                # Si uno duerme, el otro toma control
                 if(Cocina.personal[1].isResting):
                     indexToGive = 2
                 else:

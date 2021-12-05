@@ -1,0 +1,877 @@
+{
+    "0": {
+        "answer": {
+            "end_time": 0,
+            "start_time": "2021-12-04 16:55:38.988965",
+            "steps": [
+                {
+                    "part_id": [
+                        0,
+                        0
+                    ],
+                    "state": "waiting to be cooked",
+                    "step": 0,
+                    "time_stamp": "2021-12-04 16:55:38.988965",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        0,
+                        1
+                    ],
+                    "state": "waiting to be cooked",
+                    "step": 1,
+                    "time_stamp": "2021-12-04 16:55:38.988965",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        0,
+                        0
+                    ],
+                    "state": "Suborder 0 arrived at taquero Omar",
+                    "step": 2,
+                    "time_stamp": "2021-12-04 16:55:44.559955",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        1
+                    ],
+                    "state": "Suborder 1 arrived at taquero Omar",
+                    "step": 3,
+                    "time_stamp": "2021-12-04 16:55:47.850254",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        0
+                    ],
+                    "state": "cooking stack #0(4) of 3.0 tacos",
+                    "step": 4,
+                    "time_stamp": "2021-12-04 16:56:51.189029",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        0
+                    ],
+                    "state": "Stack#0(4) complete",
+                    "step": 5,
+                    "time_stamp": "2021-12-04 16:56:59.013860",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        1,
+                        0
+                    ],
+                    "state": "Switching to order 2",
+                    "step": 6,
+                    "time_stamp": "2021-12-04 16:56:59.093859",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        0
+                    ],
+                    "state": "cooking stack #1(5) of 5.0 tacos",
+                    "step": 7,
+                    "time_stamp": "2021-12-04 16:57:09.674177",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        0
+                    ],
+                    "state": "Stack#1(5) complete",
+                    "step": 8,
+                    "time_stamp": "2021-12-04 16:57:22.845109",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        0
+                    ],
+                    "state": "Suborder 0 complete",
+                    "step": 9,
+                    "time_stamp": "2021-12-04 16:57:22.845109",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        0
+                    ],
+                    "state": "Order 0 complete",
+                    "step": 10,
+                    "time_stamp": "2021-12-04 16:57:23.998359",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        0,
+                        1
+                    ],
+                    "state": "cooking stack #0(9) of 2.0 tacos",
+                    "step": 11,
+                    "time_stamp": "2021-12-04 16:57:28.151875",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        1
+                    ],
+                    "state": "Stack#0(9) complete",
+                    "step": 12,
+                    "time_stamp": "2021-12-04 16:57:32.347821",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        3,
+                        0
+                    ],
+                    "state": "Switching to order 5",
+                    "step": 13,
+                    "time_stamp": "2021-12-04 16:57:32.425883",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        1
+                    ],
+                    "state": "cooking stack #1(10) of 5.0 tacos",
+                    "step": 14,
+                    "time_stamp": "2021-12-04 16:58:07.572257",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        1
+                    ],
+                    "state": "Stack#1(10) complete",
+                    "step": 15,
+                    "time_stamp": "2021-12-04 16:58:18.881878",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        3,
+                        0
+                    ],
+                    "state": "Switching to order 7",
+                    "step": 16,
+                    "time_stamp": "2021-12-04 16:58:18.881878",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        1
+                    ],
+                    "state": "cooking stack #2(11) of 5.0 tacos",
+                    "step": 17,
+                    "time_stamp": "2021-12-04 16:58:24.646531",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        1
+                    ],
+                    "state": "Stack#2(11) complete",
+                    "step": 18,
+                    "time_stamp": "2021-12-04 16:58:35.704315",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        1
+                    ],
+                    "state": "Suborder 1 complete",
+                    "step": 19,
+                    "time_stamp": "2021-12-04 16:58:35.704315",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        0,
+                        0
+                    ],
+                    "state": "Order 0 complete",
+                    "step": 20,
+                    "time_stamp": "2021-12-04 16:58:37.942640",
+                    "worker_id": 3
+                }
+            ]
+        },
+        "datetime": "2021-09-14 16:15:55.421215",
+        "orden": [
+            {
+                "ingredients": [
+                    "salsa",
+                    "cilantro",
+                    "cebolla",
+                    "cilantro"
+                ],
+                "meat": "adobada",
+                "part_id": "0-0",
+                "quantity": 8,
+                "status": "open",
+                "type": "taco"
+            },
+            {
+                "ingredients": [
+                    "salsa",
+                    "guacamole"
+                ],
+                "meat": "adobada",
+                "part_id": "0-1",
+                "quantity": 12,
+                "status": "open",
+                "type": "taco"
+            }
+        ],
+        "request_id": 0,
+        "responsable_orden": 3,
+        "status": "complete"
+    },
+    "1": "This index is now somewhere else, Omar will tell you where is he does not snap",
+    "2": {
+        "answer": {
+            "end_time": 0,
+            "start_time": "2021-12-04 16:55:44.481635",
+            "steps": [
+                {
+                    "part_id": [
+                        2,
+                        0
+                    ],
+                    "state": "waiting to be cooked",
+                    "step": 0,
+                    "time_stamp": "2021-12-04 16:55:44.481635",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        2,
+                        1
+                    ],
+                    "state": "waiting to be cooked",
+                    "step": 1,
+                    "time_stamp": "2021-12-04 16:55:44.481635",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        2,
+                        2
+                    ],
+                    "state": "waiting to be cooked",
+                    "step": 2,
+                    "time_stamp": "2021-12-04 16:55:44.481635",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        2,
+                        1
+                    ],
+                    "state": "Suborder 1 arrived at taquero Omar",
+                    "step": 3,
+                    "time_stamp": "2021-12-04 16:55:51.939954",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        2,
+                        1
+                    ],
+                    "state": "cooking stack #0(13) of 3 tacos",
+                    "step": 4,
+                    "time_stamp": "2021-12-04 16:57:32.425883",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        2,
+                        1
+                    ],
+                    "state": "Resting",
+                    "step": 5,
+                    "time_stamp": "2021-12-04 16:57:33.974020",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        2,
+                        1
+                    ],
+                    "state": "fan deactivation at Omar's station",
+                    "step": 6,
+                    "time_stamp": "2021-12-04 16:57:48.719767",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        2,
+                        1
+                    ],
+                    "state": "Stopped resting",
+                    "step": 7,
+                    "time_stamp": "2021-12-04 16:58:04.126664",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        2,
+                        1
+                    ],
+                    "state": "Stack#0(13) complete",
+                    "step": 8,
+                    "time_stamp": "2021-12-04 16:58:07.381278",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        2,
+                        1
+                    ],
+                    "state": "Suborder 1 complete",
+                    "step": 9,
+                    "time_stamp": "2021-12-04 16:58:07.381278",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        2,
+                        0
+                    ],
+                    "state": "Order 2 complete",
+                    "step": 10,
+                    "time_stamp": "2021-12-04 16:58:10.601794",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        2,
+                        2
+                    ],
+                    "state": "cooking stack #0(5) of 2 tacos",
+                    "step": 11,
+                    "time_stamp": "2021-12-04 16:58:19.157116",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        2,
+                        2
+                    ],
+                    "state": "Stack#0(5) complete",
+                    "step": 12,
+                    "time_stamp": "2021-12-04 16:58:22.681749",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        2,
+                        2
+                    ],
+                    "state": "Suborder 2 complete",
+                    "step": 13,
+                    "time_stamp": "2021-12-04 16:58:22.681749",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        2,
+                        2
+                    ],
+                    "state": "Switching to suborder 0",
+                    "step": 14,
+                    "time_stamp": "2021-12-04 16:58:23.431862",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        2,
+                        0
+                    ],
+                    "state": "cooking stack #0(4) of 5 tacos",
+                    "step": 15,
+                    "time_stamp": "2021-12-04 16:58:23.431862",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        2,
+                        0
+                    ],
+                    "state": "Stack#0(4) complete",
+                    "step": 16,
+                    "time_stamp": "2021-12-04 16:58:28.754925",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        2,
+                        0
+                    ],
+                    "state": "Suborder 0 complete",
+                    "step": 17,
+                    "time_stamp": "2021-12-04 16:58:28.754925",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        2,
+                        0
+                    ],
+                    "state": "Order 2 complete",
+                    "step": 18,
+                    "time_stamp": "2021-12-04 16:58:28.754925",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        2,
+                        0
+                    ],
+                    "state": "Switching to order 7",
+                    "step": 19,
+                    "time_stamp": "2021-12-04 16:58:29.142749",
+                    "worker_id": 3
+                }
+            ]
+        },
+        "datetime": "2021-09-14 17:15:55.421215",
+        "orden": [
+            {
+                "ingredients": [],
+                "meat": "tripa",
+                "part_id": "1-0",
+                "quantity": 5,
+                "status": "open",
+                "type": "taco"
+            },
+            {
+                "ingredients": [
+                    "cilantro"
+                ],
+                "meat": "adobada",
+                "part_id": "1-1",
+                "quantity": 3,
+                "status": "open",
+                "type": "taco"
+            },
+            {
+                "ingredients": [
+                    "salsa"
+                ],
+                "meat": "cabeza",
+                "part_id": "1-2",
+                "quantity": 2,
+                "status": "open",
+                "type": "taco"
+            }
+        ],
+        "request_id": 2,
+        "responsable_orden": 3,
+        "status": "complete"
+    },
+    "3": "This index is now somewhere else, Omar will tell you where is he does not snap",
+    "4": {
+        "answer": {
+            "end_time": 0,
+            "start_time": "2021-12-04 16:55:48.923731",
+            "steps": [
+                {
+                    "part_id": [
+                        4,
+                        0
+                    ],
+                    "state": "waiting to be cooked",
+                    "step": 0,
+                    "time_stamp": "2021-12-04 16:55:48.923731",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        1
+                    ],
+                    "state": "waiting to be cooked",
+                    "step": 1,
+                    "time_stamp": "2021-12-04 16:55:48.923731",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        0
+                    ],
+                    "state": "cooking stack #0(7) of 4 tacos",
+                    "step": 2,
+                    "time_stamp": "2021-12-04 16:55:50.788795",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        0
+                    ],
+                    "state": "Stack#0(7) complete",
+                    "step": 3,
+                    "time_stamp": "2021-12-04 16:55:54.903850",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        0
+                    ],
+                    "state": "Suborder 0 complete",
+                    "step": 4,
+                    "time_stamp": "2021-12-04 16:55:54.903850",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        0
+                    ],
+                    "state": "Switching to order 1",
+                    "step": 5,
+                    "time_stamp": "2021-12-04 16:55:54.923848",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        1
+                    ],
+                    "state": "cooking stack #0(8) of 6 tacos",
+                    "step": 6,
+                    "time_stamp": "2021-12-04 16:56:22.066163",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        1
+                    ],
+                    "state": "Stack#0(8) complete",
+                    "step": 7,
+                    "time_stamp": "2021-12-04 16:56:34.606903",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        1
+                    ],
+                    "state": "Switching to order 1",
+                    "step": 8,
+                    "time_stamp": "2021-12-04 16:56:34.641782",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        1
+                    ],
+                    "state": "cooking stack #1(9) of 8 tacos",
+                    "step": 9,
+                    "time_stamp": "2021-12-04 16:56:47.911771",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        1
+                    ],
+                    "state": "fan activation at Jerry's station",
+                    "step": 10,
+                    "time_stamp": "2021-12-04 16:56:56.652554",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        1
+                    ],
+                    "state": "Stack#1(9) complete",
+                    "step": 11,
+                    "time_stamp": "2021-12-04 16:57:04.959766",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        1
+                    ],
+                    "state": "Suborder 1 complete",
+                    "step": 12,
+                    "time_stamp": "2021-12-04 16:57:04.959766",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        0
+                    ],
+                    "state": "Order 4 complete",
+                    "step": 13,
+                    "time_stamp": "2021-12-04 16:57:04.959766",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        4,
+                        1
+                    ],
+                    "state": "Switching to order 3",
+                    "step": 14,
+                    "time_stamp": "2021-12-04 16:57:05.007962",
+                    "worker_id": 3
+                }
+            ]
+        },
+        "datetime": "2021-09-14 17:15:55.421215",
+        "orden": [
+            {
+                "ingredients": [],
+                "meat": "cabeza",
+                "part_id": "2-0",
+                "quantity": 4,
+                "status": "open",
+                "type": "taco"
+            },
+            {
+                "ingredients": [
+                    "cilantro",
+                    "cebolla"
+                ],
+                "meat": "cabeza",
+                "part_id": "2-1",
+                "quantity": 14,
+                "status": "open",
+                "type": "taco"
+            }
+        ],
+        "request_id": 4,
+        "responsable_orden": 3,
+        "status": "complete"
+    },
+    "5": "This index is now somewhere else, Omar will tell you where is he does not snap",
+    "6": {
+        "answer": {
+            "end_time": 0,
+            "start_time": "2021-12-04 16:55:51.950768",
+            "steps": [
+                {
+                    "part_id": [
+                        6,
+                        0
+                    ],
+                    "state": "waiting to be cooked",
+                    "step": 0,
+                    "time_stamp": "2021-12-04 16:55:51.950768",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        6,
+                        0
+                    ],
+                    "state": "Suborder 0 arrived at taquero Omar",
+                    "step": 1,
+                    "time_stamp": "2021-12-04 16:55:59.684753",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        6,
+                        0
+                    ],
+                    "state": "cooking stack #0(16) of 2 tacos",
+                    "step": 2,
+                    "time_stamp": "2021-12-04 16:56:07.415054",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        6,
+                        0
+                    ],
+                    "state": "Stack#0(16) complete",
+                    "step": 3,
+                    "time_stamp": "2021-12-04 16:56:09.434558",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        6,
+                        0
+                    ],
+                    "state": "Suborder 0 complete",
+                    "step": 4,
+                    "time_stamp": "2021-12-04 16:56:09.434558",
+                    "worker_id": 0
+                },
+                {
+                    "part_id": [
+                        6,
+                        0
+                    ],
+                    "state": "Order 6 complete",
+                    "step": 5,
+                    "time_stamp": "2021-12-04 16:56:10.004578",
+                    "worker_id": 3
+                }
+            ]
+        },
+        "datetime": "2021-09-14 17:15:55.421215",
+        "orden": [
+            {
+                "ingredients": [],
+                "meat": "adobada",
+                "part_id": "3-0",
+                "quantity": 2,
+                "status": "open",
+                "type": "taco"
+            }
+        ],
+        "request_id": 6,
+        "responsable_orden": 3,
+        "status": "complete"
+    },
+    "7": "This index is now somewhere else, Omar will tell you where is he does not snap",
+    "8": {
+        "answer": {
+            "end_time": 0,
+            "start_time": "2021-12-04 16:55:56.408443",
+            "steps": [
+                {
+                    "part_id": [
+                        8,
+                        0
+                    ],
+                    "state": "waiting to be cooked",
+                    "step": 0,
+                    "time_stamp": "2021-12-04 16:55:56.408443",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        8,
+                        0
+                    ],
+                    "state": "cooking stack #0(12) of 15 tacos",
+                    "step": 1,
+                    "time_stamp": "2021-12-04 16:57:21.708094",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        8,
+                        0
+                    ],
+                    "state": "Resting",
+                    "step": 2,
+                    "time_stamp": "2021-12-04 16:57:29.008517",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        8,
+                        0
+                    ],
+                    "state": "fan deactivation at Jerry's station",
+                    "step": 3,
+                    "time_stamp": "2021-12-04 16:57:56.696637",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        8,
+                        0
+                    ],
+                    "state": "Stopped resting",
+                    "step": 4,
+                    "time_stamp": "2021-12-04 16:57:59.266059",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        8,
+                        0
+                    ],
+                    "state": "Stack#0(12) complete",
+                    "step": 5,
+                    "time_stamp": "2021-12-04 16:58:08.255980",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        8,
+                        0
+                    ],
+                    "state": "Suborder 0 complete",
+                    "step": 6,
+                    "time_stamp": "2021-12-04 16:58:08.255980",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        8,
+                        0
+                    ],
+                    "state": "Order 8 complete",
+                    "step": 7,
+                    "time_stamp": "2021-12-04 16:58:08.255980",
+                    "worker_id": 3
+                },
+                {
+                    "part_id": [
+                        8,
+                        0
+                    ],
+                    "state": "Switching to order 11",
+                    "step": 8,
+                    "time_stamp": "2021-12-04 16:58:08.332775",
+                    "worker_id": 3
+                }
+            ]
+        },
+        "datetime": "2021-09-14 17:15:55.421215",
+        "orden": [
+            {
+                "ingredients": [],
+                "meat": "cabeza",
+                "part_id": "4-0",
+                "quantity": 15,
+                "status": "open",
+                "type": "taco"
+            }
+        ],
+        "request_id": 8,
+        "responsable_orden": 3,
+        "status": "complete"
+    },
+    "9": "This index is now somewhere else, Omar will tell you where is he does not snap",
+    "10": "This index is now somewhere else, Omar will tell you where is he does not snap",
+    "11": "This index is now somewhere else, Omar will tell you where is he does not snap",
+    "12": "This index is now somewhere else, Omar will tell you where is he does not snap"
+}
