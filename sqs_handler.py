@@ -9,7 +9,6 @@ WHO = 'TAC-OS'
 QUEUE_URL = "https://sqs.us-east-1.amazonaws.com/292274580527/sqs_cc106_team_4"
 
 
-
 def create_queue():
     response = sqs.create_queue(
         QueueName="my-new-queue",
@@ -42,38 +41,41 @@ def read_message():
         message = response['Messages']
         orden = json.loads(message[0]['Body'])
         print(
-            f"Atendiendo orden {orden['request_id']} Leyendo mensaje del queue. Tiempo pendiente  {orden['tiempo_pendiente']}")
-        return message[0], orden
+            f"Atendiendo orden {orden['request_id']} Leyendo mensaje del queue")
+        return [message,orden]
 
 
 def delete_message(message, orden, complete):
-    sqs.delete_message(
-        QueueUrl=QUEUE_URL,
-        ReceiptHandle=message["ReceiptHandle"])
+
     if complete:
         orden["end_datetime"] = str(datetime.now().timestamp())
         print(
-            f"Orden {orden['request_id']} Terminada. Mensaje borrado del queue.")
+            f"Orden {orden['request_id']} Terminada. Mensaje sera borrado del queue.")
+        sqs.delete_message(
+        QueueUrl=QUEUE_URL,
+        ReceiptHandle=message["ReceiptHandle"])
         print(orden)
+        return print('MENSAJE BORRADO')
     else:
         print(
-            f"Orden {orden['request_id']} Pendiente. Regresando mensaje del queue. Tiempo Pendiente {orden['tiempo_pendiente']}")
+            f"Orden {orden['request_id']} Pendiente. Regresando mensaje del queue")
 
 
-def send_message(mensaje, orden):
-    delete_message(mensaje, orden, False)
+def send_message(outputqueue,mensaje, orden):
+    delete_message(mensaje, orden, True)
     response = sqs.send_message(
-        QueueUrl=QUEUE_URL,
+        QueueUrl=outputqueue,
         MessageBody=(json.dumps(orden))
     )
     print(response)
+
 
 def round_robin():
     while get_number_messages() > 0:
         print(f"Ordenes pendientes:{get_number_messages()}")
         # time.sleep(2)
         mensaje, orden = read_message()
-        orden['tiempo_pendiente'] = 0 #SIMULAR QUE SE ATENDIO con -=
+        orden['tiempo_pendiente'] = 0  # SIMULAR QUE SE ATENDIO con -=
         orden["process"].append(
             {"who": WHO, "new_tiempo_pendiente": orden["tiempo_pendiente"]})
         if orden["tiempo_pendiente"] <= 0:
@@ -83,7 +85,7 @@ def round_robin():
 
 
 def purge_queue():
-    #SOLO SE PUEDE HACER CADA 60 SEGUNDOS
+    # SOLO SE PUEDE HACER CADA 60 SEGUNDOS
     response = sqs.purge_queue(
         QueueUrl=QUEUE_URL,
     )
@@ -92,30 +94,78 @@ def purge_queue():
 
 
 def init():
-    total = 3
+    total = 6
     print(f'Agregando {total} ordenes a SQS')
     for index in range(total):
         orden = {
-            'start_datetime': str(datetime.now().timestamp()),
-            'end_time': "",
-            'request_id': index,
-            "tiempo_pendiente": random.randrange(25),
-            "process": []
-        }
-        response = sqs.send_message(
-            QueueUrl=QUEUE_URL,
-            MessageBody=(json.dumps(orden))
-        )
-        print(response)
+        "datetime": datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),
+        "request_id": index,
+        "status": "open",
+        "orden": [
+            {
+                "part_id": "2-0",
+                "type": "quesadilla",
+                "meat": "suadero",
+                "status": "open",
+                "quantity": 69,
+                "ingredients": []
+            },
+            {
+                "part_id": "2-1",
+                "type": "taco",
+                "meat": "suadero",
+                "status": "open",
+                "quantity": 35,
+                "ingredients": [
+                    "cebolla",
+                    "salsa"
+                ]
+            },
+            {
+                "part_id": "2-2",
+                "type": "taco",
+                "meat": "asada",
+                "status": "open",
+                "quantity": 69,
+                "ingredients": [
+                    "cebolla",
+                    "cilantro"
+                ]
+            },
+            {
+                "part_id": "2-3",
+                "type": "taco",
+                "meat": "tripa",
+                "status": "open",
+                "quantity": 17,
+                "ingredients": [
+                    "salsa",
+                    "cilantro",
+                    "guacamole"
+                ]
+            },
+            {
+                "part_id": "2-4",
+                "type": "taco",
+                "meat": "cabeza",
+                "status": "open",
+                "quantity": 91,
+                "ingredients": [
+                    "guacamole",
+                    "cebolla",
+                    "cilantro"
+                ]
+            }
+        ]
+    }
+    response = sqs.send_message(
+        QueueUrl=QUEUE_URL,
+        MessageBody=(json.dumps(orden))
+    )
+    print(response)
 
-    round_robin()
 
-
-#init()
-purge_queue()
-
-message, orden = read_message()
-print(f"MESSAGE:\n {message}")
-print(f"ORDEN:\n {orden}")
+init()
+read_message()
 
 # %%

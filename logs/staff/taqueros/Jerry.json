@@ -2,17 +2,282 @@
     "ID": 3,
     "Owl": false,
     "chalan": "Adan",
-    "cooking": false,
-    "currentCebolla": 168,
-    "currentCilantro": 171,
-    "currentGuacamole": 100,
-    "currentSalsa": 125,
-    "currentTortillas": 50,
-    "currentWorkingOrder": 8,
+    "cooking": true,
+    "currentCebolla": 154,
+    "currentCilantro": 137,
+    "currentGuacamole": 86,
+    "currentSalsa": 133,
+    "currentTortillas": 45,
+    "currentWorkingOrder": 1,
     "currentWorkingSuborder": 0,
     "isFanActive": true,
     "name": "Jerry",
-    "ordenes": {},
+    "ordenes": {
+        "16": {
+            "arrival time": 28.781,
+            "costo utis": 34.0,
+            "indiv. time to cook": 2.5,
+            "individual cost": 8.5,
+            "ingridient list": [
+                "",
+                "gu",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 278587051.12974876,
+            "quantity": 4.0,
+            "time to cook": 1.5,
+            "tupleID": [
+                1,
+                0,
+                11
+            ]
+        },
+        "17": {
+            "arrival time": 28.812,
+            "costo utis": 34.0,
+            "indiv. time to cook": 2.5,
+            "individual cost": 8.5,
+            "ingridient list": [
+                "",
+                "gu",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.29411764705882354,
+            "quantity": 4.0,
+            "time to cook": 10.0,
+            "tupleID": [
+                1,
+                0,
+                12
+            ]
+        },
+        "18": {
+            "arrival time": 28.859,
+            "costo utis": 34.0,
+            "indiv. time to cook": 2.5,
+            "individual cost": 8.5,
+            "ingridient list": [
+                "",
+                "gu",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.29411764705882354,
+            "quantity": 4.0,
+            "time to cook": 10.0,
+            "tupleID": [
+                1,
+                0,
+                13
+            ]
+        },
+        "19": {
+            "arrival time": 29.107,
+            "costo utis": 34.0,
+            "indiv. time to cook": 2.5,
+            "individual cost": 8.5,
+            "ingridient list": [
+                "",
+                "gu",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.29411764705882354,
+            "quantity": 4.0,
+            "time to cook": 10.0,
+            "tupleID": [
+                1,
+                0,
+                14
+            ]
+        },
+        "20": {
+            "arrival time": 29.139,
+            "costo utis": 34.0,
+            "indiv. time to cook": 2.5,
+            "individual cost": 8.5,
+            "ingridient list": [
+                "",
+                "gu",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.29411764705882354,
+            "quantity": 4.0,
+            "time to cook": 10.0,
+            "tupleID": [
+                1,
+                0,
+                15
+            ]
+        },
+        "21": {
+            "arrival time": 29.169,
+            "costo utis": 34.0,
+            "indiv. time to cook": 2.5,
+            "individual cost": 8.5,
+            "ingridient list": [
+                "",
+                "gu",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.29411764705882354,
+            "quantity": 4.0,
+            "time to cook": 10.0,
+            "tupleID": [
+                1,
+                0,
+                16
+            ]
+        },
+        "22": {
+            "arrival time": 29.185,
+            "costo utis": 34.0,
+            "indiv. time to cook": 2.5,
+            "individual cost": 8.5,
+            "ingridient list": [
+                "",
+                "gu",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.29411764705882354,
+            "quantity": 4.0,
+            "time to cook": 10.0,
+            "tupleID": [
+                1,
+                0,
+                17
+            ]
+        },
+        "23": {
+            "arrival time": 29.201,
+            "costo utis": 34.0,
+            "indiv. time to cook": 2.5,
+            "individual cost": 8.5,
+            "ingridient list": [
+                "",
+                "gu",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.29411764705882354,
+            "quantity": 4.0,
+            "time to cook": 10.0,
+            "tupleID": [
+                1,
+                0,
+                18
+            ]
+        },
+        "24": {
+            "arrival time": 29.217,
+            "costo utis": 34.0,
+            "indiv. time to cook": 2.5,
+            "individual cost": 8.5,
+            "ingridient list": [
+                "",
+                "gu",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.29411764705882354,
+            "quantity": 4.0,
+            "time to cook": 10.0,
+            "tupleID": [
+                1,
+                0,
+                19
+            ]
+        },
+        "25": {
+            "arrival time": 29.232,
+            "costo utis": 34.0,
+            "indiv. time to cook": 2.5,
+            "individual cost": 8.5,
+            "ingridient list": [
+                "",
+                "gu",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.29411764705882354,
+            "quantity": 4.0,
+            "time to cook": 10.0,
+            "tupleID": [
+                1,
+                0,
+                20
+            ]
+        },
+        "26": {
+            "arrival time": 29.371,
+            "costo utis": 34.0,
+            "indiv. time to cook": 2.5,
+            "individual cost": 8.5,
+            "ingridient list": [
+                "",
+                "gu",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.29411764705882354,
+            "quantity": 4.0,
+            "time to cook": 10.0,
+            "tupleID": [
+                1,
+                0,
+                21
+            ]
+        },
+        "27": {
+            "arrival time": 29.387,
+            "costo utis": 34.0,
+            "indiv. time to cook": 2.5,
+            "individual cost": 8.5,
+            "ingridient list": [
+                "",
+                "gu",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.29411764705882354,
+            "quantity": 4.0,
+            "time to cook": 10.0,
+            "tupleID": [
+                1,
+                0,
+                22
+            ]
+        }
+    },
     "resting": false,
-    "stackcounter": 16
+    "stackcounter": 28
 }

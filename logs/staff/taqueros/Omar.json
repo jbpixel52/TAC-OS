@@ -2,17 +2,40 @@
     "ID": 0,
     "Owl": false,
     "chalan": "Julio",
-    "cooking": false,
-    "currentCebolla": 184,
-    "currentCilantro": 179,
+    "cooking": true,
+    "currentCebolla": 200,
+    "currentCilantro": 200,
     "currentGuacamole": 100,
-    "currentSalsa": 118,
-    "currentTortillas": 50,
-    "currentWorkingOrder": 6,
-    "currentWorkingSuborder": 1,
+    "currentSalsa": 150,
+    "currentTortillas": 44,
+    "currentWorkingOrder": 0,
+    "currentWorkingSuborder": 0,
     "isFanActive": true,
     "name": "Omar",
-    "ordenes": {},
+    "ordenes": {
+        "1": {
+            "arrival time": 11.851,
+            "costo utis": 40,
+            "indiv. time to cook": 1,
+            "individual cost": 1,
+            "ingridient list": [
+                "",
+                "",
+                "",
+                "",
+                "to"
+            ],
+            "isQuesadilla": true,
+            "prioridad": 327749475.1211297,
+            "quantity": 40,
+            "time to cook": 12.0,
+            "tupleID": [
+                0,
+                0,
+                1
+            ]
+        }
+    },
     "resting": false,
-    "stackcounter": 16
+    "stackcounter": 2
 }

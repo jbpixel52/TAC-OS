@@ -2,17 +2,84 @@
     "ID": 1,
     "Owl": false,
     "chalan": "Julio",
-    "cooking": false,
-    "currentCebolla": 175,
-    "currentCilantro": 165,
-    "currentGuacamole": 90,
-    "currentSalsa": 130,
-    "currentTortillas": 50,
-    "currentWorkingOrder": 2,
-    "currentWorkingSuborder": 1,
+    "cooking": true,
+    "currentCebolla": 120,
+    "currentCilantro": 155,
+    "currentGuacamole": 100,
+    "currentSalsa": 115,
+    "currentTortillas": 45,
+    "currentWorkingOrder": 1,
+    "currentWorkingSuborder": 0,
     "isFanActive": true,
     "name": "Marcelino",
-    "ordenes": {},
+    "ordenes": {
+        "11": {
+            "arrival time": 25.156,
+            "costo utis": 40,
+            "indiv. time to cook": 2.0,
+            "individual cost": 5,
+            "ingridient list": [
+                "",
+                "",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 327749472.62472945,
+            "quantity": 8,
+            "time to cook": 16.0,
+            "tupleID": [
+                1,
+                0,
+                6
+            ]
+        },
+        "12": {
+            "arrival time": 25.25,
+            "costo utis": 40,
+            "indiv. time to cook": 2.0,
+            "individual cost": 5,
+            "ingridient list": [
+                "",
+                "",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.25,
+            "quantity": 8,
+            "time to cook": 16.0,
+            "tupleID": [
+                1,
+                0,
+                7
+            ]
+        },
+        "13": {
+            "arrival time": 25.419,
+            "costo utis": 40,
+            "indiv. time to cook": 2.0,
+            "individual cost": 5,
+            "ingridient list": [
+                "",
+                "",
+                "ci",
+                "ce",
+                "to"
+            ],
+            "isQuesadilla": false,
+            "prioridad": 0.25,
+            "quantity": 8,
+            "time to cook": 16.0,
+            "tupleID": [
+                1,
+                0,
+                8
+            ]
+        }
+    },
     "resting": false,
-    "stackcounter": 9
+    "stackcounter": 14
 }

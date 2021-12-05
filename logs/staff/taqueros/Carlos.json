@@ -1,0 +1,18 @@
+{
+    "ID": 4,
+    "Owl": false,
+    "chalan": null,
+    "cooking": false,
+    "currentCebolla": 200,
+    "currentCilantro": 200,
+    "currentGuacamole": 100,
+    "currentSalsa": 150,
+    "currentTortillas": 50,
+    "currentWorkingOrder": null,
+    "currentWorkingSuborder": null,
+    "isFanActive": false,
+    "name": "Carlos",
+    "ordenes": {},
+    "resting": false,
+    "stackcounter": 0
+}
