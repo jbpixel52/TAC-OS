@@ -13,7 +13,7 @@ from queue import Empty, PriorityQueue, Queue
 from time import sleep
 from datetime import datetime
 
-
+ReadingFromDisk = True
 abcdario = list(string.ascii_uppercase)
 debug_state = True
 SAVE_FREQ = 1
@@ -852,7 +852,10 @@ class PersonalTaqueria(threading.Thread):
             # Todas las subs son iguales así que solo hay que revisar 1
             indexToReturnTo = orderToReturn["responsable_orden"]
             self.sendQueuesReturn[indexToReturnTo].put(orderToReturn)
-
+        if(orderID not in self.ordersThatAreNotMine and not ReadingFromDisk):
+            orderToReturnToSqs = self.jsonOutputs[orderID]
+            pass # Aquí se pone denuevo en el SQS la orden
+            
     def writeOutputSteps(self, action, tupleID, extraArg):
         orderID = tupleID[0]
         subOrderID = tupleID[1]
@@ -1553,7 +1556,7 @@ def open_taqueria():
     Cocina = CocinaTaqueros("Taqueros")
     Cocina.start()
     Cocina.ingreso_personal(Cocina)
-    ReadingFromDisk = True
+
    
     
     while(True):
@@ -1591,5 +1594,6 @@ def open_taqueria():
                     queueToPut = 1
             else:
                 pass
-            Cocina.personal[indexToGive].queue.put(orderMessageFromSQS)  
+            Cocina.personal[indexToGive].queue.put(orderMessageFromSQS) 
+            # Aquí se borra el mensaje recibido 
             
