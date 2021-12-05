@@ -295,7 +295,9 @@ class PersonalTaqueria(threading.Thread):
             self.writeOutputSteps("rejectSuborder",(orderID,suborderID,0), None)
             return True
     
-    def send_suborder_somewhere_else(self, suborder, order, numSuborden):
+    def send_suborder_somewhere_else(self, suborder, order, numSuborden, QorderID):
+        # Qorder ID solo para quesadillero porque esta logica no va 
+        #  en el mismo lugar, pero en si es la ID de donde retornar
         # Revisar a donde lo mandaré
         # Mandar solamente la orden con la suborden buena
         # # veces que Omar olvido copiar por valor: >4 xdxd
@@ -320,9 +322,10 @@ class PersonalTaqueria(threading.Thread):
             pass
         # # Variable de apoyo en el regreso al taquero encargado para saber donde va
         if(indexToSend != 4):
-            ordercopy["tupleID"] = (self.orderCounter,numSuborden)
+            ordercopy["tupleID"] = (self.orderCounter,numSuborden)[:]
         else:
-            ordercopy["tupleID"] = (self.orderCounter-1,numSuborden)
+            indexToSendToQuesadillero = QorderID
+            ordercopy["tupleID"] = (QorderID,numSuborden)[:]
         self.sendQueues[indexToSend].put(ordercopy)
 
     def splitOrder(self, orden):
@@ -360,7 +363,7 @@ class PersonalTaqueria(threading.Thread):
                             # se permiten quesadillas sin carne
                             #Tanto en output como en logica pondre el encargado
                             pedido["responsable_orden"] = self.ID
-                            self.send_suborder_somewhere_else(subOrden, pedido, numSuborden) 
+                            self.send_suborder_somewhere_else(subOrden, pedido, numSuborden, None) 
                             numSuborden += 1   
                             pass
                     else:
@@ -740,12 +743,13 @@ class PersonalTaqueria(threading.Thread):
                             # Mandar al de las quesadillas para que cierre el
                             # trato, hay que extraer la orden de los inputs
                             tupleID = self.ordenes[self.shortestOrderIndex]["tupleID"]
+                            QorderID = tupleID[0]
                             subroderIndex = tupleID[1]
                             inputIndex = self.pointersToOrders[tupleID[0]]
                             order = self.jsonInputs[inputIndex]
                             subOrder = order['orden'][subroderIndex]
                             order["responsable_orden"] = self.ID
-                            self.send_suborder_somewhere_else(subOrder, order, subroderIndex)
+                            self.send_suborder_somewhere_else(subOrder, order, subroderIndex, QorderID)
                 else:
                     # Si el ultimo elemento cocinado (en algun insante)
                     # era una cabeza que no pudo ser removida, la
@@ -774,12 +778,13 @@ class PersonalTaqueria(threading.Thread):
                         # Mandar al de las quesadillas para que cierre el
                         # trato, hay que extraer la orden de los inputs
                         tupleID = self.ordenes[self.shortestOrderIndex]["tupleID"]
+                        QorderID = tupleID[0]
                         subroderIndex = tupleID[1]
                         inputIndex = self.pointersToOrders[tupleID[0]]
                         order = self.jsonInputs[inputIndex]
                         subOrder = order['orden'][subroderIndex]
                         order["responsable_orden"] = self.ID
-                        self.send_suborder_somewhere_else(subOrder, order, subroderIndex)
+                        self.send_suborder_somewhere_else(subOrder, order, subroderIndex, QorderID)
                 # Antes de hacer pop reportar su finalización en el json
                 self.finisherOutput(
                     "stack", (
@@ -1537,9 +1542,9 @@ class CocinaTaqueros(multiprocessing.Process):
             
 def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
-    ordersToTest = 0
-    ordersToTest2 = 0
-    ordersToTest3 = 2
+    ordersToTest = 6
+    ordersToTest2 = 5
+    ordersToTest3 = 4
     # si se desean ver ordenes en cabeza, cambiar nivel a debug
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="w",
                         format="%(asctime)s - [%(levelname)s] - [%(threadName)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s")
@@ -1559,7 +1564,7 @@ def open_taqueria():
             for i in range(ordersToTest2):
                 orden = ListadoOrdenes[i]
                 Cocina.personal[3].queue.put(orden)
-        with open("queuesDisco/jsonQuesadillas.json") as OrdenesJSON:
+        with open("queuesDisco/jsonDouble.json") as OrdenesJSON:
             ListadoOrdenes = json.load(OrdenesJSON)
             for i in range(ordersToTest3):
                 # indexToGive = Cocina.calculate_asadaANDsuadero_candidate(Cocina)
