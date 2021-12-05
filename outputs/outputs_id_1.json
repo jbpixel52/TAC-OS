@@ -2,7 +2,7 @@
     "0": {
         "answer": {
             "end_time": 0,
-            "start_time": "2021-12-04 16:55:38.255105",
+            "start_time": "2021-12-05 10:07:56.570073",
             "steps": [
                 {
                     "part_id": [
@@ -11,7 +11,7 @@
                     ],
                     "state": "waiting to be cooked",
                     "step": 0,
-                    "time_stamp": "2021-12-04 16:55:38.255105",
+                    "time_stamp": "2021-12-05 10:07:56.570073",
                     "worker_id": 1
                 },
                 {
@@ -21,37 +21,7 @@
                     ],
                     "state": "waiting to be cooked",
                     "step": 1,
-                    "time_stamp": "2021-12-04 16:55:38.255105",
-                    "worker_id": 1
-                },
-                {
-                    "part_id": [
-                        0,
-                        1
-                    ],
-                    "state": "cooking stack #0(2) of 5.0 tacos",
-                    "step": 2,
-                    "time_stamp": "2021-12-04 16:55:40.080601",
-                    "worker_id": 1
-                },
-                {
-                    "part_id": [
-                        0,
-                        1
-                    ],
-                    "state": "Stack#0(2) complete",
-                    "step": 3,
-                    "time_stamp": "2021-12-04 16:55:52.103109",
-                    "worker_id": 1
-                },
-                {
-                    "part_id": [
-                        0,
-                        1
-                    ],
-                    "state": "Switching to suborder 0",
-                    "step": 4,
-                    "time_stamp": "2021-12-04 16:55:52.103109",
+                    "time_stamp": "2021-12-05 10:07:56.570073",
                     "worker_id": 1
                 },
                 {
@@ -60,8 +30,8 @@
                         0
                     ],
                     "state": "cooking stack #0(0) of 5.0 tacos",
-                    "step": 5,
-                    "time_stamp": "2021-12-04 16:55:52.103109",
+                    "step": 2,
+                    "time_stamp": "2021-12-05 10:08:01.108384",
                     "worker_id": 1
                 },
                 {
@@ -70,8 +40,8 @@
                         0
                     ],
                     "state": "Stack#0(0) complete",
-                    "step": 6,
-                    "time_stamp": "2021-12-04 16:56:05.010759",
+                    "step": 3,
+                    "time_stamp": "2021-12-05 10:08:15.555821",
                     "worker_id": 1
                 },
                 {
@@ -80,8 +50,8 @@
                         0
                     ],
                     "state": "Switching to suborder 1",
-                    "step": 7,
-                    "time_stamp": "2021-12-04 16:56:05.010759",
+                    "step": 4,
+                    "time_stamp": "2021-12-05 10:08:17.257293",
                     "worker_id": 1
                 },
                 {
@@ -89,9 +59,9 @@
                         0,
                         1
                     ],
-                    "state": "cooking stack #1(3) of 5.0 tacos",
-                    "step": 8,
-                    "time_stamp": "2021-12-04 16:56:05.010759",
+                    "state": "cooking stack #0(2) of 5.0 tacos",
+                    "step": 5,
+                    "time_stamp": "2021-12-05 10:08:17.257293",
                     "worker_id": 1
                 },
                 {
@@ -99,19 +69,9 @@
                         0,
                         1
                     ],
-                    "state": "Stack#1(3) complete",
-                    "step": 9,
-                    "time_stamp": "2021-12-04 16:56:15.045258",
-                    "worker_id": 1
-                },
-                {
-                    "part_id": [
-                        0,
-                        1
-                    ],
-                    "state": "Suborder 1 complete",
-                    "step": 10,
-                    "time_stamp": "2021-12-04 16:56:15.045258",
+                    "state": "Stack#0(2) complete",
+                    "step": 6,
+                    "time_stamp": "2021-12-05 10:08:28.320988",
                     "worker_id": 1
                 },
                 {
@@ -120,8 +80,8 @@
                         1
                     ],
                     "state": "Switching to suborder 0",
-                    "step": 11,
-                    "time_stamp": "2021-12-04 16:56:15.045258",
+                    "step": 7,
+                    "time_stamp": "2021-12-05 10:08:28.336939",
                     "worker_id": 1
                 },
                 {
@@ -130,8 +90,8 @@
                         0
                     ],
                     "state": "cooking stack #1(1) of 5.0 tacos",
-                    "step": 12,
-                    "time_stamp": "2021-12-04 16:56:15.045258",
+                    "step": 8,
+                    "time_stamp": "2021-12-05 10:08:28.336939",
                     "worker_id": 1
                 },
                 {
@@ -140,8 +100,8 @@
                         0
                     ],
                     "state": "Stack#1(1) complete",
-                    "step": 13,
-                    "time_stamp": "2021-12-04 16:56:28.104099",
+                    "step": 9,
+                    "time_stamp": "2021-12-05 10:08:41.254868",
                     "worker_id": 1
                 },
                 {
@@ -150,8 +110,48 @@
                         0
                     ],
                     "state": "Suborder 0 complete",
+                    "step": 10,
+                    "time_stamp": "2021-12-05 10:08:41.254868",
+                    "worker_id": 1
+                },
+                {
+                    "part_id": [
+                        0,
+                        0
+                    ],
+                    "state": "Switching to suborder 1",
+                    "step": 11,
+                    "time_stamp": "2021-12-05 10:08:41.302741",
+                    "worker_id": 1
+                },
+                {
+                    "part_id": [
+                        0,
+                        1
+                    ],
+                    "state": "cooking stack #1(3) of 5.0 tacos",
+                    "step": 12,
+                    "time_stamp": "2021-12-05 10:08:41.302741",
+                    "worker_id": 1
+                },
+                {
+                    "part_id": [
+                        0,
+                        1
+                    ],
+                    "state": "Stack#1(3) complete",
+                    "step": 13,
+                    "time_stamp": "2021-12-05 10:08:51.914502",
+                    "worker_id": 1
+                },
+                {
+                    "part_id": [
+                        0,
+                        1
+                    ],
+                    "state": "Suborder 1 complete",
                     "step": 14,
-                    "time_stamp": "2021-12-04 16:56:28.104099",
+                    "time_stamp": "2021-12-05 10:08:51.914502",
                     "worker_id": 1
                 },
                 {
@@ -161,17 +161,17 @@
                     ],
                     "state": "Order 0 complete",
                     "step": 15,
-                    "time_stamp": "2021-12-04 16:56:28.104099",
+                    "time_stamp": "2021-12-05 10:08:51.914502",
                     "worker_id": 1
                 },
                 {
                     "part_id": [
                         0,
-                        0
+                        1
                     ],
                     "state": "Switching to order 1",
                     "step": 16,
-                    "time_stamp": "2021-12-04 16:56:28.120056",
+                    "time_stamp": "2021-12-05 10:08:51.915500",
                     "worker_id": 1
                 }
             ]
@@ -210,7 +210,7 @@
     "1": {
         "answer": {
             "end_time": 0,
-            "start_time": "2021-12-04 16:55:42.863585",
+            "start_time": "2021-12-05 10:08:02.984050",
             "steps": [
                 {
                     "part_id": [
@@ -219,7 +219,7 @@
                     ],
                     "state": "waiting to be cooked",
                     "step": 0,
-                    "time_stamp": "2021-12-04 16:55:42.863585",
+                    "time_stamp": "2021-12-05 10:08:02.984050",
                     "worker_id": 1
                 },
                 {
@@ -229,7 +229,7 @@
                     ],
                     "state": "waiting to be cooked",
                     "step": 1,
-                    "time_stamp": "2021-12-04 16:55:42.863585",
+                    "time_stamp": "2021-12-05 10:08:02.984050",
                     "worker_id": 1
                 },
                 {
@@ -239,7 +239,7 @@
                     ],
                     "state": "cooking stack #0(5) of 10 tacos",
                     "step": 2,
-                    "time_stamp": "2021-12-04 16:56:28.120056",
+                    "time_stamp": "2021-12-05 10:08:51.915500",
                     "worker_id": 1
                 },
                 {
@@ -249,7 +249,7 @@
                     ],
                     "state": "Stack#0(5) complete",
                     "step": 3,
-                    "time_stamp": "2021-12-04 16:56:43.957412",
+                    "time_stamp": "2021-12-05 10:09:08.861606",
                     "worker_id": 1
                 },
                 {
@@ -259,7 +259,7 @@
                     ],
                     "state": "Suborder 1 complete",
                     "step": 4,
-                    "time_stamp": "2021-12-04 16:56:43.957412",
+                    "time_stamp": "2021-12-05 10:09:08.861606",
                     "worker_id": 1
                 },
                 {
@@ -269,7 +269,7 @@
                     ],
                     "state": "Switching to order 3",
                     "step": 5,
-                    "time_stamp": "2021-12-04 16:56:44.147876",
+                    "time_stamp": "2021-12-05 10:09:09.731755",
                     "worker_id": 1
                 },
                 {
@@ -279,7 +279,37 @@
                     ],
                     "state": "cooking stack #0(4) of 5 tacos",
                     "step": 6,
-                    "time_stamp": "2021-12-04 16:56:58.981884",
+                    "time_stamp": "2021-12-05 10:09:43.642329",
+                    "worker_id": 1
+                },
+                {
+                    "part_id": [
+                        1,
+                        0
+                    ],
+                    "state": "Resting",
+                    "step": 7,
+                    "time_stamp": "2021-12-05 10:09:49.156822",
+                    "worker_id": 1
+                },
+                {
+                    "part_id": [
+                        1,
+                        0
+                    ],
+                    "state": "fan deactivation at Marcelino's station",
+                    "step": 8,
+                    "time_stamp": "2021-12-05 10:10:14.094902",
+                    "worker_id": 1
+                },
+                {
+                    "part_id": [
+                        1,
+                        0
+                    ],
+                    "state": "Stopped resting",
+                    "step": 9,
+                    "time_stamp": "2021-12-05 10:10:19.187127",
                     "worker_id": 1
                 },
                 {
@@ -288,8 +318,8 @@
                         0
                     ],
                     "state": "Stack#0(4) complete",
-                    "step": 7,
-                    "time_stamp": "2021-12-04 16:57:04.177546",
+                    "step": 10,
+                    "time_stamp": "2021-12-05 10:10:19.187127",
                     "worker_id": 1
                 },
                 {
@@ -298,8 +328,8 @@
                         0
                     ],
                     "state": "Suborder 0 complete",
-                    "step": 8,
-                    "time_stamp": "2021-12-04 16:57:04.177546",
+                    "step": 11,
+                    "time_stamp": "2021-12-05 10:10:19.187127",
                     "worker_id": 1
                 },
                 {
@@ -308,18 +338,8 @@
                         0
                     ],
                     "state": "Order 1 complete",
-                    "step": 9,
-                    "time_stamp": "2021-12-04 16:57:04.177546",
-                    "worker_id": 1
-                },
-                {
-                    "part_id": [
-                        1,
-                        0
-                    ],
-                    "state": "Switching to order 2",
-                    "step": 10,
-                    "time_stamp": "2021-12-04 16:57:04.193409",
+                    "step": 12,
+                    "time_stamp": "2021-12-05 10:10:19.187127",
                     "worker_id": 1
                 }
             ]
@@ -352,7 +372,7 @@
     "2": {
         "answer": {
             "end_time": 0,
-            "start_time": "2021-12-04 16:55:47.158151",
+            "start_time": "2021-12-05 10:08:07.321818",
             "steps": [
                 {
                     "part_id": [
@@ -361,7 +381,7 @@
                     ],
                     "state": "waiting to be cooked",
                     "step": 0,
-                    "time_stamp": "2021-12-04 16:55:47.158151",
+                    "time_stamp": "2021-12-05 10:08:07.321818",
                     "worker_id": 1
                 },
                 {
@@ -371,7 +391,7 @@
                     ],
                     "state": "waiting to be cooked",
                     "step": 1,
-                    "time_stamp": "2021-12-04 16:55:47.158151",
+                    "time_stamp": "2021-12-05 10:08:07.321818",
                     "worker_id": 1
                 },
                 {
@@ -381,7 +401,7 @@
                     ],
                     "state": "Suborder 0 arrived at taquero Jerry",
                     "step": 2,
-                    "time_stamp": "2021-12-04 16:55:56.154447",
+                    "time_stamp": "2021-12-05 10:08:14.321833",
                     "worker_id": 3
                 },
                 {
@@ -391,7 +411,7 @@
                     ],
                     "state": "cooking stack #0(6) of 2 tacos",
                     "step": 3,
-                    "time_stamp": "2021-12-04 16:56:54.819644",
+                    "time_stamp": "2021-12-05 10:09:20.338598",
                     "worker_id": 1
                 },
                 {
@@ -401,17 +421,7 @@
                     ],
                     "state": "Stack#0(6) complete",
                     "step": 4,
-                    "time_stamp": "2021-12-04 16:56:58.969886",
-                    "worker_id": 1
-                },
-                {
-                    "part_id": [
-                        2,
-                        1
-                    ],
-                    "state": "Switching to order 1",
-                    "step": 5,
-                    "time_stamp": "2021-12-04 16:56:58.981884",
+                    "time_stamp": "2021-12-05 10:09:24.482518",
                     "worker_id": 1
                 },
                 {
@@ -420,38 +430,8 @@
                         1
                     ],
                     "state": "cooking stack #1(7) of 8 tacos",
-                    "step": 6,
-                    "time_stamp": "2021-12-04 16:57:04.193409",
-                    "worker_id": 1
-                },
-                {
-                    "part_id": [
-                        2,
-                        1
-                    ],
-                    "state": "Resting",
-                    "step": 7,
-                    "time_stamp": "2021-12-04 16:57:20.775925",
-                    "worker_id": 1
-                },
-                {
-                    "part_id": [
-                        2,
-                        1
-                    ],
-                    "state": "fan deactivation at Marcelino's station",
-                    "step": 8,
-                    "time_stamp": "2021-12-04 16:57:48.476769",
-                    "worker_id": 1
-                },
-                {
-                    "part_id": [
-                        2,
-                        1
-                    ],
-                    "state": "Stopped resting",
-                    "step": 9,
-                    "time_stamp": "2021-12-04 16:57:50.786100",
+                    "step": 5,
+                    "time_stamp": "2021-12-05 10:09:25.367850",
                     "worker_id": 1
                 },
                 {
@@ -460,8 +440,8 @@
                         1
                     ],
                     "state": "Stack#1(7) complete",
-                    "step": 10,
-                    "time_stamp": "2021-12-04 16:57:50.801068",
+                    "step": 6,
+                    "time_stamp": "2021-12-05 10:09:43.469356",
                     "worker_id": 1
                 },
                 {
@@ -470,8 +450,18 @@
                         1
                     ],
                     "state": "Suborder 1 complete",
-                    "step": 11,
-                    "time_stamp": "2021-12-04 16:57:50.801068",
+                    "step": 7,
+                    "time_stamp": "2021-12-05 10:09:43.469356",
+                    "worker_id": 1
+                },
+                {
+                    "part_id": [
+                        2,
+                        1
+                    ],
+                    "state": "Switching to order 1",
+                    "step": 8,
+                    "time_stamp": "2021-12-05 10:09:43.642329",
                     "worker_id": 1
                 },
                 {
@@ -480,8 +470,8 @@
                         0
                     ],
                     "state": "cooking stack #0(11) of 5 tacos",
-                    "step": 12,
-                    "time_stamp": "2021-12-04 16:58:29.142749",
+                    "step": 9,
+                    "time_stamp": "2021-12-05 10:10:53.569047",
                     "worker_id": 3
                 },
                 {
@@ -490,8 +480,8 @@
                         0
                     ],
                     "state": "Stack#0(11) complete",
-                    "step": 13,
-                    "time_stamp": "2021-12-04 16:58:34.443619",
+                    "step": 10,
+                    "time_stamp": "2021-12-05 10:10:59.615456",
                     "worker_id": 3
                 },
                 {
@@ -500,8 +490,8 @@
                         0
                     ],
                     "state": "Suborder 0 complete",
-                    "step": 14,
-                    "time_stamp": "2021-12-04 16:58:34.443619",
+                    "step": 11,
+                    "time_stamp": "2021-12-05 10:10:59.615456",
                     "worker_id": 3
                 },
                 {
@@ -510,8 +500,8 @@
                         0
                     ],
                     "state": "Order 2 complete",
-                    "step": 15,
-                    "time_stamp": "2021-12-04 16:58:36.032588",
+                    "step": 12,
+                    "time_stamp": "2021-12-05 10:11:01.081579",
                     "worker_id": 1
                 }
             ]
@@ -545,7 +535,7 @@
     "3": {
         "answer": {
             "end_time": 0,
-            "start_time": "2021-12-04 16:55:50.174955",
+            "start_time": "2021-12-05 10:08:11.219229",
             "steps": [
                 {
                     "part_id": [
@@ -554,7 +544,7 @@
                     ],
                     "state": "waiting to be cooked",
                     "step": 0,
-                    "time_stamp": "2021-12-04 16:55:50.174955",
+                    "time_stamp": "2021-12-05 10:08:11.219229",
                     "worker_id": 1
                 },
                 {
@@ -564,7 +554,7 @@
                     ],
                     "state": "waiting to be cooked",
                     "step": 1,
-                    "time_stamp": "2021-12-04 16:55:50.174955",
+                    "time_stamp": "2021-12-05 10:08:11.219229",
                     "worker_id": 1
                 },
                 {
@@ -574,7 +564,7 @@
                     ],
                     "state": "Suborder 0 arrived at taquero Omar",
                     "step": 2,
-                    "time_stamp": "2021-12-04 16:55:56.192255",
+                    "time_stamp": "2021-12-05 10:08:18.487057",
                     "worker_id": 0
                 },
                 {
@@ -584,7 +574,7 @@
                     ],
                     "state": "cooking stack #0(8) of 5 tacos",
                     "step": 3,
-                    "time_stamp": "2021-12-04 16:56:44.147876",
+                    "time_stamp": "2021-12-05 10:09:09.731755",
                     "worker_id": 1
                 },
                 {
@@ -594,7 +584,7 @@
                     ],
                     "state": "fan activation at Marcelino's station",
                     "step": 4,
-                    "time_stamp": "2021-12-04 16:56:48.457619",
+                    "time_stamp": "2021-12-05 10:09:14.079774",
                     "worker_id": 1
                 },
                 {
@@ -604,7 +594,7 @@
                     ],
                     "state": "Stack#0(8) complete",
                     "step": 5,
-                    "time_stamp": "2021-12-04 16:56:54.788754",
+                    "time_stamp": "2021-12-05 10:09:20.337629",
                     "worker_id": 1
                 },
                 {
@@ -614,7 +604,7 @@
                     ],
                     "state": "Suborder 1 complete",
                     "step": 6,
-                    "time_stamp": "2021-12-04 16:56:54.788754",
+                    "time_stamp": "2021-12-05 10:09:20.337629",
                     "worker_id": 1
                 },
                 {
@@ -624,7 +614,7 @@
                     ],
                     "state": "Switching to order 2",
                     "step": 7,
-                    "time_stamp": "2021-12-04 16:56:54.819644",
+                    "time_stamp": "2021-12-05 10:09:20.338598",
                     "worker_id": 1
                 },
                 {
@@ -634,7 +624,7 @@
                     ],
                     "state": "cooking stack #0(15) of 5 tacos",
                     "step": 8,
-                    "time_stamp": "2021-12-04 16:58:18.881878",
+                    "time_stamp": "2021-12-05 10:11:06.642271",
                     "worker_id": 0
                 },
                 {
@@ -644,7 +634,7 @@
                     ],
                     "state": "Stack#0(15) complete",
                     "step": 9,
-                    "time_stamp": "2021-12-04 16:58:24.645568",
+                    "time_stamp": "2021-12-05 10:11:13.002474",
                     "worker_id": 0
                 },
                 {
@@ -654,7 +644,7 @@
                     ],
                     "state": "Suborder 0 complete",
                     "step": 10,
-                    "time_stamp": "2021-12-04 16:58:24.645568",
+                    "time_stamp": "2021-12-05 10:11:13.002474",
                     "worker_id": 0
                 },
                 {
@@ -664,7 +654,7 @@
                     ],
                     "state": "Order 3 complete",
                     "step": 11,
-                    "time_stamp": "2021-12-04 16:58:25.386035",
+                    "time_stamp": "2021-12-05 10:11:16.165982",
                     "worker_id": 1
                 }
             ]

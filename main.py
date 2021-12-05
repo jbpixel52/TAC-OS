@@ -21,7 +21,7 @@ from dash import dash_table, dcc, html
 from dash.dependencies import Input, Output
 
 import dashboard_main
-from main_scheduler import (ChalanTaquero, CocinaQuesadillero, CocinaTaqueros,
+from main_scheduler import (ChalanTaquero, CocinaTaqueros,
                             PersonalTaqueria, getTime, open_taqueria)
 import metrics
 debug_state = False

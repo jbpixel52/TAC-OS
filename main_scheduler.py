@@ -188,9 +188,15 @@ class PersonalTaqueria(threading.Thread):
     def objects_to_json(self):
         path = 'logs/staff/taqueros/'+self.name+'.json'
         with open(path, mode='w', encoding='utf-8') as file:
+            if(self.chalanAsignado):
+                chalan = self.chalanAsignado.name
+            else:
+                chalan = None
             serialized = {'name': self.name, 'ID': self.ID, 'ordenes': self.ordenes, 'stackcounter': self.stackCounter,
-                          'isFanActive': self.isFanActive, 'chalan': self.chalanAsignado.name, 'cooking': self.Cooking, 'resting': self.isResting, 'Owl': self.isAnOwl,
-                          'currentTortillas': self.currentTortillas, 'currentCebolla': self.currentCebolla, 'currentCilantro': self.currentCilantro, 'currentSalsa': self.currentSalsa, 'currentGuacamole': self.currentGuacamole, 'currentWorkingOrder': self.currentWorkingOrder, 'currentWorkingSuborder': self.currentWorkingSuborder}
+                        'isFanActive': self.isFanActive, 'chalan': chalan, 'cooking': self.Cooking, 'resting': self.isResting, 'Owl': self.isAnOwl,
+                        'currentTortillas': self.currentTortillas, 'currentCebolla': self.currentCebolla, 'currentCilantro': self.currentCilantro, 'currentSalsa': self.currentSalsa, 'currentGuacamole': self.currentGuacamole, 'currentWorkingOrder': self.currentWorkingOrder, 'currentWorkingSuborder': self.currentWorkingSuborder}
+
+                
             json.dump(serialized, file, indent=4, sort_keys=True)
             file.close()
 
@@ -1357,13 +1363,7 @@ class CocinaTaqueros(multiprocessing.Process):
             "Puente hacia el disco casi abierto lol #$%^& Windows y su falta de fork()")
         
     def ingreso_personal(self, cocina):
-        listOfNames = ["Omar","Marcelino","Jose","Jerry"]
-        #         # Queues de mandar pedidos o recibir pedidos no correspondientes
-        # self.sendQueues = [None,None,None,None]
-        # self.recieveQueues = None
-        # # Queues de mandar o recibir pedidos no correspondientes hechos
-        # self.sendQueuesReturn = [None,None,None,None]
-        # self.recieveQueuesReturn = None
+        listOfNames = ["Omar","Marcelino","Jose","Jerry","Carlos"]
         """
         [IDs de taqueros]
             0 - > Adobaba
@@ -1376,7 +1376,7 @@ class CocinaTaqueros(multiprocessing.Process):
         # (o sea con self), si se hace no pasa nada o pasan comportamientos
         #  no deseados para Omar
         # El queue send de uno es el receptor de otro y viceversa
-        for i in range(4):
+        for i in range(5):
             # Asignacion de espacios vacios, nombres de personal y ID
             cocina.personal.append(None)
             cocina.personal[i] = PersonalTaqueria(str(listOfNames[i]))
@@ -1403,29 +1403,29 @@ class CocinaTaqueros(multiprocessing.Process):
         cocina.personal[3].chalanAsignado.cocinerosAsignados[0] = cocina.personal[3]
         
         
-        for i in range(4):
-            for j in range(4):
+        for i in range(5):
+            for j in range(5):
                 cocina.personal[i].sendQueues.append(None)
                 cocina.personal[i].sendQueuesReturn.append(None)
 
         # Asignar buses de envio y recibo de ordenes
         #  caminos recpetores de ordenes no correspondientes
         #  y receptor de retorno de ordenes terminadas que no eran correspondientes
-        for i in range(4):
+        for i in range(5):
             cocina.personal[i].recieveQueue = Queue()
             cocina.personal[i].recieveQueueReturn = Queue()
 
         # Asignar queues de envio de ordenes no correspondientes
-        for i in range(0,4):   
-            for j in range(0,4):
+        for i in range(0,5):   
+            for j in range(0,5):
                 #Si, tecnicamente le estamos metiendo su propio queue
                 # como un sendqueue, pero eso era más facil que modifcar el for
                 cocina.personal[j].sendQueues[i] =  cocina.personal[i].recieveQueue
             
         
         # Asignar queues de envio de retorno de ordenes no correspondientes
-        for i in range(0,4):   
-            for j in range(0,4):
+        for i in range(0,5):   
+            for j in range(0,5):
                 #Si, tecnicamente le estamos metiendo su propio queue
                 # como un sendqueue, pero eso era más facil que modifcar el for
                 cocina.personal[j].sendQueuesReturn[i] =  cocina.personal[i].recieveQueueReturn
@@ -1433,7 +1433,7 @@ class CocinaTaqueros(multiprocessing.Process):
         # Dar apuntadores (voy a ir con la finta que python está haciendo
         #  esto por referencia) de los taqueros dobles a todos
         #  ellos son dos personas, IDs 1 y 2
-        for i in range(4):
+        for i in range(5):
             cocina.personal[i].pointersToTaquerosDoubles.append(
                 cocina.personal[1]
             )
@@ -1442,7 +1442,7 @@ class CocinaTaqueros(multiprocessing.Process):
             )
         # Arrancar los threads de cocineros y sus chalanes
         #  una vez que todos sus datos estan asignados
-        for i in range(4):       
+        for i in range(5):       
             cocina.personal[i].start()
         cocina.personal[0].chalanAsignado.start()
         cocina.personal[3].chalanAsignado.start()
