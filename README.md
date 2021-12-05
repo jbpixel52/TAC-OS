@@ -11,6 +11,10 @@ School project simulating the inner workings of a taqueria's production line.
 * Dependencies in requirements.txt.
 * Linux, Windows or MacOS compatible.
 ### Installing
+* Clone TAC-OS  
+```
+git clone https://github.com/jbpixel52/TAC-OS  
+```
 * Install with pip or the required dependencies
 ```
 pip install -r requirements.txt
