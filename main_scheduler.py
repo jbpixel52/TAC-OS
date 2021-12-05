@@ -12,8 +12,9 @@ import time
 from queue import Empty, PriorityQueue, Queue
 from time import sleep
 from datetime import datetime
+import sqs_handler
 
-ReadingFromDisk = True
+ReadingFromDisk = False
 abcdario = list(string.ascii_uppercase)
 debug_state = True
 SAVE_FREQ = 1
@@ -1585,7 +1586,8 @@ def open_taqueria():
                     Cocina.personal[indexToGive].queue.put(orden)         
             time.sleep(999999) # <- recordatorio para Omar -> DEJALO COMO ESTABA
         else:
-            orderMessageFromSQS = None
+            
+            orderMessageFromSQS = sqs_handler.read_message()
             queueToPut = random.randint(0,3)
             if(queueToPut == 1 or queueToPut ==2):
                 if(Cocina.personal[1].isResting):
@@ -1594,6 +1596,6 @@ def open_taqueria():
                     queueToPut = 1
             else:
                 pass
-            Cocina.personal[indexToGive].queue.put(orderMessageFromSQS) 
+            Cocina.personal[queueToPut].queue.put(orderMessageFromSQS) 
             # Aquí se borra el mensaje recibido 
             

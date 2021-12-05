@@ -111,6 +111,11 @@ def init():
     round_robin()
 
 
-init()
-#purge_queue()
+#init()
+purge_queue()
+
+message, orden = read_message()
+print(f"MESSAGE:\n {message}")
+print(f"ORDEN:\n {orden}")
+
 # %%
