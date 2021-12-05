@@ -7,12 +7,12 @@
     "currentCilantro": 200,
     "currentGuacamole": 100,
     "currentSalsa": 150,
-    "currentTortillas": 50,
-    "currentWorkingOrder": null,
-    "currentWorkingSuborder": null,
+    "currentTortillas": 48,
+    "currentWorkingOrder": 0,
+    "currentWorkingSuborder": 0,
     "isFanActive": false,
     "name": "Carlos",
     "ordenes": {},
     "resting": false,
-    "stackcounter": 0
+    "stackcounter": 1
 }

@@ -3,16 +3,16 @@
     "Owl": false,
     "chalan": "Julio",
     "cooking": false,
-    "currentCebolla": 175,
-    "currentCilantro": 165,
-    "currentGuacamole": 90,
-    "currentSalsa": 130,
+    "currentCebolla": 197,
+    "currentCilantro": 195,
+    "currentGuacamole": 100,
+    "currentSalsa": 141,
     "currentTortillas": 50,
     "currentWorkingOrder": 1,
     "currentWorkingSuborder": 0,
-    "isFanActive": true,
+    "isFanActive": false,
     "name": "Marcelino",
     "ordenes": {},
     "resting": false,
-    "stackcounter": 9
+    "stackcounter": 4
 }

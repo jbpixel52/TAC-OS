@@ -114,6 +114,8 @@ class PersonalTaqueria(threading.Thread):
         # Esctructuras de datos y cosas del output
         self.jsonOutputTemplate = None  # Se asigna en main
         self.hasCookedSomething = False
+        self.jsonInputs = {}
+        self.pointersToOrders = {} # lista de tuplesID que apuntan a sus json outputs, sirve con los quesadilleros
         self.jsonOutputs = {}  # Cuadrerno con los jsons de salida
         self.ordenes = {}  # dict in mind per worker
         self.ordenesHeads = []  # lista con las cabezas de subordenenes
@@ -178,6 +180,7 @@ class PersonalTaqueria(threading.Thread):
         # Para poder verificar las UTIs del otro taquero se necesita ver 
         # sus stats de UTIS
         self.pointersToTaquerosDoubles = []
+        # quesadillero
         
     def staff_to_json(self):
         while True:
@@ -268,9 +271,12 @@ class PersonalTaqueria(threading.Thread):
 
     def is_order_rejectable(self, orden):
         for subOrden in orden['orden']:
-            if((subOrden['type'] in self.allowedOrderTypes) \
+            if(((subOrden['type'] == "taco") \
                 and (subOrden['meat'] in self.allowedMeatTypes) \
-                and (subOrden['quantity'] > 0)):
+                and (subOrden['quantity'] > 0)) 
+               or(subOrden['type'] == "quesadilla" 
+                  and (subOrden['meat'] in self.allowedMeatTypes or subOrden['meat'] == "")
+                  and subOrden['quantity'] > 0)):
                 return False
         logging.info(f"order {orden['request_id']} has to be rejected {timeDif()}")
         self.writeOutputSteps("rejectOrder",(orden['request_id'],0,0), None)
@@ -279,7 +285,10 @@ class PersonalTaqueria(threading.Thread):
     def is_suborder_rejectable(self, orderID, suborden, suborderID):
         if((suborden['type'] in self.allowedOrderTypes) \
             and (suborden['meat'] in self.allowedMeatTypes) \
-            and (suborden['quantity'] > 0)):
+            and (suborden['quantity'] > 0)
+            or(suborden['type'] == "quesadilla" 
+                  and (suborden['meat'] in self.allowedMeatTypes or suborden['meat'] == "")
+                  and suborden['quantity'] > 0)):
             return False
         else:
             logging.info(f"suborder {suborderID} had to be rejected {timeDif()}")
@@ -297,7 +306,10 @@ class PersonalTaqueria(threading.Thread):
         ordercopy['orden'] = []
         ordercopy['orden'].append(suborder) # revaciar la lista para mandar 1 x 1
         #  todo este tiempo ey alfin encontré al (n+noselol)-ultimo sus impostor
-        indexToSend = self.cocinaDirectory[suborder["meat"]]
+        if(suborder["type"] == "taco"):
+            indexToSend = self.cocinaDirectory[suborder["meat"]]
+        else:
+            indexToSend = 4 #Si no es taco directo al de las quesadillas
         if(indexToSend == 1):
             # But first, si esto va dirigido a uno de los taqueros dobles
             # debemos ver cual es el que es el apropiado
@@ -307,7 +319,10 @@ class PersonalTaqueria(threading.Thread):
                 )
             pass
         # # Variable de apoyo en el regreso al taquero encargado para saber donde va
-        ordercopy["tupleID"] = (self.orderCounter,numSuborden)
+        if(indexToSend != 4):
+            ordercopy["tupleID"] = (self.orderCounter,numSuborden)
+        else:
+            ordercopy["tupleID"] = (self.orderCounter-1,numSuborden)
         self.sendQueues[indexToSend].put(ordercopy)
 
     def splitOrder(self, orden):
@@ -318,9 +333,12 @@ class PersonalTaqueria(threading.Thread):
         if(self.is_order_rejectable(orden)):
             # Subir el contador de orden + 1 pero no registrarlo
             self.orderCounter += 1
+            #self.pointersToOrders[self.orderCounter] = len(self.jsonOutputs)
             pass
         else: # Si la orden entera no era rechazable, procedamos
             # Seccionar en partes la orden (los indices de ['orden'])
+            self.jsonInputs[self.orderCounter] = orden
+            self.pointersToOrders[self.orderCounter] = len(self.jsonInputs)-1
             for subOrden in pedido['orden']:
                 # Ok, la orden entera no es rechazable, pero que tal
                 #  la suborden en sí
@@ -337,12 +355,14 @@ class PersonalTaqueria(threading.Thread):
                     # Ok, ya revisamos que la orden no es rechazable y que la 
                     #  suborden no es rechazable, pero que tal sí esta suborden
                     #  no es de mi carne?
-                    if(subOrden["meat"] not in self.meatTypes):
-                        #Tanto en output como en logica pondre el encargado
-                        pedido["responsable_orden"] = self.ID
-                        self.send_suborder_somewhere_else(subOrden, pedido, numSuborden) 
-                        numSuborden += 1   
-                        pass
+                    if((subOrden["meat"] not in self.meatTypes and subOrden["type"] != "quesadilla")):
+                        if(self.ID != 4): # el quesadillero recibe de forma segura las ordenes (subs)
+                            # se permiten quesadillas sin carne
+                            #Tanto en output como en logica pondre el encargado
+                            pedido["responsable_orden"] = self.ID
+                            self.send_suborder_somewhere_else(subOrden, pedido, numSuborden) 
+                            numSuborden += 1   
+                            pass
                     else:
                         """[Explicación de la lista (TB DICT) que conforma al stacl]
                             stack = [
@@ -358,31 +378,51 @@ class PersonalTaqueria(threading.Thread):
                             ]
                         """
                         # Costo UTIS empieza en 1 por la carne, igual para tiempo de cocinar
-                        costoUTIs = 1
-                        tiempoParaCocinar = 1
+                        if(subOrden['type'] == "quesadilla" and subOrden['meat'] == ""):
+                            costoUTIs = 0
+                            tiempoParaCocinar = 0
+                        else:
+                            if(self.ID != 4):
+                                # no pagar carne si no se pone
+                                costoUTIs = 1
+                                tiempoParaCocinar = 1
+                            else:
+                                # no paga el de quesadillas
+                                costoUTIs = 0
+                                tiempoParaCocinar = 0
                         subSplitIndex = 0
+                        # Variable que dice sí es quesadilla o no
+                        isQuesadilla = False
+                        if(subOrden['type'] == "quesadilla"):
+                            isQuesadilla = True
                         # Variables relacionadas con el uso de ingredientes
                         #  recordatorio: si una suborden usa x ingrediente, sus stacks tambien
                         #  y siempre se usan tortillas lol (to = *to*rtillas)
                         listaIngridients = ["", "", "", "", "to"]
-                        if(subOrden['type'] == 'taco'):
+                        # Los taqueros pagan ingredientes
+                        if(True): # no se que pasará si lo quito, no hay tiempo para pensar
                             # Hacer un calculo del costo
-                            if('salsa' in subOrden['ingredients']):
-                                costoUTIs += 2.66667
-                                tiempoParaCocinar += 0.5
-                                listaIngridients[0] = "sa"
-                            if('guacamole' in subOrden['ingredients']):
-                                costoUTIs += 3.5
-                                tiempoParaCocinar += 0.5
-                                listaIngridients[1] = "gu"
-                            if('cilantro' in subOrden['ingredients']):
-                                costoUTIs += 2
-                                tiempoParaCocinar += 0.5
-                                listaIngridients[2] = "ci"
-                            if('cebolla' in subOrden['ingredients']):
-                                costoUTIs += 2
-                                tiempoParaCocinar += 0.5
-                                listaIngridients[3] = "ce"
+                            if(self.ID == 4):
+                                costoUTIs += 20
+                                tiempoParaCocinar += 20
+                                pass
+                            else:      
+                                if('salsa' in subOrden['ingredients']):
+                                    costoUTIs += 2.66667
+                                    tiempoParaCocinar += 0.5
+                                    listaIngridients[0] = "sa"
+                                if('guacamole' in subOrden['ingredients']):
+                                    costoUTIs += 3.5
+                                    tiempoParaCocinar += 0.5
+                                    listaIngridients[1] = "gu"
+                                if('cilantro' in subOrden['ingredients']):
+                                    costoUTIs += 2
+                                    tiempoParaCocinar += 0.5
+                                    listaIngridients[2] = "ci"
+                                if('cebolla' in subOrden['ingredients']):
+                                    costoUTIs += 2
+                                    tiempoParaCocinar += 0.5
+                                    listaIngridients[3] = "ce"
                             # costo es costo por taco * cantidadtacos
                             # Costo individual servirá para la división de sstacks
                             costoUTIsIndividual = costoUTIs
@@ -404,7 +444,8 @@ class PersonalTaqueria(threading.Thread):
                                     "individual cost": costoUTIsIndividual,
                                     "time to cook": tiempoParaCocinar,
                                     "indiv. time to cook": tiempoCocinarIndividual,
-                                    "ingridient list": listaIngridients
+                                    "ingridient list": listaIngridients,
+                                    "isQuesadilla": isQuesadilla
                                 }
                                 logging.info(
                                     f"Stack {self.stackCounter} has been put in {self.ID}'s head {timeDif()}")
@@ -453,7 +494,8 @@ class PersonalTaqueria(threading.Thread):
                                         "individual cost": costoUTIsIndividual,
                                         "time to cook": residuoTiempo,
                                         "indiv. time to cook": tiempoCocinarIndividual,
-                                        "ingridient list": listaIngridients
+                                        "ingridient list": listaIngridients,
+                                        "isQuesadilla": isQuesadilla
                                     }
                                     logging.info(
                                         f"Stack {self.stackCounter} has ben put in {self.ID}'s head {timeDif()}")
@@ -475,7 +517,8 @@ class PersonalTaqueria(threading.Thread):
                                         "individual cost": costoUTIsIndividual,
                                         "time to cook": tiempoParaCocinar,
                                         "indiv. time to cook": tiempoCocinarIndividual,
-                                        "ingridient list": listaIngridients
+                                        "ingridient list": listaIngridients,
+                                        "isQuesadilla": isQuesadilla
                                     }
                                     logging.info(
                                         f"Stack {self.stackCounter} has ben put in {self.ID}'s head {timeDif()}")
@@ -669,20 +712,40 @@ class PersonalTaqueria(threading.Thread):
                             int(self.shortestOrderIndex))
                         # Si no quedan vecinos stacks, la suborden entonces
                         #  se acabó
-                        self.subOrderCounter += 1
-                        # Declarar en el registro de subordenes de ordenes
-                        #   su completación (completición?)
-                        self.ordenesSuborders[orderToCheckIndex
-                                              ][subOrderToEndIndex][1] = 1
-                        # self.finisherOutput("subOrder", (orderToCheckIndex, subOrderToEndIndex, 0))
-                        logging.info(
-                            f"{self.name}'s suborder {self.subOrderCounter} completed {timeDif()}")
-                        finishedASubOrder = True
-                        # Revisar si se acabó la orden
-                        finishedAnOrder = self.checkOrderCompletion(
-                            orderToCheckIndex
-                        )
-                        # Revisar si se acabó la orden
+                        # Acabaste, pero era una quesadilla? si no, solo falta
+                        #  pagar el queso, amdaselo al de las quesadillas para
+                        #  que lo acabe
+                        if(not self.ordenes[self.shortestOrderIndex]['isQuesadilla']
+                           or self.ID == 4):
+                            if(self.ID == 4):
+                                x = 5
+                            # quesadillero excepcion a esa regla
+                            self.subOrderCounter += 1
+                            # Declarar en el registro de subordenes de ordenes
+                            #   su completación (completición?)
+                            self.ordenesSuborders[orderToCheckIndex
+                                                ][subOrderToEndIndex][1] = 1
+                            # self.finisherOutput("subOrder", (orderToCheckIndex, subOrderToEndIndex, 0))
+                            logging.info(
+                                f"{self.name}'s suborder {self.subOrderCounter} completed {timeDif()}")
+                            finishedASubOrder = True
+                            # Revisar si se acabó la orden
+                            finishedAnOrder = self.checkOrderCompletion(
+                                orderToCheckIndex
+                            )
+                            # Revisar si se acabó la orden
+                        else:
+                            # Mandar al de las quesadillas para que cierre el
+                            # trato
+                            # Mandar al de las quesadillas para que cierre el
+                            # trato, hay que extraer la orden de los inputs
+                            tupleID = self.ordenes[self.shortestOrderIndex]["tupleID"]
+                            subroderIndex = tupleID[1]
+                            inputIndex = self.pointersToOrders[tupleID[0]]
+                            order = self.jsonInputs[inputIndex]
+                            subOrder = order['orden'][subroderIndex]
+                            order["responsable_orden"] = self.ID
+                            self.send_suborder_somewhere_else(subOrder, order, subroderIndex)
                 else:
                     # Si el ultimo elemento cocinado (en algun insante)
                     # era una cabeza que no pudo ser removida, la
@@ -690,18 +753,33 @@ class PersonalTaqueria(threading.Thread):
                     if(int(self.shortestOrderIndex) in self.ordenesHeads):
                         self.ordenesHeads.remove(
                             int(self.shortestOrderIndex))
-                    # Cada removida de cabeza sin remplazarla == se acabó el stack
-                    self.subOrderCounter += 1
-                    # Declarar que suborden x de orden y se acabó
-                    self.ordenesSuborders[orderToCheckIndex
-                                          ][subOrderToEndIndex][1] = 1
-                    # self.finisherOutput("subOrder", (orderToCheckIndex, subOrderToEndIndex, 0))
-                    logging.info(
-                        f"{self.name}'s suborder {self.subOrderCounter} completed {timeDif()}")
-                    finishedASubOrder = True
-                    # Revisar si se acabó la orden
-                    finishedAnOrder = self.checkOrderCompletion(
-                        orderToCheckIndex)
+                    if(not self.ordenes[self.shortestOrderIndex]['isQuesadilla']
+                           or self.ID == 4):
+                        if(self.ID == 4):
+                            x = 5
+                        self.subOrderCounter += 1
+                        # Cada removida de cabeza sin remplazarla == se acabó el stack
+                        #self.subOrderCounter += 1
+                        # Declarar que suborden x de orden y se acabó
+                        self.ordenesSuborders[orderToCheckIndex
+                                            ][subOrderToEndIndex][1] = 1
+                        # self.finisherOutput("subOrder", (orderToCheckIndex, subOrderToEndIndex, 0))
+                        logging.info(
+                            f"{self.name}'s suborder {self.subOrderCounter} completed {timeDif()}")
+                        finishedASubOrder = True
+                        # Revisar si se acabó la orden
+                        finishedAnOrder = self.checkOrderCompletion(
+                            orderToCheckIndex)
+                    else:
+                        # Mandar al de las quesadillas para que cierre el
+                        # trato, hay que extraer la orden de los inputs
+                        tupleID = self.ordenes[self.shortestOrderIndex]["tupleID"]
+                        subroderIndex = tupleID[1]
+                        inputIndex = self.pointersToOrders[tupleID[0]]
+                        order = self.jsonInputs[inputIndex]
+                        subOrder = order['orden'][subroderIndex]
+                        order["responsable_orden"] = self.ID
+                        self.send_suborder_somewhere_else(subOrder, order, subroderIndex)
                 # Antes de hacer pop reportar su finalización en el json
                 self.finisherOutput(
                     "stack", (
@@ -868,47 +946,56 @@ class PersonalTaqueria(threading.Thread):
         pass
 
     def requestIngridient(self, ingridient, quantity, priority):
-        if(ingridient not in self.listOfRquestedIngridients):
-            # Si no está el ingrediente en la lista de solicitados, se pide
-            # Los taqueros individuales usan queueA, los paralelos queueB
-            if(self.ID == 0 or self.ID == 3):
-                queueChalan = self.chalanAsignado.queueA
+        if(self.ID == 4):
+            if(quantity == 0):
+                time.sleep(5)
+                self.currentTortillas = self.maxTortillas
             else:
-                queueChalan = self.chalanAsignado.queueB
-            # Chechar si es tortilla para darle el boost de prioridad
-            if(ingridient == "to"):
-                priority += self.tortillaRequestBoost
-            # Cebolla y cilantro o nunca se rellenaban o lo hacian demasiado
-            #  esto termina aqui y ahora de una vez por todas
-            if(ingridient == "ce" or ingridient == "ci" or ingridient == "sa"):
-                if((ingridient == "ce") and self.currentCebolla/self.maxCebolla
+            # el quesadillero solo necesita tortillas
+            # correle a la tienda cada que hagas cinco!!!
+                pass
+        else:
+            if(ingridient not in self.listOfRquestedIngridients):
+                # Si no está el ingrediente en la lista de solicitados, se pide
+                # Los taqueros individuales usan queueA, los paralelos queueB
+                if(self.ID == 0 or self.ID == 3):
+                    queueChalan = self.chalanAsignado.queueA
+                else:
+                    queueChalan = self.chalanAsignado.queueB
+                # Chechar si es tortilla para darle el boost de prioridad
+                if(ingridient == "to"):
+                    priority += self.tortillaRequestBoost
+                # Cebolla y cilantro o nunca se rellenaban o lo hacian demasiado
+                #  esto termina aqui y ahora de una vez por todas
+                if(ingridient == "ce" or ingridient == "ci" or ingridient == "sa"):
+                    if((ingridient == "ce") and self.currentCebolla/self.maxCebolla
+                            <= self.thresholdOfCilantroAndCebollaRequest):
+                        self.listOfRquestedIngridients.append(ingridient)
+                        queueChalan.put((ingridient, quantity, self.ID, priority))
+                        pass
+                    elif((ingridient == "ci") and self.currentCilantro/self.maxCilantro
                         <= self.thresholdOfCilantroAndCebollaRequest):
-                    self.listOfRquestedIngridients.append(ingridient)
+                        self.listOfRquestedIngridients.append(ingridient)
+                        queueChalan.put((ingridient, quantity, self.ID, priority))
+                        pass
+                    elif((ingridient == "sa") and self.currentSalsa/self.maxSalsa
+                        <= self.thresholdOfSalsaRequest):
+                        self.listOfRquestedIngridients.append(ingridient)
+                        queueChalan.put((ingridient, quantity, self.ID, priority))
+                        pass
+                    elif((ingridient == "gu") and self.currentGuacamole/self.maxGuacamole
+                        <= self.thresholdOfGuacamoleRequest):
+                        self.listOfRquestedIngridients.append(ingridient)
+                        queueChalan.put((ingridient, quantity, self.ID, priority))
+                        pass
+                else:
                     queueChalan.put((ingridient, quantity, self.ID, priority))
-                    pass
-                elif((ingridient == "ci") and self.currentCilantro/self.maxCilantro
-                     <= self.thresholdOfCilantroAndCebollaRequest):
                     self.listOfRquestedIngridients.append(ingridient)
-                    queueChalan.put((ingridient, quantity, self.ID, priority))
-                    pass
-                elif((ingridient == "sa") and self.currentSalsa/self.maxSalsa
-                     <= self.thresholdOfSalsaRequest):
-                    self.listOfRquestedIngridients.append(ingridient)
-                    queueChalan.put((ingridient, quantity, self.ID, priority))
-                    pass
-                elif((ingridient == "gu") and self.currentGuacamole/self.maxGuacamole
-                     <= self.thresholdOfGuacamoleRequest):
-                    self.listOfRquestedIngridients.append(ingridient)
-                    queueChalan.put((ingridient, quantity, self.ID, priority))
-                    pass
-            else:
-                queueChalan.put((ingridient, quantity, self.ID, priority))
-                self.listOfRquestedIngridients.append(ingridient)
-            # queueChalan.put_nowait((self, ingridient, quantity))
-            # self.chalanAsignado.queueCabeza.append("lol")
-            # Tambien se marca que se pidió, el chalan lo quita de tal listado
-            # self.listOfRquestedIngridients.append(ingridient)
-        pass
+                # queueChalan.put_nowait((self, ingridient, quantity))
+                # self.chalanAsignado.queueCabeza.append("lol")
+                # Tambien se marca que se pidió, el chalan lo quita de tal listado
+                # self.listOfRquestedIngridients.append(ingridient)
+            pass
 
     def spendIngredients(self):
         # Lógica del consumo de ingredientes
@@ -1393,6 +1480,7 @@ class CocinaTaqueros(multiprocessing.Process):
         cocina.personal[1].meatTypes = ["asada","suadero"]
         cocina.personal[2].meatTypes = ["asada","suadero"]
         cocina.personal[3].meatTypes = ["tripa","cabeza"]
+        cocina.personal[4].meatTypes = ["tripa","cabeza","asada","suadero","adobada"] # en realidad no las usa pero erá mas facil poner esto
         
         #Asignarle a los chalanes sus taqueros correspondientes
         # el 0 es para los solitarios y el 1 es para los paralelos (asada y suadero)
@@ -1449,9 +1537,9 @@ class CocinaTaqueros(multiprocessing.Process):
             
 def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
-    ordersToTest = 6
-    ordersToTest2 = 5
-    ordersToTest3 = 4
+    ordersToTest = 0
+    ordersToTest2 = 0
+    ordersToTest3 = 2
     # si se desean ver ordenes en cabeza, cambiar nivel a debug
     logging.basicConfig(level=logging.DEBUG, filename="logfile.log", filemode="w",
                         format="%(asctime)s - [%(levelname)s] - [%(threadName)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s")
@@ -1471,7 +1559,7 @@ def open_taqueria():
             for i in range(ordersToTest2):
                 orden = ListadoOrdenes[i]
                 Cocina.personal[3].queue.put(orden)
-        with open("queuesDisco/jsonDouble.json") as OrdenesJSON:
+        with open("queuesDisco/jsonQuesadillas.json") as OrdenesJSON:
             ListadoOrdenes = json.load(OrdenesJSON)
             for i in range(ordersToTest3):
                 # indexToGive = Cocina.calculate_asadaANDsuadero_candidate(Cocina)
