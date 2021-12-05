@@ -1446,14 +1446,7 @@ class CocinaTaqueros(multiprocessing.Process):
             cocina.personal[i].start()
         cocina.personal[0].chalanAsignado.start()
         cocina.personal[3].chalanAsignado.start()
-        
-
-        
-class CocinaQuesadillero():
-    pass
-
-
-    
+            
 def open_taqueria():
     # Solo poner estas ordenes mientras hacemos pruebas
     ordersToTest = 6
