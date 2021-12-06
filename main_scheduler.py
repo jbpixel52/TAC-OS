@@ -180,11 +180,11 @@ class PersonalTaqueria(threading.Thread):
         self.listOfRquestedIngridients = []
         # Variables del ventilador
         self.isFanActive = False
-        self.fanThreshold = 32  # Default es 600 pero debo probarlo pequeño antes
+        self.fanThreshold = 600  # Default es 600 pero debo probarlo pequeño antes
         self.useTimeOfFan = 60  # tiempo que se usa el ventilador
         # Variables del descanso, definen el tiempo que se descanza cada x Tacos
         self.isResting = False
-        self.tacosRestingThreshold = 50  # Default es 1000
+        self.tacosRestingThreshold = 1000  # Default es 1000
         self.maxRestingTime = 30  # Maximo que puede descansar de una sentada
         #   Solo se baja este V cuando hay hangups de ingredientes
         self.remainingRestingTime = self.maxRestingTime
